@@ -2,7 +2,9 @@ package com.suyogindia.flashdeals;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.suyogindia.adapters.AddressAdapter;
@@ -20,6 +23,7 @@ import com.suyogindia.helpers.WebApi;
 import com.suyogindia.model.Address;
 import com.suyogindia.model.AddressResponse;
 import com.suyogindia.model.CartItem;
+import com.suyogindia.model.PlaceOrderResponse;
 import com.suyogindia.model.Result;
 
 import java.util.ArrayList;
@@ -41,6 +45,7 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
     private ArrayList<Address> addresListData;
     private AddressAdapter addressAdapter;
     private Call<Result> deleteAdddressCall;
+    private Call<PlaceOrderResponse> responseCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +104,9 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.action_add_address) {
             Intent intent = new Intent(ShowAddressActivity.this, AddAddressActivity.class);
+            Bundle b = new Bundle();
+            b.putParcelableArrayList(AppConstants.ORDERDETAILS, lisOrders);
+            intent.putExtras(b);
             startActivityForResult(intent, AppConstants.REQUEST_CODE_ADDRESS);
             return true;
         }
@@ -115,8 +123,49 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
 
     @Override
     public void onItemClick(View view, int position) {
-        address = addresListData.get(position);
+        Address address = addresListData.get(position);
+        String addreId = address.getId();
+        placeOrder(addreId);
+    }
 
+    private void placeOrder(final String addreId) {
+        if (AppHelpers.isConnectingToInternet(this)) {
+            callWebService(addreId);
+        } else {
+            Snackbar snackbar = Snackbar.make(rcvShowAddr, AppConstants.NONETWORK, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(AppConstants.TRYAGAIN, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            placeOrder(addreId);
+                        }
+                    });
+            snackbar.setActionTextColor(Color.RED);
+            // Changing action button text color
+            View sbView = snackbar.getView();
+            TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            tvMessage.setTextColor(Color.YELLOW);
+            snackbar.show();
+        }
+    }
+
+    private void callWebService(String addreId) {
+        dialog = AppHelpers.showProgressDialog(this, AppConstants.CREATEODER);
+        dialog.show();
+        responseCall = AppHelpers.placeOrder(this, lisOrders, addreId, 3);
+        responseCall.enqueue(new Callback<PlaceOrderResponse>() {
+            @Override
+            public void onResponse(Call<PlaceOrderResponse> call, Response<PlaceOrderResponse> response) {
+                dialog.dismiss();
+                Log.i("status", response.body().getStatus());
+            }
+
+            @Override
+            public void onFailure(Call<PlaceOrderResponse> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(ShowAddressActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(AppConstants.ERROR, t.getLocalizedMessage());
+            }
+        });
     }
 
     @Override

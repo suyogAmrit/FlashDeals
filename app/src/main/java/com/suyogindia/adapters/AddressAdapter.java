@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.suyogindia.flashdeals.AddAddressActivity;
@@ -57,6 +58,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
 
     public class AddressViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView txtAddr, txtCity, txtState, txtCountry, txtZip, txtPhone, txtEmail, txtEdit, txtRemove;
+        LinearLayout btnSelect;
 
         public AddressViewHolder(View itemView) {
             super(itemView);
@@ -69,8 +71,10 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
             txtEmail = (TextView) itemView.findViewById(R.id.txtEmail);
             txtEdit = (TextView) itemView.findViewById(R.id.txtEdit);
             txtRemove = (TextView) itemView.findViewById(R.id.txtRemove);
-            txtEdit.setOnClickListener(this);
-            txtRemove.setOnClickListener(this);
+            btnSelect = (LinearLayout) itemView.findViewById(R.id.btn_address_select);
+//            txtEdit.setOnClickListener(this);
+//            txtRemove.setOnClickListener(this);
+            btnSelect.setOnClickListener(this);
         }
 
         @Override
