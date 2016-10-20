@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.suyogindia.flashdeals">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/MyMaterialTheme">
+
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity android:name=".GetPhoneActivity">
+
+        </activity>
+        <activity android:name=".VerifyOTPActivity" />
+
+        <service
+            android:name=".VerifyOTPService"
+            android:exported="false" />
+
+        <receiver android:name=".GetOTPMessageReceiver">
+            <intent-filter android:priority="9999">
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".LoginActivity">
+
+        </activity>
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            tools:replace="android:theme" />
+
+        <!--<activity-->
+        <!--android:name="com.facebook.CustomTabActivity"-->
+        <!--android:exported="true">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.VIEW" />-->
+
+        <!--<category android:name="android.intent.category.DEFAULT" />-->
+        <!--<category android:name="android.intent.category.BROWSABLE" />-->
+
+        <!--<data android:scheme="@string/fb_login_protocol_scheme" />-->
+        <!--</intent-filter>-->
+        <!--</activity>-->
+        <activity android:name=".RegistrationActivity"></activity>
+        <activity android:name=".ForgotPasswordActivity" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".SelectDealsActivity">
+
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity android:name=".EditLocation" />
+        <activity android:name=".DealsDetailsActivity" />
+        <activity android:name=".CartActivity" />
+
+        <service
+            android:name=".ClearCartService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <activity android:name=".AddAddressActivity" />
+        <activity android:name=".ShowAddressActivity" />
+    </application>
+
+</manifest>

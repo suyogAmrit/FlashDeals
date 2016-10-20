@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">Flash Deal</string>
+
+    <string name="fb_login_protocol_scheme">fb1751274555127268</string>
+    <string name="facebook_app_id">1751274555127268</string>
+    <string name="hint_code">Code</string>
+    <string name="login_instruction">Login To Flash Deal</string>
+    <string name="social_login_instruction">Easily Using</string>
+    <string name="hint_enter_email">Enter Email Address..</string>
+    <string name="hint_enter_password">Enter Password..</string>
+    <string name="fotgot_password">Forgot Password</string>
+    <string name="hint_name">Enter Name..</string>
+    <string name="hint_enter_cpassword">Confirm Password</string>
+    <string name="complete_reg">Complete Registration</string>
+    <string name="hint_password_error">Password Length should be more than 6</string>
+    <string name="password_match_error">Password doesn\'t match</string>
+    <string name="dialog_text">Enter Email Address To Retrive Password</string>
+
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
+    <string name="nav_item_deals">Deals</string>
+    <string name="nav_item_my_orders">My Orders</string>
+    <string name="nav_item_notifications">Notifications</string>
+
+    <!-- navigation drawer item labels  -->
+    <string-array name="nav_drawer_labels">
+        <item>@string/nav_item_deals</item>
+        <item>@string/nav_item_my_orders</item>
+        <item>@string/nav_item_notifications</item>
+    </string-array>
+
+    <string name="title_deals">Deals</string>
+    <string name="title_my_orders">My Orders</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="edit">Edit</string>
+    <string name="remove">Remove</string>
+</resources>

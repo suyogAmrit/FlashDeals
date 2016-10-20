@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <item
+            android:id="@+id/nav_deals"
+            android:icon="@android:drawable/ic_menu_camera"
+            android:title="Deals"/>
+        <item
+            android:id="@+id/nav_my_orders"
+            android:icon="@android:drawable/ic_menu_gallery"
+            android:title="My Orders"/>
+        <item
+            android:id="@+id/nav_notification"
+            android:icon="@android:drawable/ic_menu_slideshow"
+            android:title="Notification"/>
+
+
+</menu>
