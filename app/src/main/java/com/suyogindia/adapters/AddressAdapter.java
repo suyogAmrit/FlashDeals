@@ -1,13 +1,17 @@
 package com.suyogindia.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.suyogindia.flashdeals.AddAddressActivity;
 import com.suyogindia.flashdeals.R;
+import com.suyogindia.flashdeals.ShowAddressActivity;
+import com.suyogindia.helpers.AppConstants;
 import com.suyogindia.model.Address;
 
 import java.util.ArrayList;
@@ -34,13 +38,8 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
 
     @Override
     public void onBindViewHolder(AddressViewHolder holder, int position) {
-        holder.txtAddr.setText("Locality: " + addresseList.get(position).getAddress());
-        holder.txtCity.setText("City: " + addresseList.get(position).getCity());
-        holder.txtState.setText("State: " + addresseList.get(position).getState());
-        holder.txtCountry.setText("Country: " + addresseList.get(position).getCountry());
-        holder.txtZip.setText("Zip: " + addresseList.get(position).getZip());
-        holder.txtPhone.setText("Phone: " + addresseList.get(position).getPhone());
-        holder.txtEmail.setText("Email: " + addresseList.get(position).getEmail());
+        Address myAddress = addresseList.get(position);
+        holder.bindData(myAddress);
     }
 
     @Override
@@ -79,6 +78,32 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
             if (listner != null) {
                 listner.onItemClick(v, getAdapterPosition());
             }
+        }
+
+        public void bindData(Address myAddress) {
+            txtAddr.setText("Locality: " + myAddress.getAddress());
+            txtCity.setText("City: " + myAddress.getCity());
+            txtState.setText("State: " + myAddress.getState());
+            txtCountry.setText("Country: " + myAddress.getCountry());
+            txtZip.setText("Zip: " + myAddress.getZip());
+            txtPhone.setText("Phone: " + myAddress.getPhone());
+            txtEmail.setText("Email: " + myAddress.getEmail());
+            txtEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, AddAddressActivity.class);
+                    intent.putExtra(AppConstants.EXTRA_ADDRESS, addresseList.get(getAdapterPosition()));
+                    context.startActivity(intent);
+                }
+            });
+            txtRemove.setOnClickListener(new View.OnClickListener() {
+                                             @Override
+                                             public void onClick(View v) {
+                                                 ((ShowAddressActivity) context).deleteAddress(getAdapterPosition());
+                                             }
+                                         }
+
+            );
         }
     }
 }

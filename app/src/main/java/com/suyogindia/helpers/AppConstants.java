@@ -62,4 +62,5 @@ public class AppConstants {
     public static final int REQUEST_CODE_ADDRESS = 201;
     public static final String EXTRA_ADDRESS = "EXTRA_ADDRESS";
     public static final String ORDERDETAILS = "order_details";
+    public static final String DELETEMSG = "Removing Address";
 }

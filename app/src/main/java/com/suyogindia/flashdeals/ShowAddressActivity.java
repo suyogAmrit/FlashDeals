@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.suyogindia.adapters.AddressAdapter;
 import com.suyogindia.helpers.AppConstants;
@@ -19,6 +20,7 @@ import com.suyogindia.helpers.WebApi;
 import com.suyogindia.model.Address;
 import com.suyogindia.model.AddressResponse;
 import com.suyogindia.model.CartItem;
+import com.suyogindia.model.Result;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +40,7 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
     private RecyclerView rcvShowAddr;
     private ArrayList<Address> addresListData;
     private AddressAdapter addressAdapter;
+    private Call<Result> deleteAdddressCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,9 +116,7 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
     @Override
     public void onItemClick(View view, int position) {
         address = addresListData.get(position);
-        Intent intent = new Intent(ShowAddressActivity.this, AddAddressActivity.class);
-        intent.putExtra(AppConstants.EXTRA_ADDRESS, address);
-        startActivity(intent);
+
     }
 
     @Override
@@ -130,4 +131,37 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
         Intent i = new Intent(this, CartActivity.class);
         startActivity(i);
     }
+
+    public void deleteAddress(int adapterPosition) {
+        Address myAddress = addresListData.get(adapterPosition);
+        if (myAddress != null) {
+            dialog = AppHelpers.showProgressDialog(this, AppConstants.DELETEMSG);
+            dialog.show();
+            Map<String, String> deleteMap = new HashMap<String, String>(1);
+            deleteMap.put(AppConstants.EXTRA_ADDRESS_ID, address.getId());
+            WebApi api = AppHelpers.setupRetrofit();
+            deleteAdddressCall = api.deleteAddress(deleteMap);
+            deleteAdddressCall.enqueue(new Callback<Result>() {
+                @Override
+                public void onResponse(Call<Result> call, Response<Result> response) {
+                    dialog.dismiss();
+                    Log.v("Response", response.body().getMessage());
+                    if (response.body().getStatus().equals("1")) {
+                        Intent intent = new Intent();
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    } else {
+                        Toast.makeText(ShowAddressActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Result> call, Throwable t) {
+                    Log.v("Error", t.getMessage());
+                }
+            });
+        }
+    }
+
+
 }
