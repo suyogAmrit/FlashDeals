@@ -135,19 +135,10 @@ public class AppHelpers {
         return row;
     }
 
-    public static Call<PlaceOrderResponse> placeOrder(Context context, List<CartItem> list, String addressId, int modeOfPayment) {
+    public static Call<PlaceOrderResponse> placeOrder(Context context, List<CartItem> list, ArrayList<PlaceOrderSeller> sellerList, String addressId, int modeOfPayment) {
         SharedPreferences shr = context.getSharedPreferences(AppConstants.USERPREFS, Context.MODE_PRIVATE);
         String userId = shr.getString(AppConstants.USERID, AppConstants.NA);
-        List<PlaceOrderSeller> sellerList = new ArrayList<>();
-        for (CartItem cartItem :
-                list) {
-            if (cartItem.getType() == 2) {
-                Seller mySeller = cartItem.getSeller();
-                PlaceOrderSeller seller = new PlaceOrderSeller(mySeller.getEmail(), mySeller.getShippingCharge(),
-                        String.valueOf(mySeller.getDeleveryMode()), addressId);
-                sellerList.add(seller);
-            }
-        }
+
         for (PlaceOrderSeller seller : sellerList) {
             String email = seller.getSellerEmail();
             List<PlaceOrderItem> itemList = new ArrayList<>();
@@ -159,9 +150,24 @@ public class AppHelpers {
                 }
             }
             seller.setDeals(itemList);
+            seller.setAddressId(addressId);
         }
         PlaceOrderPostData data = new PlaceOrderPostData(userId, sellerList, modeOfPayment);
         WebApi api = setupRetrofit();
         return api.senOrders(data);
+    }
+
+    public static ArrayList<PlaceOrderSeller> getSellerList(ArrayList<CartItem> list) {
+        ArrayList<PlaceOrderSeller> sellerList = new ArrayList<>();
+        for (CartItem cartItem :
+                list) {
+            if (cartItem.getType() == 2) {
+                Seller mySeller = cartItem.getSeller();
+                PlaceOrderSeller seller = new PlaceOrderSeller(mySeller.getEmail(), mySeller.getShippingCharge(),
+                        String.valueOf(mySeller.getDeleveryMode()));
+                sellerList.add(seller);
+            }
+        }
+        return sellerList;
     }
 }

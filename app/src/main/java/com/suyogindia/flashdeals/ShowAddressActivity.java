@@ -24,7 +24,9 @@ import com.suyogindia.model.Address;
 import com.suyogindia.model.AddressResponse;
 import com.suyogindia.model.CartItem;
 import com.suyogindia.model.PlaceOrderResponse;
+import com.suyogindia.model.PlaceOrderSeller;
 import com.suyogindia.model.Result;
+import com.suyogindia.model.Seller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,6 +43,7 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
     Address address;
     Toolbar toolbar;
     ArrayList<CartItem> lisOrders;
+    ArrayList<PlaceOrderSeller> lisSellers;
     private RecyclerView rcvShowAddr;
     private ArrayList<Address> addresListData;
     private AddressAdapter addressAdapter;
@@ -63,7 +66,9 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
         addresListData = new ArrayList<>();
         addrApi = AppHelpers.setupRetrofit();
         showAllAddress();
-        lisOrders = getIntent().getExtras().getParcelableArrayList(AppConstants.ORDERDETAILS);
+        lisSellers = getIntent().getParcelableArrayListExtra(AppConstants.SELLERDEITALS);
+        lisOrders = getIntent().getParcelableArrayListExtra(AppConstants.ORDERDETAILS);
+        assert lisOrders != null;
     }
 
     private void showAllAddress() {
@@ -151,7 +156,7 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
     private void callWebService(String addreId) {
         dialog = AppHelpers.showProgressDialog(this, AppConstants.CREATEODER);
         dialog.show();
-        responseCall = AppHelpers.placeOrder(this, lisOrders, addreId, 3);
+        responseCall = AppHelpers.placeOrder(this, lisOrders, lisSellers, addreId, 3);
         responseCall.enqueue(new Callback<PlaceOrderResponse>() {
             @Override
             public void onResponse(Call<PlaceOrderResponse> call, Response<PlaceOrderResponse> response) {

@@ -23,6 +23,7 @@ import com.suyogindia.helpers.AppConstants;
 import com.suyogindia.helpers.AppHelpers;
 import com.suyogindia.model.CartItem;
 import com.suyogindia.model.PlaceOrderResponse;
+import com.suyogindia.model.PlaceOrderSeller;
 import com.suyogindia.model.Seller;
 
 import java.util.ArrayList;
@@ -155,16 +156,18 @@ public class CartActivity extends AppCompatActivity {
                         }
                     }
                 }
+                ArrayList<PlaceOrderSeller> sellerArrayList = AppHelpers.getSellerList(list);
+
                 if (homeDelivery) {
                     //move to select address
                     Intent i = new Intent(CartActivity.this, ShowAddressActivity.class);
-                    Bundle b = new Bundle();
-                    b.putParcelableArrayList(AppConstants.ORDERDETAILS, list);
-                    i.putExtras(b);
+                    i.putParcelableArrayListExtra(AppConstants.SELLERDEITALS, sellerArrayList);
+                    i.putParcelableArrayListExtra(AppConstants.ORDERDETAILS, list);
+                    Log.i("seller", String.valueOf(list.get(2).getSeller()));
                     startActivity(i);
                     finish();
                 } else {
-                    placeOrder();
+                    placeOrder(sellerArrayList);
                 }
             } else {
                 Snackbar snackbar = Snackbar.make(rvCart, AppConstants.SELECTDELMODE, Snackbar.LENGTH_LONG);
@@ -180,15 +183,15 @@ public class CartActivity extends AppCompatActivity {
     }
 
 
-    private void placeOrder() {
+    private void placeOrder(final ArrayList<PlaceOrderSeller> sellerArrayList) {
         if (AppHelpers.isConnectingToInternet(this)) {
-            callPlaceOrderWebService();
+            callPlaceOrderWebService(sellerArrayList);
         } else {
             Snackbar snackbar = Snackbar.make(rvCart, AppConstants.NONETWORK, Snackbar.LENGTH_INDEFINITE)
                     .setAction(AppConstants.TRYAGAIN, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            placeOrder();
+                            placeOrder(sellerArrayList);
                         }
                     });
             snackbar.setActionTextColor(Color.RED);
@@ -200,10 +203,10 @@ public class CartActivity extends AppCompatActivity {
         }
     }
 
-    private void callPlaceOrderWebService() {
+    private void callPlaceOrderWebService(ArrayList<PlaceOrderSeller> sellerArrayList) {
         dialog = AppHelpers.showProgressDialog(this, AppConstants.CREATEODER);
         dialog.show();
-        responseCall = AppHelpers.placeOrder(this, list, "", 3);
+        responseCall = AppHelpers.placeOrder(this, list,sellerArrayList, "", 3);
         responseCall.enqueue(new Callback<PlaceOrderResponse>() {
             @Override
             public void onResponse(Call<PlaceOrderResponse> call, Response<PlaceOrderResponse> response) {

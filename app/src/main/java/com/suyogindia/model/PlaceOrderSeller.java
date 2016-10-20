@@ -13,11 +13,18 @@ public class PlaceOrderSeller implements Parcelable{
     String sellerEmail, shippingCarge, deliveryMode, addressId;
     List<PlaceOrderItem> deals;
 
-    public PlaceOrderSeller(String sellerEmail, String shippingCarge, String deliveryMode, String addressId) {
+    public PlaceOrderSeller(String sellerEmail, String shippingCarge, String deliveryMode) {
         this.sellerEmail = sellerEmail;
         this.shippingCarge = shippingCarge;
         this.deliveryMode = deliveryMode;
         this.deliveryMode = deliveryMode;
+    }
+
+    public String getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(String addressId) {
         this.addressId = addressId;
     }
 
