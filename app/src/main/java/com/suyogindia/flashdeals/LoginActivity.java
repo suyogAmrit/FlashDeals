@@ -259,6 +259,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         dialog.show();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dialog.dismiss();
+    }
+
     @OnClick(R.id.btn_signup)
     void signUp() {
         Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
