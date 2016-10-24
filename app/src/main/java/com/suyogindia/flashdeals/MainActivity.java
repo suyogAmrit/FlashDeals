@@ -19,6 +19,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -27,6 +28,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -91,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     // Google client to interact with Google API
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
+    Button btnManageAddress;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -232,6 +235,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     case R.id.nav_deals:
                         break;
                     case R.id.nav_my_orders:
+                        Intent intent = new Intent(MainActivity.this,MyOrdersActivity.class);
+                        startActivity(intent);
                         break;
                     case R.id.nav_notification:
                         break;
@@ -242,6 +247,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         View header = myNavigationView.getHeaderView(0);
         TextView tvEmail = (TextView) header.findViewById(R.id.tv_email);
         tvEmail.setText(email);
+        btnManageAddress = (Button)header.findViewById(R.id.btnManageAddress);
+        btnManageAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,AddAddressActivity.class);
+                intent.putExtra(AppConstants.EXTRA_MANAGE_ORDER,true);
+                startActivity(intent);
+            }
+        });
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, myDrawerLayout, toolbar,
                 R.string.drawer_open, R.string.drawer_close) {
             @Override

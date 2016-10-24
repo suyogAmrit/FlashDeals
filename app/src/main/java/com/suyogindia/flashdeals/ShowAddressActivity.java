@@ -70,7 +70,9 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
 
         lisSellers = getIntent().getParcelableArrayListExtra(AppConstants.SELLERDEITALS);
         lisOrders = getIntent().getParcelableArrayListExtra(AppConstants.ORDERDETAILS);
-        Log.i("tag", lisSellers.get(0).getSellerEmail());
+        if (lisSellers!=null) {
+            Log.i("tag", lisSellers.get(0).getSellerEmail());
+        }
         // showAllAddress();
     }
 
@@ -137,6 +139,7 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
             b.putParcelableArrayList(AppConstants.ORDERDETAILS, lisOrders);
             b.putParcelableArrayList(AppConstants.SELLERDEITALS, lisSellers);
             intent.putExtras(b);
+            intent.putExtra(AppConstants.EXTRA_MANAGE_ORDER,false);
             startActivityForResult(intent, AppConstants.REQUEST_CODE_ADDRESS);
             return true;
         }

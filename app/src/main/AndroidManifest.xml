@@ -104,6 +104,8 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
+        <activity android:name=".MyOrdersActivity"></activity>
+        <activity android:name=".ShowOrderDetailsActivity"></activity>
     </application>
 
 </manifest>

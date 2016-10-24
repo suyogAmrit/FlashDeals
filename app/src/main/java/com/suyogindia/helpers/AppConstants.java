@@ -64,4 +64,7 @@ public class AppConstants {
     public static final String ORDERDETAILS = "order_details";
     public static final String DELETEMSG = "Removing Address";
     public static final String SELLERDEITALS = "seller_details";
+    public static final String  PLEASE_CONNCT = "Please connect to internet.";
+    public static final String EXTRA_ORDERS = "EXTRA_ORDERS";
+    public static final String EXTRA_MANAGE_ORDER = "EXTRA_MANAGE_ORDER";
 }
