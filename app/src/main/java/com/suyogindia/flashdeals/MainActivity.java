@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void checkFireBaseSeriver() {
         try {
+
             final String token = FirebaseInstanceId.getInstance().getToken();
             final String android_id = Settings.Secure.getString(getContentResolver(),
                     Settings.Secure.ANDROID_ID);

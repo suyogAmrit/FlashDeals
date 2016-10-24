@@ -46,31 +46,33 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
     ArrayList<CartItem> lisOrders;
     ArrayList<PlaceOrderSeller> lisSellers;
     String userId;
+    boolean isManagedAddr;
+    boolean addAddress = true;
     private RecyclerView rcvShowAddr;
     private ArrayList<Address> addresListData;
     private AddressAdapter addressAdapter;
     private Call<Result> deleteAdddressCall;
     private Call<PlaceOrderResponse> responseCall;
-    boolean isManagedAddr;
     private MenuItem menuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_address);
-        isManagedAddr = getIntent().getBooleanExtra(AppConstants.EXTRA_MANAGE_ADDR, false);
         toolbar = (Toolbar) findViewById(R.id.toolbar_address_lis);
         toolbar.setTitle("Please Select Address");
         setSupportActionBar(toolbar);
 
         rcvShowAddr = (RecyclerView) findViewById(R.id.rcvShowAddr);
-
+        isManagedAddr = getIntent().getBooleanExtra(AppConstants.EXTRA_MANAGE_ADDR, false);
         rcvShowAddr.setLayoutManager(new LinearLayoutManager(ShowAddressActivity.this));
-        addressAdapter = new AddressAdapter(ShowAddressActivity.this);
+        addressAdapter = new AddressAdapter(ShowAddressActivity.this, isManagedAddr);
         rcvShowAddr.setAdapter(addressAdapter);
         addressAdapter.setOnItemclikListner(ShowAddressActivity.this);
         addrApi = AppHelpers.setupRetrofit();
-        if (isManagedAddr == false) {
+
+
+        if (!isManagedAddr) {
             lisSellers = getIntent().getParcelableArrayListExtra(AppConstants.SELLERDEITALS);
             lisOrders = getIntent().getParcelableArrayListExtra(AppConstants.ORDERDETAILS);
         }
@@ -81,7 +83,7 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
     }
 
     private void showAllAddress() {
-        if (addresListData!=null) {
+        if (addresListData != null) {
             addresListData.clear();
             addressAdapter.clear();
         }
@@ -103,14 +105,17 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
                     if (response.body().getStatus().equals("1")) {
                         addresListData = response.body().getAddress();
                         addressAdapter.add(addresListData);
-                        addressAdapter.setMenuListener(ShowAddressActivity.this);
-//                        if (addresListData.size() >= 4) {
-//                            menuItem.setVisible(false);
-//                            invalidateOptionsMenu();
-//                        } else {
-//                            menuItem.setVisible(true);
-//                            invalidateOptionsMenu();
-//                        }
+                        //addressAdapter.setMenuListener(ShowAddressActivity.this);
+
+                        Log.i("itemid", menuItem.getItemId() + "");
+                        if (addresListData.size() > 3) {
+                            addAddress = false;
+
+                        } else {
+                            addAddress = true;
+
+                        }
+                        invalidateOptionsMenu();
                     }
                 }
 
@@ -138,6 +143,16 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (addAddress){
+            menu.getItem(0).setVisible(true);
+        }else {
+            menu.getItem(0).setVisible(false);
+        }
+        return true;
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.menu_address, menu);
@@ -151,7 +166,7 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
         if (item.getItemId() == R.id.action_add_address) {
             Intent intent = new Intent(ShowAddressActivity.this, AddAddressActivity.class);
             Bundle b = new Bundle();
-            if (isManagedAddr == false) {
+            if (!isManagedAddr) {
                 b.putParcelableArrayList(AppConstants.ORDERDETAILS, lisOrders);
                 b.putParcelableArrayList(AppConstants.SELLERDEITALS, lisSellers);
             }
@@ -163,16 +178,16 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
         return false;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == AppConstants.REQUEST_CODE_ADDRESS) {
-            showAllAddress();
-            if (dialog.isShowing()) {
-                dialog.cancel();
-            }
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == RESULT_OK && requestCode == AppConstants.REQUEST_CODE_ADDRESS) {
+//            showAllAddress();
+//            if (dialog.isShowing()) {
+//                dialog.cancel();
+//            }
+//        }
+//    }
 
     @Override
     public void onItemClick(View view, int position) {
@@ -231,7 +246,7 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (isManagedAddr == false) {
+        if (!isManagedAddr) {
             Intent i = new Intent(this, CartActivity.class);
             startActivity(i);
         }

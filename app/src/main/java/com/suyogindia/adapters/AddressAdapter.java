@@ -1,7 +1,6 @@
 package com.suyogindia.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +8,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.suyogindia.flashdeals.AddAddressActivity;
 import com.suyogindia.flashdeals.R;
 import com.suyogindia.flashdeals.ShowAddressActivity;
-import com.suyogindia.helpers.AppConstants;
 import com.suyogindia.helpers.MenuListener;
 import com.suyogindia.model.Address;
 
@@ -27,14 +24,18 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     private ArrayList<Address> addresseList;
     private OnItemClickListner listner;
     private MenuListener mListener;
+    private boolean isManagedAddr;
 
-    public AddressAdapter(Context context) {
+    public AddressAdapter(Context context, boolean isManagedAddr) {
         this.context = context;
         this.addresseList = new ArrayList<>();
+        this.isManagedAddr = isManagedAddr;
     }
+
     public void setMenuListener(MenuListener listener) {
         mListener = listener;
     }
+
     @Override
     public AddressViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.adr_list_items, parent, false);
@@ -45,11 +46,11 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     public void onBindViewHolder(AddressViewHolder holder, int position) {
         Address myAddress = addresseList.get(position);
         holder.bindData(myAddress);
-        if (addresseList.size() >= 4) {
-            mListener.setMenuItemVisible(false);
-        } else {
-            mListener.setMenuItemVisible(true);
-        }
+//        if (addresseList.size() >= 4) {
+//            mListener.setMenuItemVisible(false);
+//        } else {
+//            mListener.setMenuItemVisible(true);
+//        }
     }
 
     @Override
@@ -98,8 +99,9 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
 
         @Override
         public void onClick(View v) {
-            if (listner != null) {
+            if (!isManagedAddr && listner != null) {
                 listner.onItemClick(v, getAdapterPosition());
+
             }
         }
 

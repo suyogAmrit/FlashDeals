@@ -13,6 +13,8 @@ import com.suyogindia.model.ListCategoryResponse;
 import com.suyogindia.model.LoginPostData;
 import com.suyogindia.model.PlaceOrderPostData;
 import com.suyogindia.model.PlaceOrderResponse;
+import com.suyogindia.model.PostTokenData;
+import com.suyogindia.model.PostTokenResponse;
 import com.suyogindia.model.RegisterUserPostData;
 import com.suyogindia.model.RegisterUserResponse;
 import com.suyogindia.model.Result;
@@ -74,4 +76,7 @@ public interface WebApi {
 
     @POST("user_address_delete.php")
     Call<Result> deleteAddress(@Body Map<String, String> object);
+
+    @POST("token_user.php")
+    Call<PostTokenResponse> sendToken(@Body PostTokenData data);
 }

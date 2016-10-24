@@ -1,7 +1,6 @@
 package com.suyogindia.flashdeals;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -43,17 +42,16 @@ public class AddAddressActivity extends AppCompatActivity {
     ArrayList<CartItem> lisOrders;
     ArrayList<PlaceOrderSeller> lisSellers;
     Call<PlaceOrderResponse> placeOrderResponseCall;
-    private EditText etLocality, etCity, etState, etcountry, etZip, etPhone, etEmail;
-    private Button btnSaveAddr, btnDeleteAddr;
-    private String userID;
     boolean isManageOrder;
+    private EditText etLocality, etCity, etState, etcountry, etZip, etPhone, etEmail;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_address);
-        isManageOrder = getIntent().getBooleanExtra(AppConstants.EXTRA_MANAGE_ADDR,false);
-        if (isManageOrder==false) {
+        isManageOrder = getIntent().getBooleanExtra(AppConstants.EXTRA_MANAGE_ADDR, false);
+        if (!isManageOrder) {
             lisSellers = getIntent().getParcelableArrayListExtra(AppConstants.SELLERDEITALS);
             lisOrders = getIntent().getParcelableArrayListExtra(AppConstants.ORDERDETAILS);
         }
@@ -63,10 +61,10 @@ public class AddAddressActivity extends AppCompatActivity {
         etCity = (EditText) findViewById(R.id.etCity);
         etState = (EditText) findViewById(R.id.etState);
         etcountry = (EditText) findViewById(R.id.etcountry);
-        etZip = (EditText) findViewById(R.id.etcountry);
+        etZip = (EditText) findViewById(R.id.etZip);
         etPhone = (EditText) findViewById(R.id.etPhone);
         etEmail = (EditText) findViewById(R.id.etEmail);
-        btnSaveAddr = (Button) findViewById(R.id.btnSaveAddr);
+        Button btnSaveAddr = (Button) findViewById(R.id.btnSaveAddr);
         SharedPreferences shr = getSharedPreferences(AppConstants.USERPREFS, MODE_PRIVATE);
         userID = shr.getString(AppConstants.USERID, AppConstants.NA);
         //  btnDeleteAddr = (Button) findViewById(R.id.btnDeleteAddr);
@@ -97,56 +95,26 @@ public class AddAddressActivity extends AppCompatActivity {
                     etPhone.setError("Number Not Valid");
                     return;
                 } else {
-                    performOperation(isManageOrder);
+                    performOperation();
                 }
             }//
         });
 //
     }
 
-    private void performOperation(boolean isOrderManged) {
-        if (AppHelpers.isConnectingToInternet(AddAddressActivity.this)){
+    private void performOperation() {
+        if (AppHelpers.isConnectingToInternet(AddAddressActivity.this)) {
             dialog.show();
-            if (isOrderManged==true) {
-                insertAddress(userID,isOrderManged);
-            } else {
-                insertAddress(userID,isOrderManged);
-                /*showDilog("Please wait", "Updating Addrress...");
-                Map<String, String> userUpdateMap = new HashMap<String, String>(8);
-                userUpdateMap.put(AppConstants.EXTRA_ADDRESS_ID, address.getId());
-                userUpdateMap.put(AppConstants.EXTRA_USER_LOCALITY, etLocality.getText().toString());
-                userUpdateMap.put(AppConstants.EXTRA_USER_CITY, etCity.getText().toString());
-                userUpdateMap.put(AppConstants.EXTRA_USER_STATE, etState.getText().toString());
-                userUpdateMap.put(AppConstants.EXTRA_USER_COUNTRY, etcountry.getText().toString());
-                userUpdateMap.put(AppConstants.EXTRA_USER_ZIP, etZip.getText().toString());
-                userUpdateMap.put(AppConstants.EXTRA_USER_PHONE, etPhone.getText().toString());
-                userUpdateMap.put(AppConstants.EXTRA_USER_EMAIL, etEmail.getText().toString());
-                userUpdateCall = userApi.updateUserDetails(userUpdateMap);
-                userUpdateCall.enqueue(new Callback<AddAddressResponse>() {
-                    @Override
-                    public void onResponse(Call<AddAddressResponse> call, Response<AddAddressResponse> response) {
-                        dialog.dismiss();
-                        Log.v("Response", response.body().getStatus());
-                        if (response.body().getStatus().equals("1")) {
-                            postOrders(response.body().getAddressId());
-                        } else {
-                            Toast.makeText(AddAddressActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
 
-                    @Override
-                    public void onFailure(Call<AddAddressResponse> call, Throwable t) {
-                        dialog.dismiss();
-                        Log.v("error", t.getMessage());
-                    }
-                });*/
-            }
-        }else {
+            insertAddress(userID);
+
+//            }
+        } else {
             Snackbar snackbar = Snackbar.make(etZip, AppConstants.NONETWORK, Snackbar.LENGTH_INDEFINITE)
                     .setAction(AppConstants.TRYAGAIN, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            performOperation(isManageOrder);
+                            performOperation();
                         }
                     });
             snackbar.setActionTextColor(Color.RED);
@@ -158,7 +126,7 @@ public class AddAddressActivity extends AppCompatActivity {
         }
     }
 
-    private void insertAddress(String userID, final boolean isMangedByOrder) {
+    private void insertAddress(String userID) {
         Map<String, String> userMap = new HashMap<String, String>(8);
         userMap.put(AppConstants.EXTRA_USER_ID, userID);
         userMap.put(AppConstants.EXTRA_USER_LOCALITY, etLocality.getText().toString());
@@ -175,14 +143,14 @@ public class AddAddressActivity extends AppCompatActivity {
                 dialog.dismiss();
                 Log.v("Respone", response.body().getStatus());
                 if (response.body().getStatus().equals("1")) {
-                    if (isMangedByOrder==true) {
-                        Intent intent = new Intent();
-                        setResult(RESULT_OK, intent);
+                    if (isManageOrder) {
+//                        Intent intent = new Intent();
+//                        setResult(RESULT_OK, intent);
                         finish();
 //                        Intent intent = new Intent(AddAddressActivity.this,ShowAddressActivity.class);
 //                        startActivity(intent);
 //                        finish();
-                    }else {
+                    } else {
                         postOrders(response.body().getAddressId());
                     }
                 } else {
@@ -199,40 +167,11 @@ public class AddAddressActivity extends AppCompatActivity {
     }
 
 
-    /*private  void  insertAddressAndPlaceOrder(){
-        Map<String, String> userMap = new HashMap<String, String>(8);
-        userMap.put(AppConstants.EXTRA_USER_ID, userID);
-        userMap.put(AppConstants.EXTRA_USER_LOCALITY, etLocality.getText().toString());
-        userMap.put(AppConstants.EXTRA_USER_CITY, etCity.getText().toString());
-        userMap.put(AppConstants.EXTRA_USER_STATE, etState.getText().toString());
-        userMap.put(AppConstants.EXTRA_USER_COUNTRY, etcountry.getText().toString());
-        userMap.put(AppConstants.EXTRA_USER_ZIP, etZip.getText().toString());
-        userMap.put(AppConstants.EXTRA_USER_PHONE, etPhone.getText().toString());
-        userMap.put(AppConstants.EXTRA_USER_EMAIL, etEmail.getText().toString());
-        userDeatilsInsertCall = userApi.insertUserDetails(userMap);
-        userDeatilsInsertCall.enqueue(new Callback<AddAddressResponse>() {
-            @Override
-            public void onResponse(Call<AddAddressResponse> call, Response<AddAddressResponse> response) {
-                dialog.dismiss();
-                Log.v("Respone", response.body().getStatus());
-                if (response.body().getStatus().equals(AppConstants.SUCESS)) {
-                    postOrders(response.body().getAddressId());
-                } else {
-                    Toast.makeText(AddAddressActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<AddAddressResponse> call, Throwable t) {
-                dialog.dismiss();
-                Log.v("Error", t.getMessage());
-            }
-        });
-    }*/
 
     private void postOrders(final String addressId) {
         if (AppHelpers.isConnectingToInternet(AddAddressActivity.this)) {
-            if (isManageOrder==false) {
+            if (!isManageOrder) {
                 callPlaceOrderWebService(addressId);
             }
         } else {
