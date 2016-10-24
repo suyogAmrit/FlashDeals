@@ -26,9 +26,9 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     private ArrayList<Address> addresseList;
     private OnItemClickListner listner;
 
-    public AddressAdapter(Context context, ArrayList<Address> addresseList) {
+    public AddressAdapter(Context context) {
         this.context = context;
-        this.addresseList = addresseList;
+        this.addresseList = new ArrayList<>();
     }
 
     @Override
@@ -50,6 +50,11 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
 
     public void setOnItemclikListner(OnItemClickListner listner1) {
         this.listner = listner1;
+    }
+
+    public void add(ArrayList<Address> addresListData) {
+        addresseList.addAll(addresListData);
+        notifyDataSetChanged();
     }
 
     public interface OnItemClickListner {
@@ -95,9 +100,8 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
             txtEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, AddAddressActivity.class);
-                    intent.putExtra(AppConstants.EXTRA_ADDRESS, addresseList.get(getAdapterPosition()));
-                    context.startActivity(intent);
+
+                    ((ShowAddressActivity) context).editAddress(getAdapterPosition());
                 }
             });
             txtRemove.setOnClickListener(new View.OnClickListener() {

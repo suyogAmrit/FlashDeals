@@ -2,6 +2,7 @@ package com.suyogindia.flashdeals;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -26,7 +27,6 @@ import com.suyogindia.model.CartItem;
 import com.suyogindia.model.PlaceOrderResponse;
 import com.suyogindia.model.PlaceOrderSeller;
 import com.suyogindia.model.Result;
-import com.suyogindia.model.Seller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +44,7 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
     Toolbar toolbar;
     ArrayList<CartItem> lisOrders;
     ArrayList<PlaceOrderSeller> lisSellers;
+    String userId;
     private RecyclerView rcvShowAddr;
     private ArrayList<Address> addresListData;
     private AddressAdapter addressAdapter;
@@ -58,43 +59,66 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
         toolbar = (Toolbar) findViewById(R.id.toolbar_address_lis);
         toolbar.setTitle("Please Select Address");
         setSupportActionBar(toolbar);
-        dialog = new ProgressDialog(ShowAddressActivity.this);
-        dialog.setTitle("Please wait");
-        dialog.setMessage("Showing Address...");
+
         rcvShowAddr = (RecyclerView) findViewById(R.id.rcvShowAddr);
+
         rcvShowAddr.setLayoutManager(new LinearLayoutManager(ShowAddressActivity.this));
-        addresListData = new ArrayList<>();
+        addressAdapter = new AddressAdapter(ShowAddressActivity.this);
+        rcvShowAddr.setAdapter(addressAdapter);
+        addressAdapter.setOnItemclikListner(ShowAddressActivity.this);
         addrApi = AppHelpers.setupRetrofit();
-        showAllAddress();
+
         lisSellers = getIntent().getParcelableArrayListExtra(AppConstants.SELLERDEITALS);
         lisOrders = getIntent().getParcelableArrayListExtra(AppConstants.ORDERDETAILS);
-        assert lisOrders != null;
+        Log.i("tag", lisSellers.get(0).getSellerEmail());
+        // showAllAddress();
     }
 
     private void showAllAddress() {
-        dialog.show();
-        Map<String, String> addrMap = new HashMap<>(1);
-        addrMap.put(AppConstants.EXTRA_USER_ID, "259b2c0934d4f32187cf712c1b307582");
-        addressResponseCall = addrApi.getAllAddress(addrMap);
-        addressResponseCall.enqueue(new Callback<AddressResponse>() {
-            @Override
-            public void onResponse(Call<AddressResponse> call, Response<AddressResponse> response) {
-                dialog.dismiss();
-                Log.v("Response", response.body().getStatus());
-                if (response.body().getStatus().equals("1")) {
-                    addresListData = response.body().getAddress();
-                    addressAdapter = new AddressAdapter(ShowAddressActivity.this, addresListData);
-                    rcvShowAddr.setAdapter(addressAdapter);
-                    addressAdapter.setOnItemclikListner(ShowAddressActivity.this);
-                }
-            }
+        if (AppHelpers.isConnectingToInternet(this)) {
+            dialog = new ProgressDialog(ShowAddressActivity.this);
+            dialog.setTitle("Please wait");
+            dialog.setMessage("Showing Address...");
+            dialog.show();
+            SharedPreferences sharedPreferences = getSharedPreferences(AppConstants.USERPREFS, MODE_PRIVATE);
+            userId = sharedPreferences.getString(AppConstants.USERID, AppConstants.NA);
+            Map<String, String> addrMap = new HashMap<>(1);
+            addrMap.put(AppConstants.EXTRA_USER_ID, userId);
+            addressResponseCall = addrApi.getAllAddress(addrMap);
+            addressResponseCall.enqueue(new Callback<AddressResponse>() {
+                @Override
+                public void onResponse(Call<AddressResponse> call, Response<AddressResponse> response) {
+                    dialog.dismiss();
+                    Log.v("Response", response.body().getStatus());
+                    if (response.body().getStatus().equals("1")) {
+                        addresListData = response.body().getAddress();
+                        addressAdapter.add(addresListData);
 
-            @Override
-            public void onFailure(Call<AddressResponse> call, Throwable t) {
-                dialog.dismiss();
-                Log.v("Error", t.getMessage());
-            }
-        });
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<AddressResponse> call, Throwable t) {
+                    dialog.dismiss();
+                    Log.v("Error", t.getMessage());
+                }
+            });
+        } else {
+            Snackbar snackbar = Snackbar.make(rcvShowAddr, AppConstants.NONETWORK, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(AppConstants.TRYAGAIN, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            showAllAddress();
+                        }
+                    });
+            snackbar.setActionTextColor(Color.RED);
+            // Changing action button text color
+            View sbView = snackbar.getView();
+            TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            tvMessage.setTextColor(Color.YELLOW);
+            snackbar.show();
+        }
+
     }
 
     @Override
@@ -111,6 +135,7 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
             Intent intent = new Intent(ShowAddressActivity.this, AddAddressActivity.class);
             Bundle b = new Bundle();
             b.putParcelableArrayList(AppConstants.ORDERDETAILS, lisOrders);
+            b.putParcelableArrayList(AppConstants.SELLERDEITALS, lisSellers);
             intent.putExtras(b);
             startActivityForResult(intent, AppConstants.REQUEST_CODE_ADDRESS);
             return true;
@@ -192,7 +217,7 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
             dialog = AppHelpers.showProgressDialog(this, AppConstants.DELETEMSG);
             dialog.show();
             Map<String, String> deleteMap = new HashMap<String, String>(1);
-            deleteMap.put(AppConstants.EXTRA_ADDRESS_ID, address.getId());
+            deleteMap.put(AppConstants.EXTRA_ADDRESS_ID, myAddress.getId());
             WebApi api = AppHelpers.setupRetrofit();
             deleteAdddressCall = api.deleteAddress(deleteMap);
             deleteAdddressCall.enqueue(new Callback<Result>() {
@@ -201,9 +226,8 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
                     dialog.dismiss();
                     Log.v("Response", response.body().getMessage());
                     if (response.body().getStatus().equals("1")) {
-                        Intent intent = new Intent();
-                        setResult(RESULT_OK, intent);
-                        finish();
+                        addresListData.clear();
+                        showAllAddress();
                     } else {
                         Toast.makeText(ShowAddressActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -218,4 +242,13 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
     }
 
 
+    public void editAddress(int adapterPosition) {
+        Intent intent = new Intent(this, AddAddressActivity.class);
+        Bundle b = new Bundle();
+        b.putParcelableArrayList(AppConstants.ORDERDETAILS, lisOrders);
+        b.putParcelableArrayList(AppConstants.SELLERDEITALS, lisSellers);
+        intent.putExtras(b);
+        intent.putExtra(AppConstants.EXTRA_ADDRESS, addresListData.get(adapterPosition));
+        startActivity(intent);
+    }
 }

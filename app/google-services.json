@@ -1,33 +1,27 @@
 {
   "project_info": {
-    "project_number": "1066360559852",
-    "project_id": "firebase-flash-deal"
+    "project_number": "713012997010",
+    "firebase_url": "https://flash-deal-146307.firebaseio.com",
+    "project_id": "flash-deal-146307",
+    "storage_bucket": "flash-deal-146307.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1066360559852:android:37cfe0ec27009d72",
+        "mobilesdk_app_id": "1:713012997010:android:37cfe0ec27009d72",
         "android_client_info": {
           "package_name": "com.suyogindia.flashdeals"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1066360559852-u8obpgcud5dhl7irekhelqcttqr3mool.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.suyogindia.flashdeals",
-            "certificate_hash": "44C79529776703ECBF5242BAEA157D5D7FE6533F"
-          }
-        },
-        {
-          "client_id": "1066360559852-j2bl07oufqg882ojgqo0d8abc77jr0rl.apps.googleusercontent.com",
+          "client_id": "713012997010-e2utu864trmqufp3a2kcp5fqb2pnae10.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAXxzMt7PjUwGFT8d8yQoQnsvq4caMs2TA"
+          "current_key": "AIzaSyDDg2wu0Vwi39kShrrglaWKeGyTpdtpFDY"
         }
       ],
       "services": {
@@ -39,7 +33,7 @@
           "other_platform_oauth_client": []
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }

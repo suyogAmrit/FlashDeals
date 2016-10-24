@@ -11,6 +11,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -34,6 +35,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.suyogindia.adapters.DealsFragmentPagerAdapter;
 import com.suyogindia.database.DataBaseHelper;
 import com.suyogindia.helpers.AppConstants;
@@ -101,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         initNavigationDrawer();
         // First we need to check availability of play services
+        checkFireBaseSeriver();
         if (checkPlayServices()) {
 
             // Building the GoogleApi client
@@ -116,6 +119,26 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 }
             }
         });
+    }
+
+    private void checkFireBaseSeriver() {
+        try {
+            final String token = FirebaseInstanceId.getInstance().getToken();
+            final String android_id = Settings.Secure.getString(getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
+
+            if (AppHelpers.isConnectingToInternet(MainActivity.this)) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        MyFirebaseInstanceIDService.sendRegistrationToServer(token, android_id, userId);
+                    }
+                }).start();
+            }
+        } catch (NullPointerException e) {
+            Intent i = new Intent(MainActivity.this, MyFirebaseInstanceIDService.class);
+            startService(i);
+        }
     }
 
     private void getCartSize() {
@@ -287,7 +310,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void displayLocation() {
-        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, LOCREQCODE);
@@ -307,7 +330,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                             .setText("Can not Locate You");
                 }
             }
-        }else {
+        } else {
             mLastLocation = LocationServices.FusedLocationApi
                     .getLastLocation(mGoogleApiClient);
 //            mLastLocation.setAccuracy(100000);

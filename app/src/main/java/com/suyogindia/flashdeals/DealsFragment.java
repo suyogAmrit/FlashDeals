@@ -58,7 +58,8 @@ public class DealsFragment extends Fragment {
                 startActivity(i);
             }
         });
-        adapter.addDeals(myCategory.getDealsList());
+        if (myCategory.getDealsList() != null)
+            adapter.addDeals(myCategory.getDealsList());
         myRecyclerView.setAdapter(adapter);
         return myRecyclerView;
     }

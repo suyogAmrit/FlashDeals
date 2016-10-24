@@ -1,6 +1,7 @@
 package com.suyogindia.helpers;
 
 import com.suyogindia.flashdeals.SendCategoryPostData;
+import com.suyogindia.model.AddAddressResponse;
 import com.suyogindia.model.AddressResponse;
 import com.suyogindia.model.ForgotPasswordPostData;
 import com.suyogindia.model.ForgotPasswordResponse;
@@ -63,13 +64,13 @@ public interface WebApi {
     Call<PlaceOrderResponse> senOrders(@Body PlaceOrderPostData data);
 
     @POST("user_address_insert.php")
-    Call<Result> insertUserDetails(@Body Map<String, String> object);
+    Call<AddAddressResponse> insertUserDetails(@Body Map<String, String> object);
 
     @POST("user_address_show.php")
     Call<AddressResponse> getAllAddress(@Body Map<String, String> object);
 
     @POST("user_address_update.php")
-    Call<Result> updateUserDetails(@Body Map<String, String> object);
+    Call<AddAddressResponse> updateUserDetails(@Body Map<String, String> object);
 
     @POST("user_address_delete.php")
     Call<Result> deleteAddress(@Body Map<String, String> object);
