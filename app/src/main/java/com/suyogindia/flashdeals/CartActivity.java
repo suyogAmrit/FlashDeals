@@ -163,6 +163,7 @@ public class CartActivity extends AppCompatActivity {
                     Intent i = new Intent(CartActivity.this, ShowAddressActivity.class);
                     i.putParcelableArrayListExtra(AppConstants.SELLERDEITALS, sellerArrayList);
                     i.putParcelableArrayListExtra(AppConstants.ORDERDETAILS, list);
+                    i.putExtra(AppConstants.EXTRA_MANAGE_ADDR,false);
                     Log.i("seller", String.valueOf(list.get(2).getSeller()));
                     startActivity(i);
                     finish();

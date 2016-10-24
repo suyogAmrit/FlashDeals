@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.suyogindia.adapters.AddressAdapter;
 import com.suyogindia.helpers.AppConstants;
 import com.suyogindia.helpers.AppHelpers;
+import com.suyogindia.helpers.MenuListener;
 import com.suyogindia.helpers.WebApi;
 import com.suyogindia.model.Address;
 import com.suyogindia.model.AddressResponse;
@@ -36,7 +37,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ShowAddressActivity extends AppCompatActivity implements AddressAdapter.OnItemClickListner {
+public class ShowAddressActivity extends AppCompatActivity implements AddressAdapter.OnItemClickListner, MenuListener {
     WebApi addrApi;
     Call<AddressResponse> addressResponseCall;
     ProgressDialog dialog;
@@ -50,12 +51,14 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
     private AddressAdapter addressAdapter;
     private Call<Result> deleteAdddressCall;
     private Call<PlaceOrderResponse> responseCall;
+    boolean isManagedAddr;
+    private MenuItem menuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_address);
-
+        isManagedAddr = getIntent().getBooleanExtra(AppConstants.EXTRA_MANAGE_ADDR, false);
         toolbar = (Toolbar) findViewById(R.id.toolbar_address_lis);
         toolbar.setTitle("Please Select Address");
         setSupportActionBar(toolbar);
@@ -67,16 +70,21 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
         rcvShowAddr.setAdapter(addressAdapter);
         addressAdapter.setOnItemclikListner(ShowAddressActivity.this);
         addrApi = AppHelpers.setupRetrofit();
-
-        lisSellers = getIntent().getParcelableArrayListExtra(AppConstants.SELLERDEITALS);
-        lisOrders = getIntent().getParcelableArrayListExtra(AppConstants.ORDERDETAILS);
-        if (lisSellers!=null) {
+        if (isManagedAddr == false) {
+            lisSellers = getIntent().getParcelableArrayListExtra(AppConstants.SELLERDEITALS);
+            lisOrders = getIntent().getParcelableArrayListExtra(AppConstants.ORDERDETAILS);
+        }
+        if (lisSellers != null) {
             Log.i("tag", lisSellers.get(0).getSellerEmail());
         }
         // showAllAddress();
     }
 
     private void showAllAddress() {
+        if (addresListData!=null) {
+            addresListData.clear();
+            addressAdapter.clear();
+        }
         if (AppHelpers.isConnectingToInternet(this)) {
             dialog = new ProgressDialog(ShowAddressActivity.this);
             dialog.setTitle("Please wait");
@@ -95,7 +103,14 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
                     if (response.body().getStatus().equals("1")) {
                         addresListData = response.body().getAddress();
                         addressAdapter.add(addresListData);
-
+                        addressAdapter.setMenuListener(ShowAddressActivity.this);
+//                        if (addresListData.size() >= 4) {
+//                            menuItem.setVisible(false);
+//                            invalidateOptionsMenu();
+//                        } else {
+//                            menuItem.setVisible(true);
+//                            invalidateOptionsMenu();
+//                        }
                     }
                 }
 
@@ -120,13 +135,13 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
             tvMessage.setTextColor(Color.YELLOW);
             snackbar.show();
         }
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.menu_address, menu);
+        menuItem = menu.findItem(R.id.action_add_address);
         return true;
     }
 
@@ -136,10 +151,12 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
         if (item.getItemId() == R.id.action_add_address) {
             Intent intent = new Intent(ShowAddressActivity.this, AddAddressActivity.class);
             Bundle b = new Bundle();
-            b.putParcelableArrayList(AppConstants.ORDERDETAILS, lisOrders);
-            b.putParcelableArrayList(AppConstants.SELLERDEITALS, lisSellers);
+            if (isManagedAddr == false) {
+                b.putParcelableArrayList(AppConstants.ORDERDETAILS, lisOrders);
+                b.putParcelableArrayList(AppConstants.SELLERDEITALS, lisSellers);
+            }
             intent.putExtras(b);
-            intent.putExtra(AppConstants.EXTRA_MANAGE_ORDER,false);
+            intent.putExtra(AppConstants.EXTRA_MANAGE_ADDR, isManagedAddr);
             startActivityForResult(intent, AppConstants.REQUEST_CODE_ADDRESS);
             return true;
         }
@@ -151,6 +168,9 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == AppConstants.REQUEST_CODE_ADDRESS) {
             showAllAddress();
+            if (dialog.isShowing()) {
+                dialog.cancel();
+            }
         }
     }
 
@@ -190,6 +210,7 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
             public void onResponse(Call<PlaceOrderResponse> call, Response<PlaceOrderResponse> response) {
                 dialog.dismiss();
                 Log.i("status", response.body().getStatus());
+                //TODO
             }
 
             @Override
@@ -210,8 +231,10 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent i = new Intent(this, CartActivity.class);
-        startActivity(i);
+        if (isManagedAddr == false) {
+            Intent i = new Intent(this, CartActivity.class);
+            startActivity(i);
+        }
     }
 
     public void deleteAddress(int adapterPosition) {
@@ -230,6 +253,7 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
                     Log.v("Response", response.body().getMessage());
                     if (response.body().getStatus().equals("1")) {
                         addresListData.clear();
+                        addressAdapter.clear();
                         showAllAddress();
                     } else {
                         Toast.makeText(ShowAddressActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -253,5 +277,11 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
         intent.putExtras(b);
         intent.putExtra(AppConstants.EXTRA_ADDRESS, addresListData.get(adapterPosition));
         startActivity(intent);
+    }
+
+    @Override
+    public void setMenuItemVisible(boolean state) {
+        menuItem.setVisible(state);
+        invalidateOptionsMenu();
     }
 }

@@ -13,6 +13,7 @@ import com.suyogindia.flashdeals.AddAddressActivity;
 import com.suyogindia.flashdeals.R;
 import com.suyogindia.flashdeals.ShowAddressActivity;
 import com.suyogindia.helpers.AppConstants;
+import com.suyogindia.helpers.MenuListener;
 import com.suyogindia.model.Address;
 
 import java.util.ArrayList;
@@ -25,12 +26,15 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     private Context context;
     private ArrayList<Address> addresseList;
     private OnItemClickListner listner;
+    private MenuListener mListener;
 
     public AddressAdapter(Context context) {
         this.context = context;
         this.addresseList = new ArrayList<>();
     }
-
+    public void setMenuListener(MenuListener listener) {
+        mListener = listener;
+    }
     @Override
     public AddressViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.adr_list_items, parent, false);
@@ -41,6 +45,11 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     public void onBindViewHolder(AddressViewHolder holder, int position) {
         Address myAddress = addresseList.get(position);
         holder.bindData(myAddress);
+        if (addresseList.size() >= 4) {
+            mListener.setMenuItemVisible(false);
+        } else {
+            mListener.setMenuItemVisible(true);
+        }
     }
 
     @Override
@@ -54,6 +63,11 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
 
     public void add(ArrayList<Address> addresListData) {
         addresseList.addAll(addresListData);
+        notifyDataSetChanged();
+    }
+
+    public void clear() {
+        addresseList.clear();
         notifyDataSetChanged();
     }
 

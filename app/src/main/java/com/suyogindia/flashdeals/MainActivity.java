@@ -29,6 +29,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -93,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     // Google client to interact with Google API
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
-    Button btnManageAddress;
+    private LinearLayout imgEditProfile;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -247,12 +249,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         View header = myNavigationView.getHeaderView(0);
         TextView tvEmail = (TextView) header.findViewById(R.id.tv_email);
         tvEmail.setText(email);
-        btnManageAddress = (Button)header.findViewById(R.id.btnManageAddress);
-        btnManageAddress.setOnClickListener(new View.OnClickListener() {
+        imgEditProfile = (LinearLayout)header.findViewById(R.id.imgEditProfile);
+        imgEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,AddAddressActivity.class);
-                intent.putExtra(AppConstants.EXTRA_MANAGE_ORDER,true);
+                Intent intent = new Intent(MainActivity.this,MyProfileActivity.class);
                 startActivity(intent);
             }
         });

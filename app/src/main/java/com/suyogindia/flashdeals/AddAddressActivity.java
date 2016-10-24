@@ -52,10 +52,12 @@ public class AddAddressActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_address);
-        lisSellers = getIntent().getParcelableArrayListExtra(AppConstants.SELLERDEITALS);
-        lisOrders = getIntent().getParcelableArrayListExtra(AppConstants.ORDERDETAILS);
+        isManageOrder = getIntent().getBooleanExtra(AppConstants.EXTRA_MANAGE_ADDR,false);
+        if (isManageOrder==false) {
+            lisSellers = getIntent().getParcelableArrayListExtra(AppConstants.SELLERDEITALS);
+            lisOrders = getIntent().getParcelableArrayListExtra(AppConstants.ORDERDETAILS);
+        }
         address = getIntent().getParcelableExtra(AppConstants.EXTRA_ADDRESS);
-        isManageOrder = getIntent().getBooleanExtra(AppConstants.EXTRA_MANAGE_ORDER,false);
         showDilog("Please wait", "Saving your Address...");
         etLocality = (EditText) findViewById(R.id.etLocality);
         etCity = (EditText) findViewById(R.id.etCity);
@@ -174,12 +176,12 @@ public class AddAddressActivity extends AppCompatActivity {
                 Log.v("Respone", response.body().getStatus());
                 if (response.body().getStatus().equals("1")) {
                     if (isMangedByOrder==true) {
-//                        Intent intent = new Intent();
-//                        setResult(RESULT_OK, intent);
-//                        finish();
-                        Intent intent = new Intent(AddAddressActivity.this,ShowAddressActivity.class);
-                        startActivity(intent);
+                        Intent intent = new Intent();
+                        setResult(RESULT_OK, intent);
                         finish();
+//                        Intent intent = new Intent(AddAddressActivity.this,ShowAddressActivity.class);
+//                        startActivity(intent);
+//                        finish();
                     }else {
                         postOrders(response.body().getAddressId());
                     }
@@ -230,7 +232,9 @@ public class AddAddressActivity extends AppCompatActivity {
 
     private void postOrders(final String addressId) {
         if (AppHelpers.isConnectingToInternet(AddAddressActivity.this)) {
-            callPlaceOrderWebService(addressId);
+            if (isManageOrder==false) {
+                callPlaceOrderWebService(addressId);
+            }
         } else {
             Snackbar snackbar = Snackbar.make(etZip, AppConstants.NONETWORK, Snackbar.LENGTH_INDEFINITE)
                     .setAction(AppConstants.TRYAGAIN, new View.OnClickListener() {
