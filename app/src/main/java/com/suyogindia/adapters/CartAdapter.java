@@ -64,7 +64,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             case 0:
                 if (holder instanceof HeaderViewHolder) {
                     HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
-                    headerHolder.tvSellerName.setText(item.getSellerName());
+                    headerHolder.tvSellerName.setText(item.getCategory());
                 }
                 break;
             case 1:

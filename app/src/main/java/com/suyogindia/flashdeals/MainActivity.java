@@ -19,7 +19,6 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -28,8 +27,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -148,13 +145,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void getCartSize() {
-        //TODO
         DataBaseHelper helper = new DataBaseHelper(MainActivity.this);
         helper.open();
         totalItem = helper.getNumberOfDeals();
         helper.close();
         if (totalItem > 0) {
             fabCart.setVisibility(View.VISIBLE);
+        } else {
+            fabCart.setVisibility(View.GONE);
         }
     }
 
@@ -238,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     case R.id.nav_deals:
                         break;
                     case R.id.nav_my_orders:
-                        Intent intent = new Intent(MainActivity.this,MyOrdersActivity.class);
+                        Intent intent = new Intent(MainActivity.this, MyOrdersActivity.class);
                         startActivity(intent);
                         break;
                     case R.id.nav_notification:
@@ -250,11 +248,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         View header = myNavigationView.getHeaderView(0);
         TextView tvEmail = (TextView) header.findViewById(R.id.tv_email);
         tvEmail.setText(email);
-        imgEditProfile = (LinearLayout)header.findViewById(R.id.imgEditProfile);
+        imgEditProfile = (LinearLayout) header.findViewById(R.id.imgEditProfile);
         imgEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,MyProfileActivity.class);
+                Intent intent = new Intent(MainActivity.this, MyProfileActivity.class);
                 startActivity(intent);
             }
         });

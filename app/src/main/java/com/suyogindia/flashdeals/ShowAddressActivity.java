@@ -144,9 +144,9 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        if (addAddress){
+        if (addAddress) {
             menu.getItem(0).setVisible(true);
-        }else {
+        } else {
             menu.getItem(0).setVisible(false);
         }
         return true;
@@ -166,13 +166,14 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
         if (item.getItemId() == R.id.action_add_address) {
             Intent intent = new Intent(ShowAddressActivity.this, AddAddressActivity.class);
             Bundle b = new Bundle();
+            intent.putExtras(b);
+            intent.putExtra(AppConstants.EXTRA_MANAGE_ADDR, isManagedAddr);
+            startActivity(intent);
             if (!isManagedAddr) {
                 b.putParcelableArrayList(AppConstants.ORDERDETAILS, lisOrders);
                 b.putParcelableArrayList(AppConstants.SELLERDEITALS, lisSellers);
+                finish();
             }
-            intent.putExtras(b);
-            intent.putExtra(AppConstants.EXTRA_MANAGE_ADDR, isManagedAddr);
-            startActivityForResult(intent, AppConstants.REQUEST_CODE_ADDRESS);
             return true;
         }
         return false;
@@ -226,6 +227,11 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
                 dialog.dismiss();
                 Log.i("status", response.body().getStatus());
                 //TODO
+                if (response.body().getStatus().equals(AppConstants.SUCESS)) {
+                    long row = AppHelpers.clearCart(ShowAddressActivity.this);
+                    Log.i("DeletedRow", String.valueOf(row));
+                    finish();
+                }
             }
 
             @Override

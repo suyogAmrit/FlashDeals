@@ -32,6 +32,7 @@ public class DataBaseHelper {
     private static final String MAXPRICE = "max_price";
     private static final String SHIPPINGCHARGE = "shipping_carge";
     private static final String MAXQTY = "max_quantity";
+    private static final String CATEGORY = "deal_category";
 
     private static final String CARTTABLE = "cart";
     private static final String DATABASE = "flashdeals";
@@ -70,6 +71,7 @@ public class DataBaseHelper {
             cv.put(SELLERNAME, myDeals.getSeller_name());
             cv.put(TOTALPRICE, totalPrice);
             cv.put(MAXQTY, myDeals.getQuantity());
+            cv.put(CATEGORY, myDeals.getCategory());
 
             Log.i("qty", cv.getAsString(MAXQTY));
             row = myDatabase.insert(CARTTABLE, null, cv);
@@ -107,6 +109,8 @@ public class DataBaseHelper {
             CartItem item1 = new CartItem(null, null, null, null, null, null, null, null, null);
             item1.setType(0);
             item1.setSellerName(s.getName());
+            item1.setCategory(s.getCategory());
+
             cartItemList.add(item1);
             if (mCursor.getCount() > 0) {
                 double sellerTotalPrice = 0;
@@ -139,7 +143,7 @@ public class DataBaseHelper {
 
     private List<Seller> getSellersFromList() {
         List<Seller> sellerList = null;
-        String[] sellerData = {SELLEREMAIL, SELLERNAME, MAXPRICE, SHIPPINGCHARGE};
+        String[] sellerData = {SELLEREMAIL, SELLERNAME, MAXPRICE, SHIPPINGCHARGE,CATEGORY};
         Cursor cursor = myDatabase.query(CARTTABLE, sellerData, null, null, SELLEREMAIL, null, null, null);
         if (cursor.getCount() > 0) {
             sellerList = new ArrayList<>();
@@ -148,7 +152,8 @@ public class DataBaseHelper {
                 String name = cursor.getString(cursor.getColumnIndex(SELLERNAME));
                 String marPrice = cursor.getString(cursor.getColumnIndex(MAXPRICE));
                 String shippingPrice = cursor.getString(cursor.getColumnIndex(SHIPPINGCHARGE));
-                Seller mySeller = new Seller(email, name, marPrice, shippingPrice);
+                String category = cursor.getString(cursor.getColumnIndex(CATEGORY));
+                Seller mySeller = new Seller(email, name, marPrice, shippingPrice,category);
                 sellerList.add(mySeller);
             }
             cursor.close();
@@ -180,7 +185,7 @@ public class DataBaseHelper {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            String sql = "CREATE TABLE " + CARTTABLE + "( " + ID + " PRIMARY KEY," + DEALID + " TEXT," + DEALDESC + " TEXT," +
+            String sql = "CREATE TABLE " + CARTTABLE + "( " + ID + " PRIMARY KEY," + DEALID + " TEXT," + DEALDESC + " TEXT," + CATEGORY + " TEXT," +
                     SELLEREMAIL + " TEXT," + MRP + " TEXT," + DISCOUNT + " TEXT," + OFFERPRICE + " TEXT," + SELLERNAME + " TEXT,"
                     + QUANTITY + " TEXT," + MAXQTY + " TEXT," + MAXPRICE + " TEXT," + SHIPPINGCHARGE + " TEXT," + TOTALPRICE + " TEXT);";
             db.execSQL(sql);

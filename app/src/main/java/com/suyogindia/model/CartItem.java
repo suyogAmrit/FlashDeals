@@ -23,6 +23,7 @@ public class CartItem implements Parcelable {
     int type;
     Seller seller;
     String sellerName;
+    String category;
 
     String totalQuantity, grandTotal;
 
@@ -36,6 +37,14 @@ public class CartItem implements Parcelable {
         this.totalPrice = totalPrice;
         this.maxqty = maxqty;
         this.sellerEmail = sellerEmail;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     protected CartItem(Parcel in) {

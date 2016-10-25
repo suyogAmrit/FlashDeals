@@ -67,4 +67,6 @@ public class AppConstants {
     public static final String  PLEASE_CONNCT = "Please connect to internet.";
     public static final String EXTRA_ORDERS = "EXTRA_ORDERS";
     public static final String EXTRA_MANAGE_ADDR = "EXTRA_MANAGE_ADDR";
+    public static final String NOTIFICATIONTYPE = "notification_type";
+    public static final String ORDERID = "order_id";
 }
