@@ -3,11 +3,19 @@ package com.suyogindia.adapters;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.suyogindia.flashdeals.MyOrdersActivity;
+import com.suyogindia.flashdeals.MyProfileActivity;
 import com.suyogindia.flashdeals.R;
 import com.suyogindia.helpers.AppConstants;
 import com.suyogindia.model.OrderItem;
@@ -49,8 +57,8 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
     }
 
     @Override
-    public void onBindViewHolder(MyOrderDetailsViewHolder holder, int position) {
-        OrderItem orders = list.get(position);
+    public void onBindViewHolder(MyOrderDetailsViewHolder holder, final int position) {
+        final OrderItem orders = list.get(position);
         switch (orders.getType()) {
             case 0:
             if (holder instanceof SellersViewHolder) {
@@ -75,15 +83,53 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
                 break;
             case 2:
                 if (holder instanceof StatsusViewHolder){
-                    StatsusViewHolder statsusViewHolder = (StatsusViewHolder)holder;
+                    final StatsusViewHolder statsusViewHolder = (StatsusViewHolder)holder;
                     if (orders.getDelevery_status().equals("0")){
                         statsusViewHolder.txtDeliveryStatus.setText("Pending");
+                        statsusViewHolder.linRadioRate.setVisibility(View.GONE);
                     }else if (orders.getDelevery_status().equals("1")){
                         statsusViewHolder.txtDeliveryStatus.setText("Delivered");
+                        statsusViewHolder.linRadioRate.setVisibility(View.VISIBLE);
                     }else {
                         statsusViewHolder.txtDeliveryStatus.setText("Cancelled");
+                        statsusViewHolder.linRadioRate.setVisibility(View.GONE);
                     }
-                    //statsusViewHolder.txtDeliveryStatus.setText(""+orders.getDelevery_status());
+                    if (orders.getUser_delevery_status().equals("1") && orders.getDelevery_status().equals("1")){
+                        statsusViewHolder.relYesNo.setVisibility(View.GONE);
+                    }else {
+                        statsusViewHolder.relYesNo.setVisibility(View.VISIBLE);
+                    }
+                    if (orders.getUser_delevery_status().equals("2") && orders.getDelevery_status().equals("1")){
+                        statsusViewHolder.noRadioGrp.setChecked(true);
+                    }
+                    statsusViewHolder.rdioGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(RadioGroup group, int checkedId) {
+                            String ids;
+                            if (checkedId==R.id.yesRadioGrp) {
+                                ids = "1";
+                                ((MyOrdersActivity) context).sendRadioRespond(orders.getSeller_order_id(), ids);
+                                if (!TextUtils.isEmpty(MyOrdersActivity.responseString)) {
+                                    if (MyOrdersActivity.responseString.equals("1")) {
+                                        statsusViewHolder.relYesNo.setVisibility(View.GONE);
+                                    }
+                                }
+                            }
+                            if (checkedId==R.id.noRadioGrp){
+                                ids = "2";
+                                ((MyOrdersActivity)context).sendRadioRespond(orders.getSeller_order_id(),ids);
+                                statsusViewHolder.relYesNo.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    });
+                    statsusViewHolder.ratingSeller.setRating(Float.parseFloat(orders.getRating()));
+                    statsusViewHolder.ratingSeller.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                        @Override
+                        public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                            ((MyOrdersActivity)context).rateSeller(orders.getSeller_email(),MyOrdersActivity.userDemoid,orders.getSeller_order_id(),rating);
+                        }
+                    });
+
                 }
                 break;
         }
@@ -139,9 +185,20 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
     }
     public class StatsusViewHolder extends MyOrderDetailsViewHolder{
         TextView txtDeliveryStatus;
+        LinearLayout linRadioRate;
+        RelativeLayout relYesNo;
+        RadioGroup rdioGrp;
+        RadioButton yesRadioGrp,noRadioGrp;
+        RatingBar ratingSeller;
         public StatsusViewHolder(View itemView) {
             super(itemView);
             txtDeliveryStatus = (TextView)itemView.findViewById(R.id.txtDeliveryStatus);
+            linRadioRate = (LinearLayout)itemView.findViewById(R.id.linRadioRate);
+            relYesNo = (RelativeLayout)itemView.findViewById(R.id.relYesNo);
+            rdioGrp = (RadioGroup)itemView.findViewById(R.id.rdioGrp);
+            yesRadioGrp = (RadioButton)itemView.findViewById(R.id.yesRadioGrp);
+            noRadioGrp = (RadioButton)itemView.findViewById(R.id.noRadioGrp);
+            ratingSeller = (RatingBar)itemView.findViewById(R.id.ratingSeller);
         }
     }
     public class MyOrderDetailsViewHolder extends RecyclerView.ViewHolder{

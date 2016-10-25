@@ -24,6 +24,7 @@ import com.suyogindia.model.OrderDetailResponse;
 import com.suyogindia.model.OrderItem;
 import com.suyogindia.model.OrderResponse;
 import com.suyogindia.model.Orders;
+import com.suyogindia.model.Result;
 import com.suyogindia.model.Seller;
 import com.suyogindia.model.SellerOrders;
 
@@ -47,6 +48,8 @@ public class MyOrdersActivity extends AppCompatActivity {
     private ArrayList<SellerOrders> orderseList;
     ProgressDialog dialog;
     String userId;
+    Call<Result> radioResponseCall,ratingResponsecall;
+    public static  String responseString,userDemoid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,7 @@ public class MyOrdersActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         SharedPreferences shr = getSharedPreferences(AppConstants.USERPREFS, MODE_PRIVATE);
         userId = shr.getString(AppConstants.USERID, AppConstants.NA);
+        userDemoid = userId;
         rcvMyOrders = (RecyclerView) findViewById(R.id.rcvMyOrders);
         rcvMyOrders.setLayoutManager(new LinearLayoutManager(MyOrdersActivity.this));
         retrofit = new Retrofit.Builder().baseUrl(AppConstants.BASEURL).addConverterFactory(GsonConverterFactory.create()).build();
@@ -105,12 +109,12 @@ public class MyOrdersActivity extends AppCompatActivity {
             itemOrdersArrayList.add(itemSeller);
             ArrayList<ItemOrders> arrayList = order.getItems();
             for (ItemOrders i : arrayList) {
-                OrderItem item = new OrderItem(1, null, null, null, null, null, null, null, null, null, null,null);
+                OrderItem item = new OrderItem(1, null, null, null, null, null, null, null, null, null, null,null,null,null,null,null);
                 item.setOrders(i);
                 itemOrdersArrayList.add(item);
             }
             OrderItem orderItem = new OrderItem(2, order.getSeller_name(),order.getDelevery_mode(), order.getShipping_charge(),
-                    order.getAddress(), order.getCity(), order.getState(), order.getCountry(), order.getZip(), order.getPhone(), order.getEmail(),order.getDelevery_status());
+                    order.getAddress(), order.getCity(), order.getState(), order.getCountry(), order.getZip(), order.getPhone(), order.getEmail(),order.getDelevery_status(),order.getUser_delevery_status(),order.getSeller_order_id(),order.getSeller_email(),order.getRating());
             itemOrdersArrayList.add(orderItem);
         }
         return itemOrdersArrayList;
@@ -124,5 +128,45 @@ public class MyOrdersActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    public void sendRadioRespond(String seller_order_id, String ids) {
+        Map<String,String> map = new HashMap<>(2);
+        map.put("seller_order_id",seller_order_id);
+        map.put("user_delevery_status",ids);
+        radioResponseCall = flasDealApi.sendInfoOFRadio(map);
+        radioResponseCall.enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(Call<Result> call, Response<Result> response) {
+                Log.v(AppConstants.RESPONSE,response.body().getMessage());
+                responseString = ""+response.body().getStatus();
+                Log.v("","");
+            }
+
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
+                Log.v(AppConstants.ERROR,t.getMessage());
+            }
+        });
+    }
+
+    public void rateSeller(String seller_email, String userDemoid, String seller_order_id, float rating) {
+        Map<String,String> ratemap = new HashMap<>(4);
+        ratemap.put("seller_id",seller_email);
+        ratemap.put("user_id",userDemoid);
+        ratemap.put("order_id",seller_order_id);
+        ratemap.put("rating",""+rating);
+        ratingResponsecall = flasDealApi.sendratingInfo(ratemap);
+        ratingResponsecall.enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(Call<Result> call, Response<Result> response) {
+                Log.v(AppConstants.RESPONSE,response.body().getStatus());
+            }
+
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
+                Log.v(AppConstants.ERROR,t.getMessage());
+            }
+        });
     }
 }

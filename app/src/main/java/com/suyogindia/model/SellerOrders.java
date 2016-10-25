@@ -19,6 +19,16 @@ public class SellerOrders implements Parcelable{
     }
 
     private String seller_name;
+
+    public String getSeller_email() {
+        return seller_email;
+    }
+
+    public void setSeller_email(String seller_email) {
+        this.seller_email = seller_email;
+    }
+
+    private String seller_email;
     private String delevery_mode;
     private String shipping_charge;
     private String address;
@@ -31,6 +41,26 @@ public class SellerOrders implements Parcelable{
     private ArrayList<ItemOrders>items;
     private String seller_order_id;
     private String delevery_status;
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
+    private String rating;
+
+    public String getUser_delevery_status() {
+        return user_delevery_status;
+    }
+
+    public void setUser_delevery_status(String user_delevery_status) {
+        this.user_delevery_status = user_delevery_status;
+    }
+
+    private String user_delevery_status;
 
     public String getDelevery_status() {
         return delevery_status;
@@ -155,6 +185,9 @@ public class SellerOrders implements Parcelable{
         TYPE = in.readInt();
         seller_order_id = in.readString();
         delevery_status = in.readString();
+        user_delevery_status = in.readString();
+        seller_email = in.readString();
+        rating = in.readString();
     }
 
     @Override
@@ -178,6 +211,9 @@ public class SellerOrders implements Parcelable{
         dest.writeInt(TYPE);
         dest.writeString(seller_order_id);
         dest.writeString(delevery_status);
+        dest.writeString(user_delevery_status);
+        dest.writeString(seller_email);
+        dest.writeString(rating);
     }
     @SuppressWarnings("unused")
     public static final Parcelable.Creator<SellerOrders> CREATOR = new Parcelable.Creator<SellerOrders>() {

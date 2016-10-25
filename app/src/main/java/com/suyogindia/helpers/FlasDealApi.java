@@ -3,6 +3,7 @@ package com.suyogindia.helpers;
 import com.suyogindia.model.OrderDetailResponse;
 import com.suyogindia.model.OrderResponse;
 import com.suyogindia.model.Profile;
+import com.suyogindia.model.Result;
 
 import java.util.Map;
 
@@ -21,4 +22,8 @@ public interface FlasDealApi {
     Call<OrderDetailResponse> getAllOrderDetails(@Body Map<String,String>object);
     @POST("show_user_profile.php")
     Call<Profile>getProfileInfo(@Body Map<String,String>object);
+    @POST("user_delevery_status.php")
+    Call<Result> sendInfoOFRadio(@Body Map<String,String>object);
+    @POST("user_ratings.php")
+    Call<Result> sendratingInfo(@Body Map<String,String>object);
 }
