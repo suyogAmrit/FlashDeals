@@ -68,7 +68,7 @@ public class ShowOrderDetailsActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<OrderDetailResponse> call, Response<OrderDetailResponse> response) {
                 Log.v(AppConstants.RESPONSE,response.body().getMessage());
-                sellerOrderses = response.body().getSeller();
+                sellerOrderses = response.body().getOrder();
                 for (SellerOrders sellOrders : sellerOrderses){
                     itemOrderses.addAll(sellOrders.getItems());
                 }

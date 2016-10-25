@@ -15,6 +15,9 @@ public class ItemOrders implements Parcelable{
     private String offer_start_time;
     private String offer_end_time;
 
+    public ItemOrders() {
+    }
+
     public String getDescription() {
         return description;
     }

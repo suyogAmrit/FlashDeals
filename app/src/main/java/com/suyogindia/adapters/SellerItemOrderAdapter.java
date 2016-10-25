@@ -65,20 +65,20 @@ public class SellerItemOrderAdapter extends BaseExpandableListAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.seller_list,parent,false);
             holder = new SellerViewHolder();
             holder.txtSellerEmail = (TextView)convertView.findViewById(R.id.txtSellerEmail);
-            holder.txtSellerDlvryMode = (TextView)convertView.findViewById(R.id.txtSellerDlvryMode);
-            holder.txtSellerShippingCharge = (TextView)convertView.findViewById(R.id.txtSellerShippingCharge);
-            holder.txtSellerAddr = (TextView)convertView.findViewById(R.id.txtSellerAddr);
-            holder.txtSellerCity = (TextView)convertView.findViewById(R.id.txtSellerCity);
-            holder.txtSellerState = (TextView)convertView.findViewById(R.id.txtSellerState);
-            holder.txtSellerCountry = (TextView)convertView.findViewById(R.id.txtSellerCountry);
-            holder.txtSellerZip = (TextView)convertView.findViewById(R.id.txtSellerZip);
-            holder.txtSellerPhone = (TextView)convertView.findViewById(R.id.txtSellerPhone);
-            holder.txtSellerAddrEmail = (TextView)convertView.findViewById(R.id.txtSellerAddrEmail);
+//            holder.txtSellerDlvryMode = (TextView)convertView.findViewById(R.id.txtSellerDlvryMode);
+//            holder.txtSellerShippingCharge = (TextView)convertView.findViewById(R.id.txtSellerShippingCharge);
+//            holder.txtSellerAddr = (TextView)convertView.findViewById(R.id.txtSellerAddr);
+//            holder.txtSellerCity = (TextView)convertView.findViewById(R.id.txtSellerCity);
+//            holder.txtSellerState = (TextView)convertView.findViewById(R.id.txtSellerState);
+//            holder.txtSellerCountry = (TextView)convertView.findViewById(R.id.txtSellerCountry);
+//            holder.txtSellerZip = (TextView)convertView.findViewById(R.id.txtSellerZip);
+//            holder.txtSellerPhone = (TextView)convertView.findViewById(R.id.txtSellerPhone);
+//            holder.txtSellerAddrEmail = (TextView)convertView.findViewById(R.id.txtSellerAddrEmail);
             convertView.setTag(holder);
         }else {
             holder = (SellerViewHolder) convertView.getTag();
         }
-        holder.txtSellerEmail.setText(sellerOrderseList.get(groupPosition).getSeller_email());
+        holder.txtSellerEmail.setText(sellerOrderseList.get(groupPosition).getSeller_name());
         holder.txtSellerDlvryMode.setText(sellerOrderseList.get(groupPosition).getDelevery_mode());
         holder.txtSellerShippingCharge.setText(sellerOrderseList.get(groupPosition).getShipping_charge());
         holder.txtSellerAddr.setText(sellerOrderseList.get(groupPosition).getAddress());

@@ -10,7 +10,15 @@ import java.util.ArrayList;
  */
 
 public class SellerOrders implements Parcelable{
-    private String seller_email;
+    public String getSeller_name() {
+        return seller_name;
+    }
+
+    public void setSeller_name(String seller_name) {
+        this.seller_name = seller_name;
+    }
+
+    private String seller_name;
     private String delevery_mode;
     private String shipping_charge;
     private String address;
@@ -21,14 +29,34 @@ public class SellerOrders implements Parcelable{
     private String phone;
     private String email;
     private ArrayList<ItemOrders>items;
+    private String seller_order_id;
+    private String delevery_status;
 
-    public String getSeller_email() {
-        return seller_email;
+    public String getDelevery_status() {
+        return delevery_status;
     }
 
-    public void setSeller_email(String seller_email) {
-        this.seller_email = seller_email;
+    public void setDelevery_status(String delevery_status) {
+        this.delevery_status = delevery_status;
     }
+
+    public String getSeller_order_id() {
+        return seller_order_id;
+    }
+
+    public void setSeller_order_id(String seller_order_id) {
+        this.seller_order_id = seller_order_id;
+    }
+
+    public int getTYPE() {
+        return TYPE;
+    }
+
+    public void setTYPE(int TYPE) {
+        this.TYPE = TYPE;
+    }
+
+    private int TYPE;
 
     public String getDelevery_mode() {
         return delevery_mode;
@@ -109,8 +137,11 @@ public class SellerOrders implements Parcelable{
     public void setItems(ArrayList<ItemOrders> items) {
         this.items = items;
     }
+    public SellerOrders(){
+        super();
+    }
     protected SellerOrders(Parcel in) {
-        seller_email = in.readString();
+        seller_name = in.readString();
         delevery_mode = in.readString();
         shipping_charge = in.readString();
         address = in.readString();
@@ -121,6 +152,9 @@ public class SellerOrders implements Parcelable{
         phone = in.readString();
         email = in.readString();
         items = in.readArrayList(null);
+        TYPE = in.readInt();
+        seller_order_id = in.readString();
+        delevery_status = in.readString();
     }
 
     @Override
@@ -130,7 +164,7 @@ public class SellerOrders implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(seller_email);
+        dest.writeString(seller_name);
         dest.writeString(delevery_mode);
         dest.writeString(shipping_charge);
         dest.writeString(address);
@@ -141,6 +175,9 @@ public class SellerOrders implements Parcelable{
         dest.writeString(phone);
         dest.writeString(email);
         dest.writeSerializable(items);
+        dest.writeInt(TYPE);
+        dest.writeString(seller_order_id);
+        dest.writeString(delevery_status);
     }
     @SuppressWarnings("unused")
     public static final Parcelable.Creator<SellerOrders> CREATOR = new Parcelable.Creator<SellerOrders>() {

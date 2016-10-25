@@ -9,7 +9,16 @@ import java.util.ArrayList;
 public class OrderDetailResponse {
     private String status;
     private String message;
-    private ArrayList<SellerOrders>seller;
+
+    public ArrayList<SellerOrders> getOrder() {
+        return order;
+    }
+
+    public void setOrder(ArrayList<SellerOrders> order) {
+        this.order = order;
+    }
+
+    private ArrayList<SellerOrders>order;
 
     public String getStatus() {
         return status;
@@ -27,11 +36,4 @@ public class OrderDetailResponse {
         this.message = message;
     }
 
-    public ArrayList<SellerOrders> getSeller() {
-        return seller;
-    }
-
-    public void setSeller(ArrayList<SellerOrders> seller) {
-        this.seller = seller;
-    }
 }

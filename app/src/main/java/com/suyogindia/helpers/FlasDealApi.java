@@ -16,7 +16,7 @@ import retrofit2.http.POST;
 
 public interface FlasDealApi {
     @POST("user_order_show.php")
-    Call<OrderResponse> getMyOrders(@Body Map<String,String>object);
+    Call<OrderDetailResponse> getMyOrders(@Body Map<String,String>object);
     @POST("user_order_detail_show.php")
     Call<OrderDetailResponse> getAllOrderDetails(@Body Map<String,String>object);
     @POST("show_user_profile.php")
