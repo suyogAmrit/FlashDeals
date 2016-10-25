@@ -269,12 +269,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     void signUp() {
         Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @OnClick(R.id.tv_forgot_password)
     void forgotPassword() {
         Intent i = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
         startActivity(i);
+        finish();
     }
 
     @Override

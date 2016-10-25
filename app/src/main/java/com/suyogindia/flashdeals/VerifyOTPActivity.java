@@ -81,6 +81,13 @@ public class VerifyOTPActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i = new Intent(VerifyOTPActivity.this, GetPhoneActivity.class);
+        startActivity(i);
+    }
+
     private void generateOTP() {
 
         otpReceiver = new OTPReceiver();

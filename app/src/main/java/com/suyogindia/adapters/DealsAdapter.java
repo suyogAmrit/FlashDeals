@@ -67,7 +67,7 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.ViewHolder> 
 
     class ViewHolder extends RecyclerView.ViewHolder {
         CardView cvDeal;
-        TextView tvSeller, tvDiscount, tvDesc;
+        TextView tvSeller, tvDiscount, tvDesc, tvOfferPrice;
         ImageButton btnQuickAdd;
 
         ViewHolder(View itemView) {
@@ -75,6 +75,7 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.ViewHolder> 
             tvSeller = (TextView) itemView.findViewById(R.id.tv_deal_seller);
             tvDesc = (TextView) itemView.findViewById(R.id.tv_deal_desc);
             tvDiscount = (TextView) itemView.findViewById(R.id.tv_discount);
+            tvOfferPrice = (TextView) itemView.findViewById(R.id.tv_offer_price);
             cvDeal = (CardView) itemView.findViewById(R.id.cv_deal);
             btnQuickAdd = (ImageButton) itemView.findViewById(R.id.btn_quick_add);
         }
@@ -83,6 +84,7 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.ViewHolder> 
             tvDesc.setText(myDeals.getDesciption());
             tvDiscount.setText(AppConstants.DISCOUNT + ": " + myDeals.getDiscount() + "%");
             tvSeller.setText(myDeals.getSeller_name());
+            tvOfferPrice.setText("Offer Price: "+AppConstants.RUPEE + myDeals.getOffer_price());
             btnQuickAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

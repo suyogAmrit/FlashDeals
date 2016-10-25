@@ -163,7 +163,7 @@ public class CartActivity extends AppCompatActivity {
                     Intent i = new Intent(CartActivity.this, ShowAddressActivity.class);
                     i.putParcelableArrayListExtra(AppConstants.SELLERDEITALS, sellerArrayList);
                     i.putParcelableArrayListExtra(AppConstants.ORDERDETAILS, list);
-                    i.putExtra(AppConstants.EXTRA_MANAGE_ADDR,false);
+                    i.putExtra(AppConstants.EXTRA_MANAGE_ADDR, false);
                     Log.i("seller", String.valueOf(list.get(2).getSeller()));
                     startActivity(i);
                     finish();
@@ -207,12 +207,17 @@ public class CartActivity extends AppCompatActivity {
     private void callPlaceOrderWebService(ArrayList<PlaceOrderSeller> sellerArrayList) {
         dialog = AppHelpers.showProgressDialog(this, AppConstants.CREATEODER);
         dialog.show();
-        responseCall = AppHelpers.placeOrder(this, list,sellerArrayList, "", 3);
+        responseCall = AppHelpers.placeOrder(this, list, sellerArrayList, "", 3);
         responseCall.enqueue(new Callback<PlaceOrderResponse>() {
             @Override
             public void onResponse(Call<PlaceOrderResponse> call, Response<PlaceOrderResponse> response) {
                 dialog.dismiss();
                 Log.i("status", response.body().getStatus());
+                if (response.body().getStatus().equals(AppConstants.SUCESS)) {
+                    long row = AppHelpers.clearCart(CartActivity.this);
+                    Log.i("DeletedRow", String.valueOf(row));
+                    finish();
+                }
             }
 
             @Override

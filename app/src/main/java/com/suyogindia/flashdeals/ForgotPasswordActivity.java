@@ -2,6 +2,7 @@ package com.suyogindia.flashdeals;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -60,6 +61,13 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         toolbar.setTitle("Forgot Password");
         setSupportActionBar(toolbar);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
+        startActivity(i);
     }
 
     @OnClick(R.id.btn_dialog_okay)

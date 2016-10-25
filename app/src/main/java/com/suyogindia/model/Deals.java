@@ -20,7 +20,7 @@ public class Deals implements Parcelable {
             return new Deals[size];
         }
     };
-    String deal_id, seller_email, desciption, mrp, offer_price, discount, quantity, max_price, max_distance, shipping_charge, seller_name;
+    String deal_id, seller_email, desciption, mrp, offer_price, discount, quantity, max_price, max_distance, shipping_charge, seller_name,category;
 
     protected Deals(Parcel in) {
         deal_id = in.readString();
@@ -34,6 +34,11 @@ public class Deals implements Parcelable {
         max_distance = in.readString();
         shipping_charge = in.readString();
         seller_name = in.readString();
+        category = in.readString();
+    }
+
+    public String getCategory() {
+        return category;
     }
 
     public String getSeller_name() {
@@ -98,5 +103,6 @@ public class Deals implements Parcelable {
         dest.writeString(max_distance);
         dest.writeString(shipping_charge);
         dest.writeString(seller_name);
+        dest.writeString(category);
     }
 }

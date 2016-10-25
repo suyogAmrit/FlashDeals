@@ -167,8 +167,6 @@ public class AddAddressActivity extends AppCompatActivity {
     }
 
 
-
-
     private void postOrders(final String addressId) {
         if (AppHelpers.isConnectingToInternet(AddAddressActivity.this)) {
             if (!isManageOrder) {
@@ -202,7 +200,11 @@ public class AddAddressActivity extends AppCompatActivity {
                 dialog.dismiss();
                 Log.i(AppConstants.STATUS, response.body().getStatus());
                 //TODO CLEAR CART
-
+                if (response.body().getStatus().equals(AppConstants.SUCESS)) {
+                    long row = AppHelpers.clearCart(AddAddressActivity.this);
+                    Log.i("DeletedRow", String.valueOf(row));
+                    finish();
+                }
             }
 
             @Override

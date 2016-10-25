@@ -170,4 +170,10 @@ public class AppHelpers {
         }
         return sellerList;
     }
+
+    public static long clearCart(Context context) {
+        DataBaseHelper helper = new DataBaseHelper(context);
+        helper.open();
+        return helper.clearCart();
+    }
 }

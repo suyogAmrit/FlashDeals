@@ -8,17 +8,18 @@ import android.os.Parcelable;
  */
 
 public class Seller implements Parcelable{
-    String email, name, maxPrice, shippingCharge, totalPrice;
+    String email, name, maxPrice, shippingCharge, totalPrice,category;
     int deleveryMode;
     int shippingAdded;
 
-    public Seller(String email, String name, String maxPrice, String shippingCharge) {
+    public Seller(String email, String name, String maxPrice, String shippingCharge, String category) {
         this.email = email;
         this.name = name;
         this.maxPrice = maxPrice;
         this.shippingCharge = shippingCharge;
         deleveryMode = 0;
         this.shippingAdded = 0;
+        this.category = category;
     }
 
     protected Seller(Parcel in) {
@@ -29,6 +30,7 @@ public class Seller implements Parcelable{
         totalPrice = in.readString();
         deleveryMode = in.readInt();
         shippingAdded = in.readInt();
+        category = in.readString();
     }
 
     public static final Creator<Seller> CREATOR = new Creator<Seller>() {
@@ -42,6 +44,10 @@ public class Seller implements Parcelable{
             return new Seller[size];
         }
     };
+
+    public String getCategory() {
+        return category;
+    }
 
     public int getShippingAdded() {
         return shippingAdded;
@@ -95,6 +101,7 @@ public class Seller implements Parcelable{
         dest.writeString(maxPrice);
         dest.writeString(shippingCharge);
         dest.writeString(totalPrice);
+        dest.writeString(category);
         dest.writeInt(deleveryMode);
         dest.writeInt(shippingAdded);
     }
