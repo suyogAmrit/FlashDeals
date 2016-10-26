@@ -131,42 +131,51 @@ public class MyOrdersActivity extends AppCompatActivity {
     }
 
     public void sendRadioRespond(String seller_order_id, String ids) {
-        Map<String,String> map = new HashMap<>(2);
-        map.put("seller_order_id",seller_order_id);
-        map.put("user_delevery_status",ids);
-        radioResponseCall = flasDealApi.sendInfoOFRadio(map);
-        radioResponseCall.enqueue(new Callback<Result>() {
-            @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-                Log.v(AppConstants.RESPONSE,response.body().getMessage());
-                responseString = ""+response.body().getStatus();
-                Log.v("","");
-            }
+        if (AppHelpers.isConnectingToInternet(MyOrdersActivity.this)) {
 
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                Log.v(AppConstants.ERROR,t.getMessage());
-            }
-        });
+            Map<String, String> map = new HashMap<>(2);
+            map.put("seller_order_id", seller_order_id);
+            map.put("user_delevery_status", ids);
+            radioResponseCall = flasDealApi.sendInfoOFRadio(map);
+            radioResponseCall.enqueue(new Callback<Result>() {
+                @Override
+                public void onResponse(Call<Result> call, Response<Result> response) {
+                    Log.v(AppConstants.RESPONSE, response.body().getMessage());
+                    responseString = "" + response.body().getStatus();
+                    Log.v("", "");
+                }
+
+                @Override
+                public void onFailure(Call<Result> call, Throwable t) {
+                    Log.v(AppConstants.ERROR, t.getMessage());
+                }
+            });
+        }else {
+            Toast.makeText(MyOrdersActivity.this,"Please Connect to internet",Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void rateSeller(String seller_email, String userDemoid, String seller_order_id, float rating) {
-        Map<String,String> ratemap = new HashMap<>(4);
-        ratemap.put("seller_id",seller_email);
-        ratemap.put("user_id",userDemoid);
-        ratemap.put("order_id",seller_order_id);
-        ratemap.put("rating",""+rating);
-        ratingResponsecall = flasDealApi.sendratingInfo(ratemap);
-        ratingResponsecall.enqueue(new Callback<Result>() {
-            @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-                Log.v(AppConstants.RESPONSE,response.body().getStatus());
-            }
+        if(AppHelpers.isConnectingToInternet(MyOrdersActivity.this)) {
+            Map<String, String> ratemap = new HashMap<>(4);
+            ratemap.put("seller_id", seller_email);
+            ratemap.put("user_id", userDemoid);
+            ratemap.put("order_id", seller_order_id);
+            ratemap.put("rating", "" + rating);
+            ratingResponsecall = flasDealApi.sendratingInfo(ratemap);
+            ratingResponsecall.enqueue(new Callback<Result>() {
+                @Override
+                public void onResponse(Call<Result> call, Response<Result> response) {
+                    Log.v(AppConstants.RESPONSE, response.body().getStatus());
+                }
 
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                Log.v(AppConstants.ERROR,t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<Result> call, Throwable t) {
+                    Log.v(AppConstants.ERROR, t.getMessage());
+                }
+            });
+        }else {
+            Toast.makeText(MyOrdersActivity.this,"Please Connect to internet",Toast.LENGTH_SHORT).show();
+        }
     }
 }
