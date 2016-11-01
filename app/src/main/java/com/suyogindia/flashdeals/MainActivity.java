@@ -11,6 +11,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -88,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     Call<GetDealsResponse> dealsResponseCall;
     DealsFragmentPagerAdapter adapter;
     int totalItem = 0;
+    boolean doubleBackToExitPressedOnce = false;
     private Location mLastLocation;
     // Google client to interact with Google API
     private GoogleApiClient mGoogleApiClient;
@@ -234,13 +237,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.nav_deals:
+                        myDrawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     case R.id.nav_my_orders:
                         Intent intent = new Intent(MainActivity.this, MyOrdersActivity.class);
                         startActivity(intent);
                         break;
-                    case R.id.nav_notification:
-                        break;
+
                 }
                 return true;
             }
@@ -368,6 +371,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             List<Address> addressList = myGeocoder.getFromLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude(), 1);
             Address myAddress = addressList.get(0);
             pinCode = myAddress.getPostalCode();
+            SharedPreferences shr = getSharedPreferences(AppConstants.USERPREFS, MODE_PRIVATE);
+            String savedPincode = shr.getString(AppConstants.PINCODE, "na");
+            if (savedPincode.equals("na")) {
+                SharedPreferences.Editor editor = shr.edit();
+                editor.putString(AppConstants.PINCODE, pinCode);
+                editor.apply();
+            }
+
+
             tvLocation.setText(myAddress.getAddressLine(0));
         } catch (IOException e) {
             e.printStackTrace();
@@ -395,8 +407,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @OnClick(R.id.btn_edit_location)
     void ediLocation() {
-        Intent i = new Intent(MainActivity.this, EditLocation.class);
-        startActivity(i);
+
     }
 
     public void updateCart() {
@@ -405,5 +416,24 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         if (totalItem > 0) {
             fabCart.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
     }
 }

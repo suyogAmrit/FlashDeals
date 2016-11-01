@@ -3,8 +3,8 @@ package com.suyogindia.flashdeals;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -28,24 +28,27 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MyProfileActivity extends AppCompatActivity {
-    private TextView txtProfileName,txtProfileEmail,txtProfilePhone;
-    private Button btnManageAddress;
     ProgressDialog dialog;
     Retrofit retrofit;
     FlasDealApi profileApi;
     String userId;
+    private TextView txtProfileName, txtProfileEmail, txtProfilePhone;
+    private Button btnManageAddress;
+    private Button btnSelectDeals;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_profile);
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("My Profile");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        txtProfileName = (TextView)findViewById(R.id.txtProfileName);
-        txtProfileEmail = (TextView)findViewById(R.id.txtProfileEmail);
-        txtProfilePhone = (TextView)findViewById(R.id.txtProfilePhone);
-        btnManageAddress = (Button)findViewById(R.id.btnManageAddress);
+        txtProfileName = (TextView) findViewById(R.id.txtProfileName);
+        txtProfileEmail = (TextView) findViewById(R.id.txtProfileEmail);
+        txtProfilePhone = (TextView) findViewById(R.id.txtProfilePhone);
+        btnManageAddress = (Button) findViewById(R.id.btnManageAddress);
+        btnSelectDeals = (Button) findViewById(R.id.btnSelectDeals);
         dialog = new ProgressDialog(this);
         dialog.setTitle("Please wait");
         dialog.setMessage("Showing profile...");
@@ -56,38 +59,47 @@ public class MyProfileActivity extends AppCompatActivity {
         profileApi = retrofit.create(FlasDealApi.class);
         if (AppHelpers.isConnectingToInternet(MyProfileActivity.this)) {
             showProfileData();
-        }else {
-            Toast.makeText(MyProfileActivity.this,"Please connect to internet",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(MyProfileActivity.this, "Please connect to internet", Toast.LENGTH_SHORT).show();
         }
         btnManageAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MyProfileActivity.this,ShowAddressActivity.class);
-                intent.putExtra(AppConstants.EXTRA_MANAGE_ADDR,true);
+                Intent intent = new Intent(MyProfileActivity.this, ShowAddressActivity.class);
+                intent.putExtra(AppConstants.EXTRA_MANAGE_ADDR, true);
                 startActivity(intent);
+            }
+        });
+        btnSelectDeals.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MyProfileActivity.this, SelectDealsActivity.class);
+                i.putExtra(AppConstants.FROMPROFILE, true);
+                startActivity(i);
+                finish();
             }
         });
     }
 
     private void showProfileData() {
-        Map<String,String> map = new HashMap<>(1);
-        map.put(AppConstants.USERID,userId);
+        Map<String, String> map = new HashMap<>(1);
+        map.put(AppConstants.USERID, userId);
         Call<Profile> profileCall = profileApi.getProfileInfo(map);
         profileCall.enqueue(new Callback<Profile>() {
             @Override
             public void onResponse(Call<Profile> call, Response<Profile> response) {
                 dialog.dismiss();
-                if (response.body().getStatus().equals("1")){
-                    txtProfileName.setText("Name: "+response.body().getName());
-                    txtProfileEmail.setText("Email: "+response.body().getEmail());
-                    txtProfilePhone.setText("Mobile: "+response.body().getMobile_no());
-                    Toast.makeText(MyProfileActivity.this,response.body().getMessage(),Toast.LENGTH_SHORT).show();
+                if (response.body().getStatus().equals("1")) {
+                    txtProfileName.setText("Name: " + response.body().getName());
+                    txtProfileEmail.setText("Email: " + response.body().getEmail());
+                    txtProfilePhone.setText("Mobile: " + response.body().getMobile_no());
+                    Toast.makeText(MyProfileActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Profile> call, Throwable t) {
-                Log.v("ProfileError",t.getMessage());
+                Log.v("ProfileError", t.getMessage());
             }
         });
     }
@@ -95,7 +107,7 @@ public class MyProfileActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
-        if (item.getItemId()==android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             finish();
             return true;
         }

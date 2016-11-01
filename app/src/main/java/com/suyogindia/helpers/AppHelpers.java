@@ -15,12 +15,14 @@ import android.util.Log;
 
 import com.suyogindia.database.DataBaseHelper;
 import com.suyogindia.flashdeals.ClearCartService;
+import com.suyogindia.flashdeals.OrderReviewResponse;
 import com.suyogindia.model.CartItem;
 import com.suyogindia.model.Deals;
 import com.suyogindia.model.PlaceOrderItem;
 import com.suyogindia.model.PlaceOrderPostData;
 import com.suyogindia.model.PlaceOrderResponse;
 import com.suyogindia.model.PlaceOrderSeller;
+import com.suyogindia.model.ReviewOrderData;
 import com.suyogindia.model.Seller;
 
 import java.io.BufferedReader;
@@ -175,5 +177,45 @@ public class AppHelpers {
         DataBaseHelper helper = new DataBaseHelper(context);
         helper.open();
         return helper.clearCart();
+    }
+
+    public static Call<OrderReviewResponse> postForOrderReview(Context context, ArrayList<CartItem> list, ArrayList<PlaceOrderSeller> sellerList, String addressId) {
+        SharedPreferences shr = context.getSharedPreferences(AppConstants.USERPREFS, Context.MODE_PRIVATE);
+        String userId = shr.getString(AppConstants.USERID, AppConstants.NA);
+        ArrayList<Integer> listRemovePos = new ArrayList<>();
+        for (PlaceOrderSeller seller : sellerList) {
+            String email = seller.getSellerEmail();
+            boolean found = false;
+            List<PlaceOrderItem> itemList = new ArrayList<>();
+            for (CartItem deal :
+                    list) {
+                if (deal.getType() == 1 && deal.getSellerEmail().equals(email)) {
+                    PlaceOrderItem item = new PlaceOrderItem(deal.getDelaId(), deal.getQty());
+                    itemList.add(item);
+                    found = true;
+                }
+
+            }
+            if (!found) {
+                listRemovePos.add(sellerList.indexOf(seller));
+            } else {
+                seller.setDeals(itemList);
+                seller.setAddressId(addressId);
+            }
+        }
+        for (int i : listRemovePos) {
+            sellerList.remove(i);
+        }
+        ReviewOrderData data = new ReviewOrderData(userId, sellerList);
+        WebApi api = setupRetrofit();
+        return api.reviewOrders(data);
+    }
+
+    public static long deleteFromCart(Context mContext, String dealId) {
+        DataBaseHelper helper = new DataBaseHelper(mContext);
+        helper.open();
+        long row = helper.deleteFromCart(dealId);
+        helper.close();
+        return row;
     }
 }

@@ -1,5 +1,8 @@
 package com.suyogindia.helpers;
 
+import com.suyogindia.flashdeals.CheckDeliverPostData;
+import com.suyogindia.flashdeals.CheckDeliveryResponse;
+import com.suyogindia.flashdeals.OrderReviewResponse;
 import com.suyogindia.flashdeals.SendCategoryPostData;
 import com.suyogindia.model.AddAddressResponse;
 import com.suyogindia.model.AddressResponse;
@@ -18,6 +21,7 @@ import com.suyogindia.model.PostTokenResponse;
 import com.suyogindia.model.RegisterUserPostData;
 import com.suyogindia.model.RegisterUserResponse;
 import com.suyogindia.model.Result;
+import com.suyogindia.model.ReviewOrderData;
 import com.suyogindia.model.SendCategoryResponse;
 import com.suyogindia.model.SocialLoginPostData;
 import com.suyogindia.model.VerifyOtpPostData;
@@ -79,4 +83,10 @@ public interface WebApi {
 
     @POST("token_user.php")
     Call<PostTokenResponse> sendToken(@Body PostTokenData data);
+
+    @POST("check_delevery_area.php")
+    Call<CheckDeliveryResponse> getDeliveryOptions(@Body CheckDeliverPostData data);
+
+    @POST("user_order_review.php")
+    Call<OrderReviewResponse> reviewOrders(@Body ReviewOrderData data);
 }

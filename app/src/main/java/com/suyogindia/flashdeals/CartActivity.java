@@ -168,7 +168,14 @@ public class CartActivity extends AppCompatActivity {
                     startActivity(i);
                     finish();
                 } else {
-                    placeOrder(sellerArrayList);
+                    Intent i = new Intent(CartActivity.this, OrderReviewActivity.class);
+                    i.putParcelableArrayListExtra(AppConstants.SELLERDEITALS, sellerArrayList);
+                    i.putParcelableArrayListExtra(AppConstants.ORDERDETAILS, list);
+                    i.putExtra(AppConstants.ADDRESSID, "");
+                    i.putExtra(AppConstants.EXTRA_MANAGE_ADDR, false);
+                    Log.i("seller", String.valueOf(list.get(2).getSeller()));
+                    startActivity(i);
+                    finish();
                 }
             } else {
                 Snackbar snackbar = Snackbar.make(rvCart, AppConstants.SELECTDELMODE, Snackbar.LENGTH_LONG);

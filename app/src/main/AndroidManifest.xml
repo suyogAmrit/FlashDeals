@@ -72,7 +72,6 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".EditLocation" />
         <activity android:name=".DealsDetailsActivity" />
         <activity android:name=".CartActivity" />
 
@@ -98,6 +97,7 @@
         <activity android:name=".MyOrdersActivity" />
         <activity android:name=".ShowOrderDetailsActivity" />
         <activity android:name=".MyProfileActivity"></activity>
+        <activity android:name=".OrderReviewActivity"></activity>
     </application>
 
 </manifest>

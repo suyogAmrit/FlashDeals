@@ -245,6 +245,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         editor.apply();
 
         Intent i = new Intent(LoginActivity.this, SelectDealsActivity.class);
+        i.putExtra(AppConstants.FROMPROFILE,false);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i);
         finish();
@@ -262,7 +263,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        dialog.dismiss();
+        if (dialog != null)
+            dialog.dismiss();
     }
 
     @OnClick(R.id.btn_signup)

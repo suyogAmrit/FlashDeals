@@ -138,7 +138,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         public void bindData(CartItem item) {
             Log.i("total", item.getGrandTotal());
-            tvTotalQty.setText(item.getTotalQuantity());
+            tvTotalQty.setText(item.getTotalQuantity().substring(0, item.getTotalQuantity().length() - 2));
             tvTotalPrice.setText(AppConstants.RUPEE + item.getGrandTotal());
         }
     }

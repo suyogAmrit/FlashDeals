@@ -6,31 +6,43 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.suyogindia.flashdeals.MyProfileActivity">
-    <include layout="@layout/toolbar"/>
+
+    <include layout="@layout/toolbar" />
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/txtProfileName"
-        android:textColor="@android:color/black"
-        android:gravity="center"/>
-    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@android:color/black" />
+
+    <TextView
         android:id="@+id/txtProfileEmail"
-        android:textColor="@android:color/black"
-        android:layout_marginTop="10dp"
-        android:gravity="center"/>
-    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/txtProfilePhone"
-        android:textColor="@android:color/black"
         android:layout_marginTop="10dp"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/txtProfilePhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textColor="@android:color/black" />
+
     <Button
+        android:id="@+id/btnManageAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Manage Address"
-        android:id="@+id/btnManageAddress"/>
+        android:text="Manage Address" />
+
+    <Button
+        android:id="@+id/btnSelectDeals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Select Deals" />
 </LinearLayout>

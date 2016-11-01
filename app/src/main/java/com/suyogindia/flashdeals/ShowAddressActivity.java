@@ -194,7 +194,13 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
     public void onItemClick(View view, int position) {
         Address address = addresListData.get(position);
         String addreId = address.getId();
-        placeOrder(addreId);
+        Intent i = new Intent(ShowAddressActivity.this, OrderReviewActivity.class);
+        i.putExtra(AppConstants.ADDRESSID, addreId);
+        i.putParcelableArrayListExtra(AppConstants.ORDERDETAILS, lisOrders);
+        i.putParcelableArrayListExtra(AppConstants.SELLERDEITALS, lisSellers);
+        startActivity(i);
+        finish();
+        // placeOrder(addreId);
     }
 
     private void placeOrder(final String addreId) {

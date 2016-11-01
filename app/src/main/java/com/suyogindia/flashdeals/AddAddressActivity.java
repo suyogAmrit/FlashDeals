@@ -1,6 +1,7 @@
 package com.suyogindia.flashdeals;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -151,7 +152,14 @@ public class AddAddressActivity extends AppCompatActivity {
 //                        startActivity(intent);
 //                        finish();
                     } else {
-                        postOrders(response.body().getAddressId());
+//                        postOrders(response.body().getAddressId());
+                        String addreId = response.body().getAddressId();
+                        Intent i = new Intent(AddAddressActivity.this, OrderReviewActivity.class);
+                        i.putExtra(AppConstants.ADDRESSID, addreId);
+                        i.putParcelableArrayListExtra(AppConstants.ORDERDETAILS, lisOrders);
+                        i.putParcelableArrayListExtra(AppConstants.SELLERDEITALS, lisSellers);
+                        startActivity(i);
+                        finish();
                     }
                 } else {
                     Toast.makeText(AddAddressActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();

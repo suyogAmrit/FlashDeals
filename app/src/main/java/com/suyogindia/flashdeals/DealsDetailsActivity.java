@@ -1,9 +1,18 @@
 package com.suyogindia.flashdeals;
 
+import android.app.Dialog;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -12,26 +21,44 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.suyogindia.helpers.AppConstants;
 import com.suyogindia.helpers.AppHelpers;
+import com.suyogindia.helpers.WebApi;
 import com.suyogindia.model.CartItem;
 import com.suyogindia.model.Deals;
+
+import java.io.IOException;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by suyogcomputech on 18/10/16.
  */
-public class DealsDetailsActivity extends AppCompatActivity {
+public class DealsDetailsActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+    // LogCat tag
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
+    private static final int LOCREQCODE = 111;
     Deals myDeals;
-
     @BindView(R.id.tv_desc)
     TextView tvDesc;
     @BindView(R.id.tv_seller)
@@ -52,14 +79,29 @@ public class DealsDetailsActivity extends AppCompatActivity {
     TextView tvTotal;
     @BindView(R.id.toolbar_details)
     Toolbar toolbar;
+    @BindView(R.id.tv_delivery_to_pincode)
+    TextView tvDelivery;
+    @BindView(R.id.ibtn_edit_location)
+    ImageButton btnEdit;
     String qty, totalPrice;
     int detailsType;
-
     CartItem cartItem;
+    String pinCode;
+    Dialog myDialog;
+    EditText etPincode;
+    LinearLayout btnUseMyLocation;
+    Button btnSubmit;
+
+    private Location mLastLocation;
+    // Google client to interact with Google API
+    private GoogleApiClient mGoogleApiClient;
+    private LocationRequest mLocationRequest;
+    private LinearLayout imgEditProfile;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_deals_details);
         ButterKnife.bind(this);
         detailsType = getIntent().getExtras().getInt(AppConstants.DETAILSTYPE);
@@ -71,7 +113,9 @@ public class DealsDetailsActivity extends AppCompatActivity {
             Log.i(qty, cartItem.getMaxqty());
             setupUIWithCartItem();
         }
+        SharedPreferences shr = getSharedPreferences(AppConstants.USERPREFS, MODE_PRIVATE);
 
+        pinCode = shr.getString(AppConstants.PINCODE, AppConstants.NA);
         etQty.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -113,6 +157,102 @@ public class DealsDetailsActivity extends AppCompatActivity {
                 }
             }
         });
+        Log.i("pincode", pinCode);
+        if (pinCode.equals(AppConstants.NA)) {
+            tvDelivery.setText(AppConstants.ENTERPINCODE);
+        } else {
+            checkDeliveryOptions();
+        }
+    }
+
+    private void checkDeliveryOptions() {
+        if (AppHelpers.isConnectingToInternet(DealsDetailsActivity.this)) {
+            callCheckDeliverWebService();
+
+        } else {
+            Snackbar snackbar = Snackbar.make(btnEdit, AppConstants.NONETWORK, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(AppConstants.TRYAGAIN, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            checkDeliveryOptions();
+                        }
+                    });
+            snackbar.setActionTextColor(Color.RED);
+            // Changing action button text color
+            View sbView = snackbar.getView();
+            TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            tvMessage.setTextColor(Color.YELLOW);
+            snackbar.show();
+        }
+    }
+
+    @OnClick(R.id.ibtn_edit_location)
+    void editeLocation() {
+        showDialog();
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == LOCREQCODE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            displayLocation();
+        }
+    }
+
+    private void showDialog() {
+        myDialog = new Dialog(this);
+        myDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        myDialog.setContentView(R.layout.dialog_pincode);
+        etPincode = (EditText) myDialog.findViewById(R.id.et_dialo_pincode);
+        btnUseMyLocation = (LinearLayout) myDialog.findViewById(R.id.btn_use_my_loc);
+        btnSubmit = (Button) myDialog.findViewById(R.id.btn_submit);
+        btnSubmit.setEnabled(false);
+        etPincode.addTextChangedListener(new PincodeTextWatcher());
+        btnUseMyLocation.setOnClickListener(new UseMyLocListener());
+        btnSubmit.setOnClickListener(new PincodeSubmitListener());
+        myDialog.show();
+    }
+
+    private void callCheckDeliverWebService() {
+        String dealId = "";
+        if (detailsType == 2) {
+            dealId = myDeals.getDeal_id();
+        } else {
+            dealId = cartItem.getDelaId();
+        }
+        CheckDeliverPostData data = new CheckDeliverPostData(dealId, pinCode);
+        WebApi api = AppHelpers.setupRetrofit();
+        Call<CheckDeliveryResponse> responseCall = api.getDeliveryOptions(data);
+        responseCall.enqueue(new Callback<CheckDeliveryResponse>() {
+            @Override
+            public void onResponse(Call<CheckDeliveryResponse> call, Response<CheckDeliveryResponse> response) {
+                String status = response.body().getStatus();
+                if (status.equals(AppConstants.SUCESS)) {
+                    setupUI(response.body());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CheckDeliveryResponse> call, Throwable t) {
+
+            }
+
+        });
+    }
+
+    private void setupUI(CheckDeliveryResponse body) {
+        tvDelivery.setText(body.getMessage());
+        if (body.getDelevery_area_status().equals(AppConstants.SUCESS)) {
+            tvDelivery.setTextColor(Color.GREEN);
+        } else {
+            tvDelivery.setTextColor(Color.RED);
+        }
+        SharedPreferences shr = getSharedPreferences(AppConstants.USERPREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = shr.edit();
+        editor.putString(AppConstants.PINCODE, pinCode);
+        editor.apply();
     }
 
     private void setupUIWithCartItem() {
@@ -237,6 +377,153 @@ public class DealsDetailsActivity extends AppCompatActivity {
             }
         }
         return true;
+    }
+
+    private boolean checkPlayServices() {
+        GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
+        int result = googleAPI.isGooglePlayServicesAvailable(this);
+        if (result != ConnectionResult.SUCCESS) {
+            if (googleAPI.isUserResolvableError(result)) {
+                googleAPI.getErrorDialog(this, result,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Creating google api client object
+     */
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API).build();
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        displayLocation();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult result) {
+        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = "
+                + result.getErrorCode());
+    }
+
+    private void displayLocation() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, LOCREQCODE);
+            } else {
+                mLastLocation = LocationServices.FusedLocationApi
+                        .getLastLocation(mGoogleApiClient);
+                if (mLastLocation != null) {
+                    double latitude = mLastLocation.getLatitude();
+                    double longitude = mLastLocation.getLongitude();
+
+                    getAddressFromLocation();
+                } else {
+
+                    Toast.makeText(DealsDetailsActivity.this, "Can not Locate You", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } else {
+            mLastLocation = LocationServices.FusedLocationApi
+                    .getLastLocation(mGoogleApiClient);
+//            mLastLocation.setAccuracy(100000);
+            if (mLastLocation != null) {
+                double latitude = mLastLocation.getLatitude();
+                double longitude = mLastLocation.getLongitude();
+
+                getAddressFromLocation();
+            } else {
+
+                Toast.makeText(DealsDetailsActivity.this, "Can not Locate You", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void getAddressFromLocation() {
+        Geocoder myGeocoder = new Geocoder(this);
+        try {
+            List<Address> addressList = myGeocoder.getFromLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude(), 1);
+            Address myAddress = addressList.get(0);
+            pinCode = myAddress.getPostalCode();
+            Log.i("pincode", pinCode);
+            SharedPreferences shr = getSharedPreferences(AppConstants.USERPREFS, MODE_PRIVATE);
+            SharedPreferences.Editor editor = shr.edit();
+            editor.putString(AppConstants.PINCODE, pinCode);
+            editor.apply();
+            checkDeliveryOptions();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private class PincodeSubmitListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            if (myDialog != null) {
+                myDialog.dismiss();
+            }
+            pinCode = etPincode.getText().toString();
+            checkDeliveryOptions();
+        }
+    }
+
+    private class UseMyLocListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            Log.i("onclick", "use my location");
+            if (myDialog != null) {
+                myDialog.dismiss();
+            }
+            if (checkPlayServices()) {
+
+                // Building the GoogleApi client
+                buildGoogleApiClient();
+            }
+            if (mGoogleApiClient != null) {
+                mGoogleApiClient.connect();
+            }
+
+        }
+    }
+
+    private class PincodeTextWatcher implements TextWatcher {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (s.toString().trim().length() == 6) {
+                btnSubmit.setEnabled(true);
+            } else {
+                btnSubmit.setEnabled(false);
+
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
     }
 
 

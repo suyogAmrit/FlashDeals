@@ -47,6 +47,7 @@ public class SelectDealsActivity extends AppCompatActivity {
     Call<ListCategoryResponse> responseCall;
     SelectDealsAdapter adapter;
     Call<SendCategoryResponse> categoryResponseCall;
+    boolean fromProfile = false;
     private List<String> listSelectedIds;
 
     @Override
@@ -54,9 +55,18 @@ public class SelectDealsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_deals);
         ButterKnife.bind(this);
-
+        fromProfile = getIntent().getExtras().getBoolean(AppConstants.FROMPROFILE);
         setupUi();
         getCategoryList();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (fromProfile) {
+            Intent i = new Intent(this, MyProfileActivity.class);
+            startActivity(i);
+        }
     }
 
     private void setupUi() {

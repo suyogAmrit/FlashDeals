@@ -143,7 +143,7 @@ public class DataBaseHelper {
 
     private List<Seller> getSellersFromList() {
         List<Seller> sellerList = null;
-        String[] sellerData = {SELLEREMAIL, SELLERNAME, MAXPRICE, SHIPPINGCHARGE,CATEGORY};
+        String[] sellerData = {SELLEREMAIL, SELLERNAME, MAXPRICE, SHIPPINGCHARGE, CATEGORY};
         Cursor cursor = myDatabase.query(CARTTABLE, sellerData, null, null, SELLEREMAIL, null, null, null);
         if (cursor.getCount() > 0) {
             sellerList = new ArrayList<>();
@@ -153,7 +153,7 @@ public class DataBaseHelper {
                 String marPrice = cursor.getString(cursor.getColumnIndex(MAXPRICE));
                 String shippingPrice = cursor.getString(cursor.getColumnIndex(SHIPPINGCHARGE));
                 String category = cursor.getString(cursor.getColumnIndex(CATEGORY));
-                Seller mySeller = new Seller(email, name, marPrice, shippingPrice,category);
+                Seller mySeller = new Seller(email, name, marPrice, shippingPrice, category);
                 sellerList.add(mySeller);
             }
             cursor.close();
@@ -175,6 +175,10 @@ public class DataBaseHelper {
         cv.put(TOTALPRICE, totalPrice);
         row = myDatabase.update(CARTTABLE, cv, DEALID + "=?", new String[]{dealId});
         return row;
+    }
+
+    public long deleteFromCart(String dealId) {
+        return myDatabase.delete(CARTTABLE, DEALID + "=?", new String[]{dealId});
     }
 
     private class DbHelper extends SQLiteOpenHelper {

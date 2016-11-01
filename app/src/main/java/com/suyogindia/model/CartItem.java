@@ -27,6 +27,10 @@ public class CartItem implements Parcelable {
 
     String totalQuantity, grandTotal;
 
+    public void setQty(String qty) {
+        this.qty = qty;
+    }
+
     public CartItem(String delaId, String desc, String mrp, String offerPrice, String qty, String discount, String totalPrice, String maxqty, String sellerEmail) {
         this.delaId = delaId;
         this.desc = desc;

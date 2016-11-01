@@ -69,4 +69,11 @@ public class AppConstants {
     public static final String EXTRA_MANAGE_ADDR = "EXTRA_MANAGE_ADDR";
     public static final String NOTIFICATIONTYPE = "notification_type";
     public static final String ORDERID = "order_id";
+    public static final String FROMPROFILE = "from_profile";
+    public static final String PINCODE = "pincode";
+    public static final String ENTERPINCODE = "Enter Pincode to check delivery options";
+    public static final String EDIFRAGTAG = "edit_frag_tag";
+    public static final String ADDRESSID = "address_id";
+    public static final String REVIEWMSG = "Checking Your Order";
+    public static final String QTYERROR = "Enter Valid Quantity";
 }
