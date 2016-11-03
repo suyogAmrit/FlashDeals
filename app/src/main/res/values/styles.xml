@@ -25,4 +25,9 @@
         <item name="colorControlNormal">@color/red</item>
         <item name="colorControlActivated">@color/blue</item>
     </style>
+        <style name="foodRatingBar" parent="@android:style/Widget.RatingBar">
+            <item name="android:progressDrawable">@drawable/rating_bg</item>
+            <item name="android:minHeight">22dip</item>
+            <item name="android:maxHeight">22dip</item>
+        </style>
 </resources>

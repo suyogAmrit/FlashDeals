@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardElevation="3dp"
-    app:cardUseCompatPadding="true">
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="2dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -18,11 +13,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:text="Delivery Status:"
+                android:textColor="@android:color/black"
                 android:id="@+id/txtDs"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
+                android:textStyle="bold"
                 android:id="@+id/txtDeliveryStatus"
                 android:layout_alignParentRight="true"
                 android:layout_toRightOf="@+id/txtDs"
@@ -42,6 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Has your order been Delivered?"
+                    android:textColor="@android:color/black"
                     android:id="@+id/txtHas"
                     android:layout_alignParentLeft="true"/>
                 <RadioGroup
@@ -50,6 +48,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_alignParentRight="true"
+                    android:layout_toRightOf="@+id/txtHas"
                     android:gravity="right">
 
                     <RadioButton
@@ -58,8 +57,10 @@
                         android:layout_height="wrap_content"
                         android:checked="false"
                         android:gravity="center"
-                        android:textSize="8sp"
+                        android:textSize="10sp"
                         android:text="Yes"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
                         android:background="@drawable/rd_bg"
                         android:button="@null"
                         android:theme="@style/MyRadioButton"/>
@@ -71,8 +72,10 @@
                         android:layout_marginLeft="5dp"
                         android:gravity="center"
                         android:checked="false"
-                        android:textSize="8sp"
+                        android:textSize="10sp"
                         android:text="No"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
                         android:button="@null"
                         android:background="@drawable/rd_bg"
                         android:theme="@style/MyRadioButton"/>
@@ -86,20 +89,25 @@
                     android:layout_height="wrap_content"
                     android:text="Rate Seller"
                     android:id="@+id/txtRate"
+                    android:textColor="@android:color/black"
                     android:layout_alignParentLeft="true"
                     android:layout_marginTop="10dp"/>
-                <android.support.v7.widget.AppCompatRatingBar
+                <RatingBar
                     android:layout_marginLeft="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:theme="@style/RatingBar"
-                    style="?android:attr/ratingBarStyle"
                     android:id="@+id/ratingSeller"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/foodRatingBar"
+                    android:numStars="5"
+                    android:stepSize="1"
                     android:layout_toRightOf="@+id/txtRate"
-                    android:layout_alignParentRight="true" />
+                     />
             </RelativeLayout>
-
+<View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:layout_marginTop="5dp"
+    android:background="@color/light_grey"/>
         </LinearLayout>
 
     </LinearLayout>
-</android.support.v7.widget.CardView>

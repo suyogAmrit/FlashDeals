@@ -1,7 +1,6 @@
 package com.suyogindia.flashdeals;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,22 +9,16 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
-import com.suyogindia.adapters.MyOrderAdapter;
 import com.suyogindia.adapters.OrdersDetailAdapter;
 import com.suyogindia.helpers.AppConstants;
 import com.suyogindia.helpers.AppHelpers;
 import com.suyogindia.helpers.FlasDealApi;
-import com.suyogindia.helpers.OnMyOrderItemClickListener;
 import com.suyogindia.model.ItemOrders;
 import com.suyogindia.model.OrderDetailResponse;
 import com.suyogindia.model.OrderItem;
-import com.suyogindia.model.OrderResponse;
-import com.suyogindia.model.Orders;
 import com.suyogindia.model.Result;
-import com.suyogindia.model.Seller;
 import com.suyogindia.model.SellerOrders;
 
 import java.util.ArrayList;
