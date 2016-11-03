@@ -12,6 +12,15 @@ public class OrderItem implements Parcelable{
     private String seller_name;
     private String user_delevery_status;
     private String rating;
+    private String phone;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public String getRating() {
         return rating;
@@ -23,6 +32,15 @@ public class OrderItem implements Parcelable{
 
     private String seller_delevery_mode;
     private String seller_shipping_charge;
+
+    public String getSeller_address() {
+        return seller_address;
+    }
+
+    public void setSeller_address(String seller_address) {
+        this.seller_address = seller_address;
+    }
+
     private String seller_address;
     private String seller_city;
     private String seller_state;
@@ -52,6 +70,7 @@ public class OrderItem implements Parcelable{
         delevery_status = in.readString();
         seller_email = in.readString();
         rating = in.readString();
+        phone = in.readString();
     }
     public String getSeller_name() {
         return seller_name;
@@ -111,10 +130,12 @@ public class OrderItem implements Parcelable{
         this.rating = rating;
     }
 
-    public OrderItem(int type, String seller_name, String seller_order_id) {
+    public OrderItem(int type, String seller_name, String seller_order_id,String seller_address,String phone) {
         this.type = type;
         this.seller_name = seller_name;
         this.seller_order_id = seller_order_id;
+        this.seller_address=seller_address;
+        this.phone = phone;
     }
 
     public ItemOrders getOrders() {
@@ -144,6 +165,7 @@ public class OrderItem implements Parcelable{
         dest.writeString(delevery_status);
         dest.writeString(seller_email);
         dest.writeString(rating);
+        dest.writeString(phone);
     }
     @SuppressWarnings("unused")
     public static final Parcelable.Creator<OrderItem> CREATOR = new Parcelable.Creator<OrderItem>() {

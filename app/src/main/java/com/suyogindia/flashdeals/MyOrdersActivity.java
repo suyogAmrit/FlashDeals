@@ -105,11 +105,11 @@ public class MyOrdersActivity extends AppCompatActivity {
     private ArrayList<OrderItem> getItemOrdersFrom(ArrayList<SellerOrders> orderseList) {
         ArrayList<OrderItem> itemOrdersArrayList = new ArrayList<>();
         for (SellerOrders order : orderseList) {
-            OrderItem itemSeller = new OrderItem(0, order.getSeller_name(), order.getSeller_order_id());
+            OrderItem itemSeller = new OrderItem(0, order.getSeller_name(), order.getSeller_order_id(),order.getSeller_address(),order.getPhone());
             itemOrdersArrayList.add(itemSeller);
             ArrayList<ItemOrders> arrayList = order.getItems();
             for (ItemOrders i : arrayList) {
-                OrderItem item = new OrderItem(1, null, null, null, null, null, null, null, null, null, null,null,null,null,null,null);
+                OrderItem item = new OrderItem(1, null, null, null,null, null, null, null, null, null, null,null,null,null,null,null);
                 item.setOrders(i);
                 itemOrdersArrayList.add(item);
             }

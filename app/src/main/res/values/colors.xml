@@ -3,4 +3,7 @@
     <color name="colorPrimary">#00397c</color>
     <color name="colorPrimaryDark">#002148</color>
     <color name="colorAccent">#ee3928</color>
+    <color name="red">#ee3928</color>
+    <color name="blue">#00397c</color>
+    <color name="sky">#d3edf8</color>
 </resources>

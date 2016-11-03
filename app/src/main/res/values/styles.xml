@@ -18,11 +18,11 @@
         <item name="color">#FFF</item>
     </style>
     <style name="RatingBar" parent="Theme.AppCompat">
-        <item name="colorControlNormal">@color/colorAccent</item>
-        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorControlNormal">@color/sky</item>
+        <item name="colorControlActivated">@color/red</item>
     </style>
     <style name="MyRadioButton" parent="Theme.AppCompat.Light">
-        <item name="colorControlNormal">@color/colorAccent</item>
-        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorControlNormal">@color/red</item>
+        <item name="colorControlActivated">@color/blue</item>
     </style>
 </resources>

@@ -64,21 +64,23 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
             if (holder instanceof SellersViewHolder) {
                 SellersViewHolder sellersViewHolder = (SellersViewHolder) holder;
                 if (!TextUtils.isEmpty(orders.getSeller_name())) {
-                    sellersViewHolder.txtSellerEmail.setText("Seller Name: "+orders.getSeller_name());
+                    sellersViewHolder.txtSellerEmail.setText(orders.getSeller_name());
                 }
                 sellersViewHolder.txtSellerOrderId.setText("Order Id: "+orders.getSeller_order_id());
+                sellersViewHolder.txtSellerAddr.setText(orders.getSeller_address());
+                sellersViewHolder.txtSellerPhone.setText(orders.getPhone());
             }
                 break;
             case 1:
             if (holder instanceof ItemsViewHolder) {
                 ItemsViewHolder itemsViewHolder = (ItemsViewHolder) holder;
 
-                itemsViewHolder.txtItemDesc.setText("About Item: "+orders.getOrders().getDescription());
-                itemsViewHolder.txtItemMrp.setText("Item Price: "+ AppConstants.RUPEE+orders.getOrders().getMrp());
-                itemsViewHolder.txtItemOfferPrice.setText("Offer Price: "+orders.getOrders().getOffer_price());
-                itemsViewHolder.txtItemDiscount.setText("Off: "+orders.getOrders().getDiscount()+"%");
-                itemsViewHolder.txtItemOfferStartTime.setText("Offer Starts on: "+orders.getOrders().getOffer_start_time());
-                itemsViewHolder.txtItemOfferEndTime.setText("Offer Ends on: "+orders.getOrders().getOffer_end_time());
+                itemsViewHolder.txtItemDesc.setText("About Item  : "+orders.getOrders().getDescription());
+                itemsViewHolder.txtItemMrp.setText("Item Price  : "+ AppConstants.RUPEE+orders.getOrders().getMrp());
+                itemsViewHolder.txtItemOfferPrice.setText("Offer Price  : "+orders.getOrders().getOffer_price());
+                itemsViewHolder.txtItemDiscount.setText("Off  : "+orders.getOrders().getDiscount()+"%");
+                itemsViewHolder.txtItemOfferStartTime.setText("Offer Starts on : "+orders.getOrders().getOffer_start_time());
+                itemsViewHolder.txtItemOfferEndTime.setText("Offer Ends on : "+orders.getOrders().getOffer_end_time());
             }
                 break;
             case 2:
@@ -160,12 +162,12 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
             txtSellerEmail = (TextView)itemView.findViewById(R.id.txtSellerEmail);
 //            txtSellerDlvryMode = (TextView)itemView.findViewById(R.id.txtSellerDlvryMode);
 //            txtSellerShippingCharge = (TextView)itemView.findViewById(R.id.txtSellerShippingCharge);
-//            txtSellerAddr = (TextView)itemView.findViewById(R.id.txtSellerAddr);
+              txtSellerAddr = (TextView)itemView.findViewById(R.id.txtSellerAddr);
 //            txtSellerCity = (TextView)itemView.findViewById(R.id.txtSellerCity);
 //            txtSellerState = (TextView)itemView.findViewById(R.id.txtSellerState);
 //            txtSellerCountry = (TextView)itemView.findViewById(R.id.txtSellerCountry);
 //            txtSellerZip = (TextView)itemView.findViewById(R.id.txtSellerZip);
-//            txtSellerPhone = (TextView)itemView.findViewById(R.id.txtSellerPhone);
+              txtSellerPhone = (TextView)itemView.findViewById(R.id.txtSellerPhone);
 //            txtSellerAddrEmail = (TextView)itemView.findViewById(R.id.txtSellerAddrEmail);
             txtSellerOrderId = (TextView)itemView.findViewById(R.id.txtSellerOrderId);
             //txtSellerDeliveryStatus = (TextView)itemView.findViewById(R.id.txtSellerDeliveryStatus);

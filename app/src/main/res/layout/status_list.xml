@@ -4,9 +4,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardElevation="5dp"
-    app:cardUseCompatPadding="true"
-    app:cardBackgroundColor="#e6e6e6">
+    app:cardElevation="3dp"
+    app:cardUseCompatPadding="true">
     <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -59,11 +58,12 @@
                         android:layout_height="wrap_content"
                         android:checked="false"
                         android:gravity="center"
-                        android:textSize="12sp"
+                        android:textSize="8sp"
                         android:text="Yes"
                         android:background="@drawable/rd_bg"
                         android:button="@null"
                         android:theme="@style/MyRadioButton"/>
+
                     <RadioButton
                         android:id="@+id/noRadioGrp"
                         android:layout_width="wrap_content"
@@ -71,7 +71,7 @@
                         android:layout_marginLeft="5dp"
                         android:gravity="center"
                         android:checked="false"
-                        android:textSize="12sp"
+                        android:textSize="8sp"
                         android:text="No"
                         android:button="@null"
                         android:background="@drawable/rd_bg"
@@ -88,7 +88,7 @@
                     android:id="@+id/txtRate"
                     android:layout_alignParentLeft="true"
                     android:layout_marginTop="10dp"/>
-                <RatingBar
+                <android.support.v7.widget.AppCompatRatingBar
                     android:layout_marginLeft="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
