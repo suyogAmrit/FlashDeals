@@ -82,7 +82,7 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.ViewHolder> 
 
         void bind(final Deals myDeals, final OnItemClickListener listener) {
             tvDesc.setText(myDeals.getDesciption());
-            tvDiscount.setText(AppConstants.DISCOUNT + ": " + myDeals.getDiscount() + "%");
+            tvDiscount.setText(AppConstants.DISCOUNT + ": " + myDeals.getDiscount());
             tvSeller.setText(myDeals.getSeller_name());
             tvOfferPrice.setText("Offer Price: "+AppConstants.RUPEE + myDeals.getOffer_price());
             btnQuickAdd.setOnClickListener(new View.OnClickListener() {
