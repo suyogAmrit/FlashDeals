@@ -25,6 +25,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Desc"
+        android:textColor="@android:color/black"
         android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_details" />
@@ -36,18 +37,19 @@
         android:text="Seller"
         android:textSize="16sp"
         android:visibility="gone"
-        tools:layout_editor_absoluteY="107dp"
-        tools:layout_editor_absoluteX="16dp" />
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="107dp" />
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="MRP"
-        android:textSize="16sp"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/tv_desc"
-        app:layout_constraintLeft_toLeftOf="@+id/tv_desc" />
+        android:text="MRP"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_desc"
+        app:layout_constraintTop_toBottomOf="@+id/tv_desc" />
 
     <TextView
         android:id="@+id/tv_mrp"
@@ -67,6 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Discount"
+        android:textColor="@android:color/black"
         android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="@+id/textView7"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
@@ -76,8 +79,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
-        android:textSize="16sp"
         android:textColor="@color/colorAccent"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView9"
         app:layout_constraintRight_toRightOf="@+id/tv_mrp" />
 
@@ -87,6 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Offer Price"
+        android:textColor="@android:color/black"
         android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="@+id/textView9"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
@@ -106,6 +110,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Qunatity"
+        android:textColor="@android:color/black"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/btn_add"
         app:layout_constraintLeft_toLeftOf="@+id/textView13" />
@@ -150,23 +155,24 @@
         android:id="@+id/textView16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Total Price"
+        android:textColor="@android:color/black"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_total_price"
         app:layout_constraintLeft_toLeftOf="@+id/textView15"
-        app:layout_constraintTop_toTopOf="@+id/view"
-        android:layout_marginTop="16dp" />
+        app:layout_constraintTop_toTopOf="@+id/view" />
 
     <TextView
         android:id="@+id/tv_total_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textSize="16sp"
-        app:layout_constraintTop_toTopOf="@+id/view"
         android:layout_marginTop="16dp"
+        android:text="TextView"
         android:textColor="@color/colorAccent"
-        app:layout_constraintRight_toRightOf="@+id/btn_add" />
+        android:textSize="16sp"
+        app:layout_constraintRight_toRightOf="@+id/btn_add"
+        app:layout_constraintTop_toTopOf="@+id/view" />
 
     <View
         android:id="@+id/view"
@@ -186,22 +192,22 @@
         android:id="@+id/tv_delivery_to_pincode"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:text="delevery to"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/ibtn_edit_location"
-        app:layout_constraintRight_toLeftOf="@+id/ibtn_edit_location"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintLeft_toLeftOf="@+id/textView16" />
+        app:layout_constraintLeft_toLeftOf="@+id/textView16"
+        app:layout_constraintRight_toLeftOf="@+id/ibtn_edit_location" />
 
     <ImageButton
+        android:id="@+id/ibtn_edit_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@android:drawable/ic_menu_edit"
-        android:id="@+id/ibtn_edit_location"
+        android:layout_marginTop="16dp"
         android:background="@null"
         app:layout_constraintRight_toRightOf="@+id/tv_total_price"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/tv_total_price" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_total_price"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
 
 </android.support.constraint.ConstraintLayout>

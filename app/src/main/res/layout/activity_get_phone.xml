@@ -34,7 +34,8 @@
         android:textSize="15sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ic_icon" />
+        app:layout_constraintTop_toBottomOf="@+id/ic_icon"
+        android:textColor="@android:color/black"/>
 
     <EditText
         android:id="@+id/et_code"

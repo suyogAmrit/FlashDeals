@@ -87,26 +87,26 @@ public class MakePaymentHelper {
         Log.i("hassequence", hashSequence);
         String serverCalculatedHash = hashCal(hashSequence);
         Log.i("hash", serverCalculatedHash);
-        paymentParam.setMerchantHash(serverCalculatedHash);
-        PayUmoneySdkInitilizer.startPaymentActivityForResult((OrderReviewActivity) myContext, paymentParam);
-//        WebApi api = AppHelpers.setupRetrofit();
-//        HashRequest request = new HashRequest(KEY, TXNID, amount, PRODUCTINFO, FIRSTNAME, email, udf1, udf2, udf3, udf4, udf5);
-//        Call<HashResponse> responseCall = api.getHash(request);
-//        responseCall.enqueue(new Callback<HashResponse>() {
-//            @Override
-//            public void onResponse(Call<HashResponse> call, Response<HashResponse> response) {
-//                Log.i(AppConstants.STATUS, response.body().getResult());
-//                String hash = response.body().getResult();
-//                paymentParam.setMerchantHash(hash);
-//                PayUmoneySdkInitilizer.startPaymentActivityForResult((OrderReviewActivity) myContext, paymentParam);
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<HashResponse> call, Throwable t) {
-//
-//            }
-//        });
+//        paymentParam.setMerchantHash(serverCalculatedHash);
+//        PayUmoneySdkInitilizer.startPaymentActivityForResult((OrderReviewActivity) myContext, paymentParam);
+        WebApi api = AppHelpers.setupRetrofit();
+        HashRequest request = new HashRequest(KEY, TXNID, amount, PRODUCTINFO, FIRSTNAME, email, udf1, udf2, udf3, udf4, udf5);
+        Call<HashResponse> responseCall = api.getHash(request);
+        responseCall.enqueue(new Callback<HashResponse>() {
+            @Override
+            public void onResponse(Call<HashResponse> call, Response<HashResponse> response) {
+                Log.i(AppConstants.STATUS, response.body().getResult());
+                String hash = response.body().getResult();
+                paymentParam.setMerchantHash(hash);
+                PayUmoneySdkInitilizer.startPaymentActivityForResult((OrderReviewActivity) myContext, paymentParam);
+
+            }
+
+            @Override
+            public void onFailure(Call<HashResponse> call, Throwable t) {
+
+            }
+        });
     }
 
 }
