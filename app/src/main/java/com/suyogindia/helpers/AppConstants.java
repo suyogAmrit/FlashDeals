@@ -76,4 +76,5 @@ public class AppConstants {
     public static final String ADDRESSID = "address_id";
     public static final String REVIEWMSG = "Checking Your Order";
     public static final String QTYERROR = "Enter Valid Quantity";
+    public static final String WAIT = "Please Wait";
 }

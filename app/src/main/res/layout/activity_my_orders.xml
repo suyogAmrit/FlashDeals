@@ -6,9 +6,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.suyogindia.flashdeals.MyOrdersActivity">
-    <include layout="@layout/toolbar"/>
+
+    <include layout="@layout/toolbar" />
+
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/rcvMyOrders"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/rcvMyOrders"/>
+        android:layout_margin="8dp" />
 </LinearLayout>

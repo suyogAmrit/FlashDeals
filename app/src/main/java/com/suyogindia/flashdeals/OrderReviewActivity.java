@@ -199,7 +199,7 @@ public class OrderReviewActivity extends AppCompatActivity {
 
         }
         ReviewOrderItem item5 = new ReviewOrderItem(4, orderReviewResponse.getGrand_total());
-        listItems.add(item5);
+        listItems.add(0,item5);
         ReviewOrderItem item4 = new ReviewOrderItem(5, orderReviewResponse.getAddress());
         listItems.add(item4);
         grandToal = Double.parseDouble(orderReviewResponse.getGrand_total());

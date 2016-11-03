@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -44,6 +45,7 @@ public class AddAddressActivity extends AppCompatActivity {
     ArrayList<PlaceOrderSeller> lisSellers;
     Call<PlaceOrderResponse> placeOrderResponseCall;
     boolean isManageOrder;
+    Toolbar toolbar;
     private EditText etLocality, etCity, etState, etcountry, etZip, etPhone, etEmail;
     private String userID;
 
@@ -66,6 +68,9 @@ public class AddAddressActivity extends AppCompatActivity {
         etPhone = (EditText) findViewById(R.id.etPhone);
         etEmail = (EditText) findViewById(R.id.etEmail);
         Button btnSaveAddr = (Button) findViewById(R.id.btnSaveAddr);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_add_address);
+        toolbar.setTitle("Enter Details");
+        setSupportActionBar(toolbar);
         SharedPreferences shr = getSharedPreferences(AppConstants.USERPREFS, MODE_PRIVATE);
         userID = shr.getString(AppConstants.USERID, AppConstants.NA);
         //  btnDeleteAddr = (Button) findViewById(R.id.btnDeleteAddr);

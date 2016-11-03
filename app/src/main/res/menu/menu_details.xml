@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="Add To Cart"
+    <item
         android:id="@+id/action_add_to_cart"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_add_shopping_cart_white" />
+        android:icon="@drawable/ic_cart_add"
+        android:title="Add To Cart"
+        app:showAsAction="always" />
 </menu>

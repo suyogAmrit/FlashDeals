@@ -246,9 +246,9 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
     private void setupUI(CheckDeliveryResponse body) {
         tvDelivery.setText(body.getMessage());
         if (body.getDelevery_area_status().equals(AppConstants.SUCESS)) {
-            tvDelivery.setTextColor(Color.GREEN);
+            tvDelivery.setTextColor(Color.parseColor("#d32f2f"));
         } else {
-            tvDelivery.setTextColor(Color.RED);
+            tvDelivery.setTextColor(Color.parseColor("#004D40"));
         }
         SharedPreferences shr = getSharedPreferences(AppConstants.USERPREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = shr.edit();
@@ -262,7 +262,7 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
         qty = cartItem.getQty();
         totalPrice = cartItem.getTotalPrice();
         tvDesc.setText(cartItem.getDesc());
-        tvDiscount.setText(cartItem.getDiscount());
+        tvDiscount.setText(cartItem.getDiscount()+"%");
         tvMrp.setText(AppConstants.RUPEE + cartItem.getMrp());
         tvOfferPrice.setText(AppConstants.RUPEE + cartItem.getOfferPrice());
         tvSeller.setText(cartItem.getSellerName());
@@ -275,7 +275,7 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
         setSupportActionBar(toolbar);
         qty = totalPrice = "0";
         tvDesc.setText(myDeals.getDesciption());
-        tvDiscount.setText(myDeals.getDiscount());
+        tvDiscount.setText(myDeals.getDiscount()+"%");
         tvMrp.setText(AppConstants.RUPEE + myDeals.getMrp());
         tvOfferPrice.setText(AppConstants.RUPEE + myDeals.getOffer_price());
         tvSeller.setText(myDeals.getSeller_name());

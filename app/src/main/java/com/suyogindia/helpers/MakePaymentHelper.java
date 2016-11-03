@@ -1,5 +1,6 @@
 package com.suyogindia.helpers;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 
@@ -25,11 +26,11 @@ public class MakePaymentHelper {
     private static final String MARCHANTID = "5640384";
     Context myContext;
     String email;
+    ProgressDialog dialog;
     private String KEY = "DISVeLKQ";
     private String TXNID;
     private String PRODUCTINFO = "Flash_DEAL";
     private String FIRSTNAME = "suyog";
-    private String SALT = "omcS1V6wUR";
     private String udf1 = "";
     private String udf2 = "";
     private String udf3 = "";
@@ -82,19 +83,22 @@ public class MakePaymentHelper {
                 .setUdf4(udf4)
                 .setUdf5(udf5);
         final PayUmoneySdkInitilizer.PaymentParam paymentParam = builder.build();
-        String hashSequence = KEY + "|" + TXNID + "|" + amount + "|" + PRODUCTINFO + "|" + FIRSTNAME + "|" + email + "|" + udf1 + "|" + udf2 + "|" +
-                udf3 + "|" + udf4 + "|" + udf5 + "|" + SALT;
-        Log.i("hassequence", hashSequence);
-        String serverCalculatedHash = hashCal(hashSequence);
-        Log.i("hash", serverCalculatedHash);
+//        String hashSequence = KEY + "|" + TXNID + "|" + amount + "|" + PRODUCTINFO + "|" + FIRSTNAME + "|" + email + "|" + udf1 + "|" + udf2 + "|" +
+//                udf3 + "|" + udf4 + "|" + udf5 + "|" + SALT;
+//        Log.i("hassequence", hashSequence);
+//        String serverCalculatedHash = hashCal(hashSequence);
+//        Log.i("hash", serverCalculatedHash);
 //        paymentParam.setMerchantHash(serverCalculatedHash);
 //        PayUmoneySdkInitilizer.startPaymentActivityForResult((OrderReviewActivity) myContext, paymentParam);
+        dialog = AppHelpers.showProgressDialog(myContext, AppConstants.WAIT);
+        dialog.show();
         WebApi api = AppHelpers.setupRetrofit();
-        HashRequest request = new HashRequest(KEY, TXNID, amount, PRODUCTINFO, FIRSTNAME, email, udf1, udf2, udf3, udf4, udf5);
+        HashRequest request = new HashRequest(KEY, TXNID, String.valueOf(amount), PRODUCTINFO, FIRSTNAME, email, udf1, udf2, udf3, udf4, udf5);
         Call<HashResponse> responseCall = api.getHash(request);
         responseCall.enqueue(new Callback<HashResponse>() {
             @Override
             public void onResponse(Call<HashResponse> call, Response<HashResponse> response) {
+                dialog.dismiss();
                 Log.i(AppConstants.STATUS, response.body().getResult());
                 String hash = response.body().getResult();
                 paymentParam.setMerchantHash(hash);
@@ -104,7 +108,7 @@ public class MakePaymentHelper {
 
             @Override
             public void onFailure(Call<HashResponse> call, Throwable t) {
-
+                dialog.dismiss();
             }
         });
     }

@@ -77,8 +77,8 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     }
 
     public class AddressViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView txtAddr, txtCity, txtState, txtCountry, txtZip, txtPhone, txtEmail, txtEdit, txtRemove;
-        LinearLayout btnSelect;
+        TextView txtAddr, txtCity, txtState, txtCountry, txtZip, txtPhone, txtEmail;
+        LinearLayout btnSelect,txtEdit,txtRemove;
 
         public AddressViewHolder(View itemView) {
             super(itemView);
@@ -89,8 +89,8 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
             txtZip = (TextView) itemView.findViewById(R.id.txtZip);
             txtPhone = (TextView) itemView.findViewById(R.id.txtPhone);
             txtEmail = (TextView) itemView.findViewById(R.id.txtEmail);
-            txtEdit = (TextView) itemView.findViewById(R.id.txtEdit);
-            txtRemove = (TextView) itemView.findViewById(R.id.txtRemove);
+            txtEdit = (LinearLayout) itemView.findViewById(R.id.txtEdit);
+            txtRemove = (LinearLayout) itemView.findViewById(R.id.txtRemove);
             btnSelect = (LinearLayout) itemView.findViewById(R.id.btn_address_select);
 //            txtEdit.setOnClickListener(this);
 //            txtRemove.setOnClickListener(this);

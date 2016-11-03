@@ -67,12 +67,14 @@
 
     <Button
         android:id="@+id/btn_submit"
-        style="?attr/buttonBarButtonStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/red_button"
         android:text="Submit"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/btn_use_my_loc"
         app:layout_constraintRight_toRightOf="@+id/btn_use_my_loc"

@@ -16,6 +16,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="DESC"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,6 +29,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Offer Price"
+        android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_cart_desc" />
 
@@ -37,6 +40,8 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:text="TextView"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_mrp"
         app:layout_constraintRight_toRightOf="parent" />
 
@@ -48,6 +53,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Qunatity"
+        android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_mrp" />
 
@@ -56,6 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView14"
         app:layout_constraintRight_toRightOf="@+id/tv_cart_offer_price" />
 
@@ -67,6 +74,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Total Price:"
+        android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
@@ -75,6 +83,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView18"
         app:layout_constraintRight_toRightOf="@+id/tv_cart_qty" />
 
@@ -86,6 +96,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Shipping Charges:"
+        android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
@@ -94,6 +105,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="@+id/textView19"
         app:layout_constraintRight_toRightOf="@+id/tv_cart_qty" />
 
@@ -105,6 +117,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Total Amount:"
+        android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
@@ -113,6 +126,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView20"
         app:layout_constraintRight_toRightOf="@+id/tv_cart_qty" />
 
@@ -125,7 +140,20 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp" />
 
-    <Button
+    <!--<Button-->
+    <!--android:id="@+id/btn_cart_edit"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginEnd="8dp"-->
+    <!--android:layout_marginLeft="8dp"-->
+    <!--android:layout_marginRight="8dp"-->
+    <!--android:layout_marginStart="8dp"-->
+    <!--android:layout_marginTop="8dp"-->
+    <!--android:text="Edit"-->
+    <!--app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--app:layout_constraintRight_toLeftOf="@+id/guideline2"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/textView20" />-->
+    <LinearLayout
         android:id="@+id/btn_cart_edit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -134,13 +162,55 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/blue_button"
+        android:clickable="true"
+        android:elevation="1dp"
+        android:gravity="center|center_horizontal"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
         android:text="Edit"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/textView20"
-        tools:layout_editor_absoluteX="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textView20">
 
-    <Button
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_edit" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:text="@string/edit"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+    <!--<Button-->
+    <!--android:id="@+id/btn_cart_remove"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginEnd="8dp"-->
+    <!--android:layout_marginLeft="8dp"-->
+    <!--android:layout_marginRight="8dp"-->
+    <!--android:layout_marginStart="8dp"-->
+    <!--android:text="Remove"-->
+    <!--app:layout_constraintBottom_toBottomOf="@+id/btn_cart_edit"-->
+    <!--app:layout_constraintRight_toRightOf="parent"-->
+    <!--app:layout_constraintLeft_toLeftOf="@+id/guideline2" />-->
+    <LinearLayout
         android:id="@+id/btn_cart_remove"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -148,10 +218,41 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        android:background="@drawable/red_button"
+        android:clickable="true"
+        android:elevation="1dp"
+        android:gravity="center|center_horizontal"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
         android:text="Remove"
         app:layout_constraintBottom_toBottomOf="@+id/btn_cart_edit"
-        app:layout_constraintLeft_toRightOf="@+id/guideline2"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintLeft_toLeftOf="@+id/guideline2"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_remove" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:text="@string/remove"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_review_message"

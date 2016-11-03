@@ -7,12 +7,13 @@
         android:id="@+id/cv_select_deals"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp">
+        android:layout_margin="5dp"
+        android:background="@drawable/form_background">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp">
+            android:padding="8dp">
 
             <TextView
                 android:id="@+id/tv_select_deal_title"
@@ -28,8 +29,7 @@
                 android:layout_toLeftOf="@+id/ch_deals"
                 android:layout_toStartOf="@+id/ch_deals"
                 android:text="Deal"
-                android:textSize="16dp"
-                android:textStyle="bold" />
+                android:textSize="16sp" />
 
             <CheckBox
                 android:id="@+id/ch_deals"

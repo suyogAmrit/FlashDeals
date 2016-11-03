@@ -50,7 +50,7 @@
                 android:layout_toStartOf="@+id/btn_edit_location"
                 android:gravity="center"
                 android:maxLines="1"
-                android:text="asdasdas"
+                android:text="Can Not Locate You"
                 android:textSize="18sp" />
 
             <ImageButton

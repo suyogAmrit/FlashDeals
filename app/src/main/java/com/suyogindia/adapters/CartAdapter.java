@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -139,7 +140,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public void bindData(CartItem item) {
             Log.i("total", item.getGrandTotal());
             tvTotalQty.setText(item.getTotalQuantity().substring(0, item.getTotalQuantity().length() - 2));
-            tvTotalPrice.setText(AppConstants.RUPEE + item.getGrandTotal());
+            tvTotalPrice.setText(AppConstants.RUPEE  +" "+ item.getGrandTotal());
         }
     }
 
@@ -161,7 +162,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             final Seller mySeller = item.getSeller();
             tvTotal.setText(mySeller.getTotalPrice());
-            tvShippingCharge.setText(AppConstants.RUPEE + mySeller.getShippingCharge());
+            tvShippingCharge.setText(AppConstants.RUPEE  +" "+ mySeller.getShippingCharge());
             tvSellerShippingInfo.setText("This seller Provides Free Home delivery above " + AppConstants.RUPEE + mySeller.getMaxPrice()
                     + " – below " + AppConstants.RUPEE + mySeller.getMaxPrice() + ", " + AppConstants.RUPEE + mySeller.getShippingCharge() + " chargable.");
             rgMode.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -185,7 +186,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             } else {
                 tvshippingText.setVisibility(View.GONE);
                 tvShippingCharge.setVisibility(View.GONE);
-                tvGrandTotal.setText(AppConstants.RUPEE + mySeller.getTotalPrice());
+                tvGrandTotal.setText(AppConstants.RUPEE +" "+ mySeller.getTotalPrice());
             }
         }
 
@@ -197,13 +198,13 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     private class GenericViewHolder extends RecyclerView.ViewHolder {
-        Button btnEdit, btnRemove;
+        LinearLayout btnEdit, btnRemove;
         TextView tvDesc, tvOfferPrice, tvQty, tvTotal;
 
         public GenericViewHolder(View v) {
             super(v);
-            btnEdit = (Button) v.findViewById(R.id.btn_cart_edit);
-            btnRemove = (Button) v.findViewById(R.id.btn_cart_remove);
+            btnEdit = (LinearLayout) v.findViewById(R.id.btn_cart_edit);
+            btnRemove = (LinearLayout) v.findViewById(R.id.btn_cart_remove);
             tvDesc = (TextView) v.findViewById(R.id.tv_cart_desc);
             tvOfferPrice = (TextView) v.findViewById(R.id.tv_cart_offer_price);
             tvQty = (TextView) v.findViewById(R.id.tv_cart_qty);
@@ -211,9 +212,9 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
         public void bindData(CartItem item) {
-            tvTotal.setText(AppConstants.RUPEE + item.getTotalPrice());
+            tvTotal.setText(AppConstants.RUPEE  +" "+ item.getTotalPrice());
             tvQty.setText(item.getQty());
-            tvOfferPrice.setText(AppConstants.RUPEE + item.getOfferPrice());
+            tvOfferPrice.setText(AppConstants.RUPEE  +" "+ item.getOfferPrice());
             tvDesc.setText(item.getDesc());
             btnRemove.setOnClickListener(new View.OnClickListener() {
                 @Override

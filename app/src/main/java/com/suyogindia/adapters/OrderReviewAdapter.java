@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.suyogindia.flashdeals.OrderReviewActivity;
@@ -140,9 +140,9 @@ public class OrderReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @BindView(R.id.tv_total_amount)
         TextView tvTotalAmount;
         @BindView(R.id.btn_cart_edit)
-        Button btnEdit;
+        LinearLayout btnEdit;
         @BindView(R.id.btn_cart_remove)
-        Button btnRemove;
+        LinearLayout btnRemove;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
@@ -151,11 +151,11 @@ public class OrderReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         public void bind(ReviewOrderItem item) {
             tvDesc.setText(item.getDescription());
-            tvOfferPrice.setText(AppConstants.RUPEE + item.getOffer_price());
+            tvOfferPrice.setText(AppConstants.RUPEE + " " + item.getOffer_price());
             tvQty.setText(item.getQuantity_available());
-            tvTotal.setText(AppConstants.RUPEE + item.getItem_price());
-            tvShippingChages.setText(AppConstants.RUPEE + item.getShipping_price());
-            tvTotalAmount.setText(AppConstants.RUPEE + item.getTotal_item_price());
+            tvTotal.setText(AppConstants.RUPEE + " " + item.getItem_price());
+            tvShippingChages.setText(AppConstants.RUPEE + " " + item.getShipping_price());
+            tvTotalAmount.setText(AppConstants.RUPEE + " " + item.getTotal_item_price());
             if (item.getReview_status() == 0) {
                 tvMessge.setVisibility(View.VISIBLE);
                 tvMessge.setText(item.getReview_message());
@@ -193,13 +193,15 @@ public class OrderReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         public void bind(ReviewOrderItem item) {
-            tvTotal.setText(AppConstants.RUPEE + item.getFooterItem());
+            tvTotal.setText(AppConstants.RUPEE + " " + item.getFooterItem());
         }
     }
 
     class GrandTotalHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_grand_total)
         TextView tvTotal;
+        @BindView(R.id.textView10)
+        TextView textView;
 
         public GrandTotalHolder(View itemView) {
             super(itemView);
@@ -207,7 +209,8 @@ public class OrderReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         public void bind(ReviewOrderItem item) {
-            tvTotal.setText(AppConstants.RUPEE + item.getFooterItem());
+            tvTotal.setText(AppConstants.RUPEE + " " + item.getFooterItem());
+            textView.setText("Grand Total:");
         }
     }
 

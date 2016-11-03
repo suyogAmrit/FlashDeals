@@ -5,10 +5,9 @@ package com.suyogindia.model;
  */
 
 public class HashRequest {
-    String key, txnid, productInfo, firstName, email, udf1, udf2, udf3, udf4, udf5;
-    double amount;
+    String key, txnid, amount, productInfo, firstName, email, udf1, udf2, udf3, udf4, udf5;
 
-    public HashRequest(String key,String txnid, double amount, String productInfo, String firstName, String email, String udf1, String udf2, String udf3, String udf4, String udf5) {
+    public HashRequest(String key, String txnid, String amount, String productInfo, String firstName, String email, String udf1, String udf2, String udf3, String udf4, String udf5) {
         this.key = key;
         this.txnid = txnid;
         this.amount = amount;

@@ -37,8 +37,8 @@
         android:text="Seller"
         android:textSize="16sp"
         android:visibility="gone"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="107dp" />
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 
     <TextView
         android:id="@+id/textView7"
@@ -112,7 +112,7 @@
         android:text="Qunatity"
         android:textColor="@android:color/black"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_add"
+        app:layout_constraintBaseline_toBaselineOf="@+id/et_qty"
         app:layout_constraintLeft_toLeftOf="@+id/textView13" />
 
     <ImageButton
@@ -120,15 +120,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@null"
-        android:src="@drawable/ic_qty_add"
+        android:src="@drawable/ic_plus"
         app:layout_constraintRight_toRightOf="@+id/tv_cart_offer_price"
         app:layout_constraintTop_toBottomOf="@+id/tv_cart_offer_price" />
 
     <EditText
         android:id="@+id/et_qty"
-        android:layout_width="36dp"
-        android:layout_height="24dp"
+        android:layout_width="48dp"
+        android:layout_height="36dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:background="@drawable/form_background"
@@ -137,6 +136,7 @@
         android:inputType="number"
         android:textAlignment="center"
         android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_add"
         app:layout_constraintRight_toLeftOf="@+id/btn_add"
         app:layout_constraintTop_toTopOf="@+id/btn_add" />
 
@@ -146,9 +146,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:background="@null"
-        android:src="@drawable/icon_minus_round"
-        app:layout_constraintBottom_toBottomOf="@+id/et_qty"
+        android:src="@drawable/ic_minus"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_add"
         app:layout_constraintRight_toLeftOf="@+id/et_qty" />
 
     <TextView
@@ -194,7 +193,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="delevery to"
+        android:text="Enter Pincode to check delivery option"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/ibtn_edit_location"
         app:layout_constraintLeft_toLeftOf="@+id/textView16"
@@ -206,8 +205,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="@null"
+        android:src="@drawable/ic_edit_loc"
         app:layout_constraintRight_toRightOf="@+id/tv_total_price"
-        app:layout_constraintTop_toBottomOf="@+id/tv_total_price"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_total_price" />
 
 </android.support.constraint.ConstraintLayout>
