@@ -1,6 +1,7 @@
 package com.suyogindia.flashdeals;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -353,7 +354,8 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
                 } else if (detailsType == 1) {
                     long row = AppHelpers.updateCart(this, qty, totalPrice, cartItem.getDelaId());
                     if (row > 0) {
-                        Toast.makeText(this, "Item Added To Cart", Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(DealsDetailsActivity.this, CartActivity.class);
+                        startActivity(i);
                         finish();
                     } else {
                         Snackbar snackbar = Snackbar.make(etQty, AppConstants.WENTWRONG, Snackbar.LENGTH_SHORT);

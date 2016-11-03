@@ -82,6 +82,10 @@ public class CartActivity extends AppCompatActivity {
         helper.close();
         if (list != null && list.size() > 0)
             getGrandTotal();
+        else {
+            Toast.makeText(this, "Add Some Product to Cart", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
     private void getGrandTotal() {

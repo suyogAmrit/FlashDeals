@@ -102,43 +102,45 @@ public class DataBaseHelper {
     public ArrayList<CartItem> getCartData() {
         List<Seller> sellerList = getSellersFromList();
         ArrayList<CartItem> cartItemList = new ArrayList<>();
-        for (Seller s :
-                sellerList) {
-            String[] cartData = {DEALID, DEALDESC, MRP, OFFERPRICE, TOTALPRICE, DISCOUNT, QUANTITY, MAXQTY, SELLEREMAIL};
-            Cursor mCursor = myDatabase.query(CARTTABLE, cartData, SELLEREMAIL + "=?", new String[]{s.getEmail()}, null, null, null);
-            CartItem item1 = new CartItem(null, null, null, null, null, null, null, null, null);
-            item1.setType(0);
-            item1.setSellerName(s.getName());
-            item1.setCategory(s.getCategory());
+        if (sellerList != null) {
+            for (Seller s :
+                    sellerList) {
+                String[] cartData = {DEALID, DEALDESC, MRP, OFFERPRICE, TOTALPRICE, DISCOUNT, QUANTITY, MAXQTY, SELLEREMAIL};
+                Cursor mCursor = myDatabase.query(CARTTABLE, cartData, SELLEREMAIL + "=?", new String[]{s.getEmail()}, null, null, null);
+                CartItem item1 = new CartItem(null, null, null, null, null, null, null, null, null);
+                item1.setType(0);
+                item1.setSellerName(s.getName());
+                item1.setCategory(s.getCategory());
 
-            cartItemList.add(item1);
-            if (mCursor.getCount() > 0) {
-                double sellerTotalPrice = 0;
-                while (mCursor.moveToNext()) {
-                    String dealId = mCursor.getString(mCursor.getColumnIndex(DEALID));
-                    String desc = mCursor.getString(mCursor.getColumnIndex(DEALDESC));
-                    String mrp = mCursor.getString(mCursor.getColumnIndex(MRP));
-                    String offerPrice = mCursor.getString(mCursor.getColumnIndex(OFFERPRICE));
-                    String totaPrice = mCursor.getString(mCursor.getColumnIndex(TOTALPRICE));
-                    String discount = mCursor.getString(mCursor.getColumnIndex(DISCOUNT));
-                    String qunatity = mCursor.getString(mCursor.getColumnIndex(QUANTITY));
-                    String maxQty = mCursor.getString(mCursor.getColumnIndex(MAXQTY));
-                    String sellerEmail = mCursor.getString(mCursor.getColumnIndex(SELLEREMAIL));
-                    Log.i("toalitemPrice", totaPrice);
-                    CartItem item2 = new CartItem(dealId, desc, mrp, offerPrice, qunatity, discount, totaPrice, maxQty, sellerEmail);
-                    item2.setType(1);
-                    sellerTotalPrice = sellerTotalPrice + Double.parseDouble(totaPrice);
-                    cartItemList.add(item2);
+                cartItemList.add(item1);
+                if (mCursor.getCount() > 0) {
+                    double sellerTotalPrice = 0;
+                    while (mCursor.moveToNext()) {
+                        String dealId = mCursor.getString(mCursor.getColumnIndex(DEALID));
+                        String desc = mCursor.getString(mCursor.getColumnIndex(DEALDESC));
+                        String mrp = mCursor.getString(mCursor.getColumnIndex(MRP));
+                        String offerPrice = mCursor.getString(mCursor.getColumnIndex(OFFERPRICE));
+                        String totaPrice = mCursor.getString(mCursor.getColumnIndex(TOTALPRICE));
+                        String discount = mCursor.getString(mCursor.getColumnIndex(DISCOUNT));
+                        String qunatity = mCursor.getString(mCursor.getColumnIndex(QUANTITY));
+                        String maxQty = mCursor.getString(mCursor.getColumnIndex(MAXQTY));
+                        String sellerEmail = mCursor.getString(mCursor.getColumnIndex(SELLEREMAIL));
+                        Log.i("toalitemPrice", totaPrice);
+                        CartItem item2 = new CartItem(dealId, desc, mrp, offerPrice, qunatity, discount, totaPrice, maxQty, sellerEmail);
+                        item2.setType(1);
+                        sellerTotalPrice = sellerTotalPrice + Double.parseDouble(totaPrice);
+                        cartItemList.add(item2);
+                    }
+                    mCursor.close();
+                    s.setTotalPrice(String.valueOf(sellerTotalPrice));
+                    CartItem item3 = new CartItem(null, null, null, null, null, null, null, null, null);
+                    item3.setSeller(s);
+                    item3.setType(2);
+                    cartItemList.add(item3);
                 }
-                mCursor.close();
-                s.setTotalPrice(String.valueOf(sellerTotalPrice));
-                CartItem item3 = new CartItem(null, null, null, null, null, null, null, null, null);
-                item3.setSeller(s);
-                item3.setType(2);
-                cartItemList.add(item3);
             }
-        }
-        return cartItemList;
+            return cartItemList;
+        } else return null;
     }
 
     private List<Seller> getSellersFromList() {

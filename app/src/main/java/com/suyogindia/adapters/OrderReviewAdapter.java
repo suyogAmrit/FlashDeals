@@ -42,7 +42,7 @@ public class OrderReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_cart_header, parent, false);
             return new SellerHeaderViewHolder(v);
         } else if (viewType == TYPE_ITEM) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_cart_generic, parent, false);
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_review_generic, parent, false);
             return new ItemViewHolder(v);
         } else if (viewType == TYPE_SELLER_FOOTER) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_review_seller, parent, false);
@@ -135,6 +135,10 @@ public class OrderReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView tvTotal;
         @BindView(R.id.tv_review_message)
         TextView tvMessge;
+        @BindView(R.id.tv_shipping_charge)
+        TextView tvShippingChages;
+        @BindView(R.id.tv_total_amount)
+        TextView tvTotalAmount;
         @BindView(R.id.btn_cart_edit)
         Button btnEdit;
         @BindView(R.id.btn_cart_remove)
@@ -147,9 +151,11 @@ public class OrderReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         public void bind(ReviewOrderItem item) {
             tvDesc.setText(item.getDescription());
-            tvOfferPrice.setText(AppConstants.RUPEE + item.getItem_price());
+            tvOfferPrice.setText(AppConstants.RUPEE + item.getOffer_price());
             tvQty.setText(item.getQuantity_available());
-            tvTotal.setText(AppConstants.RUPEE + item.getTotal_item_price());
+            tvTotal.setText(AppConstants.RUPEE + item.getItem_price());
+            tvShippingChages.setText(AppConstants.RUPEE + item.getShipping_price());
+            tvTotalAmount.setText(AppConstants.RUPEE + item.getTotal_item_price());
             if (item.getReview_status() == 0) {
                 tvMessge.setVisibility(View.VISIBLE);
                 tvMessge.setText(item.getReview_message());
@@ -159,7 +165,7 @@ public class OrderReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 public void onClick(View v) {
                     String dealId = list.get(getAdapterPosition()).getDealId();
                     String qty = list.get(getAdapterPosition()).getQuantity_available();
-                    String price = list.get(getAdapterPosition()).getItem_price();
+                    String price = list.get(getAdapterPosition()).getOffer_price();
                     ((OrderReviewActivity) mContext).editQunatity(dealId, qty, price);
                 }
             });

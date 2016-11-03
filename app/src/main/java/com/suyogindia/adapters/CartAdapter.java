@@ -228,6 +228,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     i.putExtra(AppConstants.CARTITEM, cartDataList.get(getAdapterPosition()));
                     i.putExtra(AppConstants.DETAILSTYPE, 1);
                     myContext.startActivity(i);
+                    ((CartActivity) myContext).finish();
                 }
             });
         }

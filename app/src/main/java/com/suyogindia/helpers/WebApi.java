@@ -12,6 +12,8 @@ import com.suyogindia.model.GenOtpPostData;
 import com.suyogindia.model.GenOtpResponse;
 import com.suyogindia.model.GetDealsPostData;
 import com.suyogindia.model.GetDealsResponse;
+import com.suyogindia.model.HashRequest;
+import com.suyogindia.model.HashResponse;
 import com.suyogindia.model.ListCategoryResponse;
 import com.suyogindia.model.LoginPostData;
 import com.suyogindia.model.PlaceOrderPostData;
@@ -89,4 +91,7 @@ public interface WebApi {
 
     @POST("user_order_review.php")
     Call<OrderReviewResponse> reviewOrders(@Body ReviewOrderData data);
+
+    @POST("moneyhash.php")
+    Call<HashResponse> getHash(@Body HashRequest data);
 }

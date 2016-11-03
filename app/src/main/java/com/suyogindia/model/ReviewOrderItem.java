@@ -8,7 +8,7 @@ public class ReviewOrderItem {
     int type;
     String seller_name, seller_email, seller_category;
 
-    String dealId, description, quantity_available, review_message, category_id, shipping_price, total_item_price, item_price;
+    String dealId, description, quantity_available, review_message, category_id, shipping_price, total_item_price, item_price,offer_price;
     int review_status;
 
     String footerItem;
@@ -24,9 +24,13 @@ public class ReviewOrderItem {
         return seller_category;
     }
 
+    public String getOffer_price() {
+        return offer_price;
+    }
+
     public ReviewOrderItem(int type, String dealId, String description, String quantity_available,
                            String review_message, String category_id, String shipping_price, String total_item_price,
-                           String item_price, int review_status) {
+                           String item_price, String offer_price, int review_status) {
         this.type = type;
         this.dealId = dealId;
         this.description = description;
@@ -36,6 +40,7 @@ public class ReviewOrderItem {
         this.shipping_price = shipping_price;
         this.total_item_price = total_item_price;
         this.item_price = item_price;
+        this.offer_price = offer_price;
         this.review_status = review_status;
     }
 
