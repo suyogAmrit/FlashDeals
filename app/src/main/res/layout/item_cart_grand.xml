@@ -26,6 +26,7 @@
         android:layout_marginRight="16dp"
         android:text="TextView"
         android:textSize="16sp"
+        android:textColor="@android:color/black"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textView8"
         app:layout_constraintRight_toRightOf="parent" />
