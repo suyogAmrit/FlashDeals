@@ -79,7 +79,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="Total Price:"
+        android:text="Total Price"
         android:textSize="16sp"
         android:textColor="@android:color/black"
 
@@ -103,7 +103,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="Shipping Charges:"
+        android:text="Shipping Charges"
         android:textColor="@android:color/black"
 
         android:textSize="16sp"
@@ -126,7 +126,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="Total Amount:"
+        android:text="Total Amount"
         android:textColor="@android:color/black"
 
         android:textSize="16sp"
