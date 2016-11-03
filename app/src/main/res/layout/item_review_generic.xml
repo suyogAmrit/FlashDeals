@@ -29,6 +29,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Offer Price"
+        android:textColor="@android:color/black"
+
         android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_cart_desc" />
@@ -54,6 +56,8 @@
         android:layout_marginTop="8dp"
         android:text="Qunatity"
         android:textSize="16sp"
+        android:textColor="@android:color/black"
+
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_mrp" />
 
@@ -63,6 +67,8 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         android:textSize="16sp"
+        android:textColor="@android:color/black"
+
         app:layout_constraintBottom_toBottomOf="@+id/textView14"
         app:layout_constraintRight_toRightOf="@+id/tv_cart_offer_price" />
 
@@ -75,6 +81,8 @@
         android:layout_marginTop="8dp"
         android:text="Total Price:"
         android:textSize="16sp"
+        android:textColor="@android:color/black"
+
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
@@ -96,6 +104,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Shipping Charges:"
+        android:textColor="@android:color/black"
+
         android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
@@ -117,6 +127,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Total Amount:"
+        android:textColor="@android:color/black"
+
         android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView19" />
