@@ -45,7 +45,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private void sendNotification(JSONObject notificationObject) throws JSONException {
         Notification.Builder builder = new Notification.Builder(this);
-        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setSmallIcon(R.drawable.ic_notification);
         builder.setPriority(Notification.PRIORITY_HIGH);
         builder.setDefaults(NotificationCompat.DEFAULT_ALL);
         builder.setAutoCancel(true);
