@@ -15,7 +15,7 @@ public class AppConstants {
     public static final String FBPERMISSION = "public_profile,email";
     public static final String FBGHRAPPERMISSION = "id,name,email,gender, birthday,picture";
     public static final String EMAIL = "email";
-    public static final String BASEURL = "http://192.168.10.200/flashdeal/";
+    public static final String BASEURL = "http://flashdeal.co.in/flashdealapp/";
     public static final String SUCESS = "1";
     public static final String DALOGTITLE = "Please Wait";
     public static final String GENOTPMESSAGE = "Generating OTP..";

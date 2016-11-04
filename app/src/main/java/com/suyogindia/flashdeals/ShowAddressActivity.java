@@ -101,21 +101,23 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
                 @Override
                 public void onResponse(Call<AddressResponse> call, Response<AddressResponse> response) {
                     dialog.dismiss();
-                    Log.v("Response", response.body().getStatus());
-                    if (response.body().getStatus().equals("1")) {
-                        addresListData = response.body().getAddress();
-                        addressAdapter.add(addresListData);
-                        //addressAdapter.setMenuListener(ShowAddressActivity.this);
+                    if (response.isSuccessful()) {
+                        Log.v("Response", response.body().getStatus());
+                        if (response.body().getStatus().equals("1")) {
+                            addresListData = response.body().getAddress();
+                            addressAdapter.add(addresListData);
+                            //addressAdapter.setMenuListener(ShowAddressActivity.this);
 
-                        Log.i("itemid", menuItem.getItemId() + "");
-                        if (addresListData.size() > 3) {
-                            addAddress = false;
+                            Log.i("itemid", menuItem.getItemId() + "");
+                            if (addresListData.size() > 3) {
+                                addAddress = false;
 
-                        } else {
-                            addAddress = true;
+                            } else {
+                                addAddress = true;
 
+                            }
+                            invalidateOptionsMenu();
                         }
-                        invalidateOptionsMenu();
                     }
                 }
 
@@ -231,12 +233,14 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
             @Override
             public void onResponse(Call<PlaceOrderResponse> call, Response<PlaceOrderResponse> response) {
                 dialog.dismiss();
-                Log.i("status", response.body().getStatus());
-                //TODO
-                if (response.body().getStatus().equals(AppConstants.SUCESS)) {
-                    long row = AppHelpers.clearCart(ShowAddressActivity.this);
-                    Log.i("DeletedRow", String.valueOf(row));
-                    finish();
+                if (response.isSuccessful()) {
+                    Log.i("status", response.body().getStatus());
+                    //TODO
+                    if (response.body().getStatus().equals(AppConstants.SUCESS)) {
+                        long row = AppHelpers.clearCart(ShowAddressActivity.this);
+                        Log.i("DeletedRow", String.valueOf(row));
+                        finish();
+                    }
                 }
             }
 
@@ -277,16 +281,17 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
                 @Override
                 public void onResponse(Call<Result> call, Response<Result> response) {
                     dialog.dismiss();
-                    Log.v("Response", response.body().getMessage());
-                    if (response.body().getStatus().equals("1")) {
-                        addresListData.clear();
-                        addressAdapter.clear();
-                        showAllAddress();
-                    } else {
-                        Toast.makeText(ShowAddressActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    if (response.isSuccessful()) {
+                        Log.v("Response", response.body().getMessage());
+                        if (response.body().getStatus().equals("1")) {
+                            addresListData.clear();
+                            addressAdapter.clear();
+                            showAllAddress();
+                        } else {
+                            Toast.makeText(ShowAddressActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
-
                 @Override
                 public void onFailure(Call<Result> call, Throwable t) {
                     Log.v("Error", t.getMessage());

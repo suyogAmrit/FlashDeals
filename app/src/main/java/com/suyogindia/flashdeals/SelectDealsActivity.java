@@ -125,11 +125,13 @@ public class SelectDealsActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ListCategoryResponse> call, Response<ListCategoryResponse> response) {
                 dialog.dismiss();
-                Log.i(AppConstants.RESPONSE, response.body().getStatus());
-                if (response.body().getStatus().equals(AppConstants.SUCESS)) {
-                    adapter.addCategoryList(response.body().getCategoryList());
-                } else {
-                    Toast.makeText(SelectDealsActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                if (response.isSuccessful()) {
+                    Log.i(AppConstants.RESPONSE, response.body().getStatus());
+                    if (response.body().getStatus().equals(AppConstants.SUCESS)) {
+                        adapter.addCategoryList(response.body().getCategoryList());
+                    } else {
+                        Toast.makeText(SelectDealsActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
@@ -208,14 +210,16 @@ public class SelectDealsActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<SendCategoryResponse> call, Response<SendCategoryResponse> response) {
                 dialog.dismiss();
-                Log.i(AppConstants.RESPONSE, response.body().getStatus());
-                if (response.body().getStatus().equals(AppConstants.SUCESS)) {
-                    Intent i = new Intent(SelectDealsActivity.this, MainActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(i);
-                    finish();
-                } else {
-                    Toast.makeText(SelectDealsActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                if (response.isSuccessful()) {
+                    Log.i(AppConstants.RESPONSE, response.body().getStatus());
+                    if (response.body().getStatus().equals(AppConstants.SUCESS)) {
+                        Intent i = new Intent(SelectDealsActivity.this, MainActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(i);
+                        finish();
+                    } else {
+                        Toast.makeText(SelectDealsActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 

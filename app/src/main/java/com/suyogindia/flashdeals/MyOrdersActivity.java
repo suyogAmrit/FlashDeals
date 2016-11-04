@@ -2,8 +2,8 @@ package com.suyogindia.flashdeals;
 
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -32,17 +32,17 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MyOrdersActivity extends AppCompatActivity {
-    private RecyclerView rcvMyOrders;
+    public static String responseString, userDemoid;
     Retrofit retrofit;
     FlasDealApi flasDealApi;
     Call<OrderDetailResponse> orderResponseCall;
+    ProgressDialog dialog;
+    String userId;
+    Call<Result> radioResponseCall, ratingResponsecall;
+    private RecyclerView rcvMyOrders;
     //private MyOrderAdapter adapter;
     private OrdersDetailAdapter adapter;
     private ArrayList<SellerOrders> orderseList;
-    ProgressDialog dialog;
-    String userId;
-    Call<Result> radioResponseCall,ratingResponsecall;
-    public static  String responseString,userDemoid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +57,9 @@ public class MyOrdersActivity extends AppCompatActivity {
         userDemoid = userId;
         rcvMyOrders = (RecyclerView) findViewById(R.id.rcvMyOrders);
         rcvMyOrders.setLayoutManager(new LinearLayoutManager(MyOrdersActivity.this));
+        adapter = new OrdersDetailAdapter(MyOrdersActivity.this);
+        rcvMyOrders.setAdapter(adapter);
+
         retrofit = new Retrofit.Builder().baseUrl(AppConstants.BASEURL).addConverterFactory(GsonConverterFactory.create()).build();
         flasDealApi = retrofit.create(FlasDealApi.class);
         orderseList = new ArrayList<>();
@@ -78,12 +81,14 @@ public class MyOrdersActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<OrderDetailResponse> call, Response<OrderDetailResponse> response) {
                 dialog.dismiss();
-                Log.v(AppConstants.RESPONSE, response.body().getStatus());
-                if (response.body().getStatus().equals("1")) {
-                    orderseList = response.body().getOrder();
-                    ArrayList<OrderItem> itemOrdersArrayList = getItemOrdersFrom(orderseList);
-                    adapter = new OrdersDetailAdapter(MyOrdersActivity.this, itemOrdersArrayList);
-                    rcvMyOrders.setAdapter(adapter);
+                if (response.isSuccessful()) {
+                    Log.v(AppConstants.RESPONSE, response.body().getStatus());
+                    if (response.body().getStatus().equals("1")) {
+                        orderseList = response.body().getOrder();
+                        if (orderseList != null && orderseList.size() > 0)
+                            adapter.add(getItemOrdersFrom(orderseList));
+
+                    }
                 }
             }
 
@@ -98,16 +103,16 @@ public class MyOrdersActivity extends AppCompatActivity {
     private ArrayList<OrderItem> getItemOrdersFrom(ArrayList<SellerOrders> orderseList) {
         ArrayList<OrderItem> itemOrdersArrayList = new ArrayList<>();
         for (SellerOrders order : orderseList) {
-            OrderItem itemSeller = new OrderItem(0, order.getSeller_name(), order.getSeller_order_id(),order.getSeller_address(),order.getPhone());
+            OrderItem itemSeller = new OrderItem(0, order.getSeller_name(), order.getSeller_order_id(), order.getSeller_address(), order.getPhone());
             itemOrdersArrayList.add(itemSeller);
             ArrayList<ItemOrders> arrayList = order.getItems();
             for (ItemOrders i : arrayList) {
-                OrderItem item = new OrderItem(1, null, null, null,null, null, null, null, null, null, null,null,null,null,null,null);
+                OrderItem item = new OrderItem(1, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
                 item.setOrders(i);
                 itemOrdersArrayList.add(item);
             }
-            OrderItem orderItem = new OrderItem(2, order.getSeller_name(),order.getDelevery_mode(), order.getShipping_charge(),
-                    order.getAddress(), order.getCity(), order.getState(), order.getCountry(), order.getZip(), order.getPhone(), order.getEmail(),order.getDelevery_status(),order.getUser_delevery_status(),order.getSeller_order_id(),order.getSeller_email(),order.getRating());
+            OrderItem orderItem = new OrderItem(2, order.getSeller_name(), order.getDelevery_mode(), order.getShipping_charge(),
+                    order.getAddress(), order.getCity(), order.getState(), order.getCountry(), order.getZip(), order.getPhone(), order.getEmail(), order.getDelevery_status(), order.getUser_delevery_status(), order.getSeller_order_id(), order.getSeller_email(), order.getRating());
             itemOrdersArrayList.add(orderItem);
         }
         return itemOrdersArrayList;
@@ -133,9 +138,11 @@ public class MyOrdersActivity extends AppCompatActivity {
             radioResponseCall.enqueue(new Callback<Result>() {
                 @Override
                 public void onResponse(Call<Result> call, Response<Result> response) {
-                    Log.v(AppConstants.RESPONSE, response.body().getMessage());
-                    responseString = "" + response.body().getStatus();
-                    Log.v("", "");
+                    if (response.isSuccessful()) {
+                        Log.v(AppConstants.RESPONSE, response.body().getMessage());
+                        responseString = "" + response.body().getStatus();
+                        Log.v("", "");
+                    }
                 }
 
                 @Override
@@ -143,13 +150,13 @@ public class MyOrdersActivity extends AppCompatActivity {
                     Log.v(AppConstants.ERROR, t.getMessage());
                 }
             });
-        }else {
-            Toast.makeText(MyOrdersActivity.this,"Please Connect to internet",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(MyOrdersActivity.this, "Please Connect to internet", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void rateSeller(String seller_email, String userDemoid, String seller_order_id, float rating) {
-        if(AppHelpers.isConnectingToInternet(MyOrdersActivity.this)) {
+        if (AppHelpers.isConnectingToInternet(MyOrdersActivity.this)) {
             Map<String, String> ratemap = new HashMap<>(4);
             ratemap.put("seller_id", seller_email);
             ratemap.put("user_id", userDemoid);
@@ -159,7 +166,9 @@ public class MyOrdersActivity extends AppCompatActivity {
             ratingResponsecall.enqueue(new Callback<Result>() {
                 @Override
                 public void onResponse(Call<Result> call, Response<Result> response) {
-                    Log.v(AppConstants.RESPONSE, response.body().getStatus());
+                    if (response.isSuccessful()) {
+                        Log.v(AppConstants.RESPONSE, response.body().getStatus());
+                    }
                 }
 
                 @Override
@@ -167,8 +176,8 @@ public class MyOrdersActivity extends AppCompatActivity {
                     Log.v(AppConstants.ERROR, t.getMessage());
                 }
             });
-        }else {
-            Toast.makeText(MyOrdersActivity.this,"Please Connect to internet",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(MyOrdersActivity.this, "Please Connect to internet", Toast.LENGTH_SHORT).show();
         }
     }
 }

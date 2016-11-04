@@ -111,6 +111,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         call.enqueue(new Callback<ForgotPasswordResponse>() {
             @Override
             public void onResponse(Call<ForgotPasswordResponse> call, Response<ForgotPasswordResponse> response) {
+
                 dialog.dismiss();
                 Toast.makeText(ForgotPasswordActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
             }

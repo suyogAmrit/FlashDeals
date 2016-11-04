@@ -116,25 +116,27 @@ public class VerifyOTPActivity extends AppCompatActivity {
             otpResponseCall.enqueue(new Callback<GenOtpResponse>() {
                 @Override
                 public void onResponse(Call<GenOtpResponse> call, Response<GenOtpResponse> response) {
-                    String status = response.body().getStatus();
-                    Log.i(AppConstants.RESPONSE, response.body().getStatus());
-                    dialog.dismiss();
-                    if (status.equals(AppConstants.SUCESS)) {
-                        updateUiForResend(false);
-                    } else {
-                        Snackbar snackbar = Snackbar.make(etOTP, response.body().getMessage(), Snackbar.LENGTH_INDEFINITE)
-                                .setAction(AppConstants.TRYAGAIN, new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        requestOTP();
-                                    }
-                                });
-                        snackbar.setActionTextColor(Color.RED);
-                        // Changing action button text color
-                        View sbView = snackbar.getView();
-                        TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-                        tvMessage.setTextColor(Color.YELLOW);
-                        snackbar.show();
+                    if (response.isSuccessful()) {
+                        String status = response.body().getStatus();
+                        Log.i(AppConstants.RESPONSE, response.body().getStatus());
+                        dialog.dismiss();
+                        if (status.equals(AppConstants.SUCESS)) {
+                            updateUiForResend(false);
+                        } else {
+                            Snackbar snackbar = Snackbar.make(etOTP, response.body().getMessage(), Snackbar.LENGTH_INDEFINITE)
+                                    .setAction(AppConstants.TRYAGAIN, new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            requestOTP();
+                                        }
+                                    });
+                            snackbar.setActionTextColor(Color.RED);
+                            // Changing action button text color
+                            View sbView = snackbar.getView();
+                            TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                            tvMessage.setTextColor(Color.YELLOW);
+                            snackbar.show();
+                        }
                     }
                 }
 
@@ -220,19 +222,23 @@ public class VerifyOTPActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<VerifyOtpResponse> call, Response<VerifyOtpResponse> response) {
                     dialog.dismiss();
-                    if (response.body().getStatus().equals(AppConstants.SUCESS)) {
-                        String userId = response.body().getUserId();
-                        //saveuserID
-                        saveUserId(userId);
+                    if (response.isSuccessful()) {
+                        Log.i("status",response.body().getStatus());
+                        if (response.body().getStatus().equals(AppConstants.SUCESS)) {
+                            Log.i("response",response.body().getStatus());
+                            String userId = response.body().getUserId();
+                            //saveuserID
+                            saveUserId(userId);
 
-                    } else {
-                        Snackbar snackbar = Snackbar.make(etOTP, response.body().getMessage(), Snackbar.LENGTH_SHORT);
+                        } else {
+                            Snackbar snackbar = Snackbar.make(etOTP, response.body().getMessage(), Snackbar.LENGTH_SHORT);
 
-                        // Changing action button text color
-                        View sbView = snackbar.getView();
-                        TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-                        tvMessage.setTextColor(Color.YELLOW);
-                        snackbar.show();
+                            // Changing action button text color
+                            View sbView = snackbar.getView();
+                            TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                            tvMessage.setTextColor(Color.YELLOW);
+                            snackbar.show();
+                        }
                     }
                 }
 
@@ -273,7 +279,6 @@ public class VerifyOTPActivity extends AppCompatActivity {
 
         //fire Intent
         Intent i = new Intent(VerifyOTPActivity.this, LoginActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i);
         finish();
     }

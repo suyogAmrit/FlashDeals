@@ -165,12 +165,14 @@ public class OrderReviewActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<OrderReviewResponse> call, Response<OrderReviewResponse> response) {
                 dialog.dismiss();
-                Log.i(AppConstants.STATUS + "orderreview", response.body().getStatus());
-                if (response.body().getStatus().equals(AppConstants.SUCESS)) {
+                if (response.isSuccessful()) {
+                    Log.i(AppConstants.STATUS + "orderreview", response.body().getStatus());
+                    if (response.body().getStatus().equals(AppConstants.SUCESS)) {
 //                    OrderReviewResponse orderReviewResponse = response.body();
-                    getReviewOrderItemsFrom(response.body());
-                    if (listItems != null && listItems.size() > 0)
-                        adapter.add(listItems);
+                        getReviewOrderItemsFrom(response.body());
+                        if (listItems != null && listItems.size() > 0)
+                            adapter.add(listItems);
+                    }
                 }
             }
 

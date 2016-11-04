@@ -214,18 +214,20 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onResponse(Call<RegisterUserResponse> call, Response<RegisterUserResponse> response) {
                 dialog.dismiss();
-                Log.i("responsecode", String.valueOf(response.code()));
+                if (response.isSuccessful()) {
+                    Log.i("responsecode", String.valueOf(response.code()));
 
-                if (response.body().getStatus().equals(AppConstants.SUCESS)) {
-                    saveEmailAndMove(response.body().getEmail());
-                } else {
-                    Snackbar snackbar = Snackbar.make(etPassword, response.body().getMessage(), Snackbar.LENGTH_SHORT);
+                    if (response.body().getStatus().equals(AppConstants.SUCESS)) {
+                        saveEmailAndMove(response.body().getEmail());
+                    } else {
+                        Snackbar snackbar = Snackbar.make(etPassword, response.body().getMessage(), Snackbar.LENGTH_SHORT);
 
-                    // Changing action button text color
-                    View sbView = snackbar.getView();
-                    TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-                    tvMessage.setTextColor(Color.YELLOW);
-                    snackbar.show();
+                        // Changing action button text color
+                        View sbView = snackbar.getView();
+                        TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                        tvMessage.setTextColor(Color.YELLOW);
+                        snackbar.show();
+                    }
                 }
             }
 
@@ -245,7 +247,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         editor.apply();
 
         Intent i = new Intent(LoginActivity.this, SelectDealsActivity.class);
-        i.putExtra(AppConstants.FROMPROFILE,false);
+        i.putExtra(AppConstants.FROMPROFILE, false);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i);
         finish();
@@ -322,18 +324,20 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             soicialLoginCall.enqueue(new Callback<RegisterUserResponse>() {
                 @Override
                 public void onResponse(Call<RegisterUserResponse> call, Response<RegisterUserResponse> response) {
-                    Log.i("response", response.body().getMessage());
+                    if (response.isSuccessful()) {
+                        Log.i("response", response.body().getMessage());
 
-                    if (response.body().getStatus().equals(AppConstants.SUCESS)) {
-                        saveEmailAndMove(response.body().getEmail());
-                    } else {
-                        Snackbar snackbar = Snackbar.make(etPassword, response.body().getMessage(), Snackbar.LENGTH_SHORT);
+                        if (response.body().getStatus().equals(AppConstants.SUCESS)) {
+                            saveEmailAndMove(response.body().getEmail());
+                        } else {
+                            Snackbar snackbar = Snackbar.make(etPassword, response.body().getMessage(), Snackbar.LENGTH_SHORT);
 
-                        // Changing action button text color
-                        View sbView = snackbar.getView();
-                        TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-                        tvMessage.setTextColor(Color.YELLOW);
-                        snackbar.show();
+                            // Changing action button text color
+                            View sbView = snackbar.getView();
+                            TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                            tvMessage.setTextColor(Color.YELLOW);
+                            snackbar.show();
+                        }
                     }
                 }
 

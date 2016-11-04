@@ -228,11 +228,12 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
         responseCall.enqueue(new Callback<CheckDeliveryResponse>() {
             @Override
             public void onResponse(Call<CheckDeliveryResponse> call, Response<CheckDeliveryResponse> response) {
-                String status = response.body().getStatus();
-                if (status.equals(AppConstants.SUCESS)) {
-                    setupUI(response.body());
+                if (response.isSuccessful()) {
+                    String status = response.body().getStatus();
+                    if (status.equals(AppConstants.SUCESS)) {
+                        setupUI(response.body());
+                    }
                 }
-
             }
 
             @Override
@@ -262,7 +263,7 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
         qty = cartItem.getQty();
         totalPrice = cartItem.getTotalPrice();
         tvDesc.setText(cartItem.getDesc());
-        tvDiscount.setText(cartItem.getDiscount()+"%");
+        tvDiscount.setText(cartItem.getDiscount() + "%");
         tvMrp.setText(AppConstants.RUPEE + cartItem.getMrp());
         tvOfferPrice.setText(AppConstants.RUPEE + cartItem.getOfferPrice());
         tvSeller.setText(cartItem.getSellerName());
@@ -275,7 +276,7 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
         setSupportActionBar(toolbar);
         qty = totalPrice = "0";
         tvDesc.setText(myDeals.getDesciption());
-        tvDiscount.setText(myDeals.getDiscount()+"%");
+        tvDiscount.setText(myDeals.getDiscount() + "%");
         tvMrp.setText(AppConstants.RUPEE + myDeals.getMrp());
         tvOfferPrice.setText(AppConstants.RUPEE + myDeals.getOffer_price());
         tvSeller.setText(myDeals.getSeller_name());

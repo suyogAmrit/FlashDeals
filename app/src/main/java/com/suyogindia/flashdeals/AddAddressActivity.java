@@ -147,27 +147,29 @@ public class AddAddressActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<AddAddressResponse> call, Response<AddAddressResponse> response) {
                 dialog.dismiss();
-                Log.v("Respone", response.body().getStatus());
-                if (response.body().getStatus().equals("1")) {
-                    if (isManageOrder) {
+                if (response.isSuccessful()) {
+                    Log.v("Respone", response.body().getStatus());
+                    if (response.body().getStatus().equals("1")) {
+                        if (isManageOrder) {
 //                        Intent intent = new Intent();
 //                        setResult(RESULT_OK, intent);
-                        finish();
+                            finish();
 //                        Intent intent = new Intent(AddAddressActivity.this,ShowAddressActivity.class);
 //                        startActivity(intent);
 //                        finish();
-                    } else {
+                        } else {
 //                        postOrders(response.body().getAddressId());
-                        String addreId = response.body().getAddressId();
-                        Intent i = new Intent(AddAddressActivity.this, OrderReviewActivity.class);
-                        i.putExtra(AppConstants.ADDRESSID, addreId);
-                        i.putParcelableArrayListExtra(AppConstants.ORDERDETAILS, lisOrders);
-                        i.putParcelableArrayListExtra(AppConstants.SELLERDEITALS, lisSellers);
-                        startActivity(i);
-                        finish();
+                            String addreId = response.body().getAddressId();
+                            Intent i = new Intent(AddAddressActivity.this, OrderReviewActivity.class);
+                            i.putExtra(AppConstants.ADDRESSID, addreId);
+                            i.putParcelableArrayListExtra(AppConstants.ORDERDETAILS, lisOrders);
+                            i.putParcelableArrayListExtra(AppConstants.SELLERDEITALS, lisSellers);
+                            startActivity(i);
+                            finish();
+                        }
+                    } else {
+                        Toast.makeText(AddAddressActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(AddAddressActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -211,12 +213,14 @@ public class AddAddressActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<PlaceOrderResponse> call, Response<PlaceOrderResponse> response) {
                 dialog.dismiss();
-                Log.i(AppConstants.STATUS, response.body().getStatus());
-                //TODO CLEAR CART
-                if (response.body().getStatus().equals(AppConstants.SUCESS)) {
-                    long row = AppHelpers.clearCart(AddAddressActivity.this);
-                    Log.i("DeletedRow", String.valueOf(row));
-                    finish();
+                if (response.isSuccessful()) {
+                    Log.i(AppConstants.STATUS, response.body().getStatus());
+                    //TODO CLEAR CART
+                    if (response.body().getStatus().equals(AppConstants.SUCESS)) {
+                        long row = AppHelpers.clearCart(AddAddressActivity.this);
+                        Log.i("DeletedRow", String.valueOf(row));
+                        finish();
+                    }
                 }
             }
 

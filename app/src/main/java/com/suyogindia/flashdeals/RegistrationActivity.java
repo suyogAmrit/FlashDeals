@@ -94,7 +94,7 @@ public class RegistrationActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent i = new Intent(RegistrationActivity.this,LoginActivity.class);
+        Intent i = new Intent(RegistrationActivity.this, LoginActivity.class);
         startActivity(i);
     }
 
@@ -118,20 +118,22 @@ public class RegistrationActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<RegisterUserResponse> call, Response<RegisterUserResponse> response) {
                     dialog.dismiss();
-                    Log.i("responsecode", String.valueOf(response.code()));
+                    if (response.isSuccessful()) {
+                        Log.i("responsecode", String.valueOf(response.code()));
 
-                    if (response.body().getStatus().equals(AppConstants.SUCESS)) {
-                        saveEmailAndMove(response.body().getEmail());
-                    } else {
-                        Snackbar snackbar = Snackbar.make(etCPass, response.body().getMessage(), Snackbar.LENGTH_SHORT);
+                        if (response.body().getStatus().equals(AppConstants.SUCESS)) {
+                            saveEmailAndMove(response.body().getEmail());
+                        } else {
+                            Snackbar snackbar = Snackbar.make(etCPass, response.body().getMessage(), Snackbar.LENGTH_SHORT);
 
-                        // Changing action button text color
-                        View sbView = snackbar.getView();
-                        TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-                        tvMessage.setTextColor(Color.YELLOW);
-                        snackbar.show();
-                    }
+                            // Changing action button text color
+                            View sbView = snackbar.getView();
+                            TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                            tvMessage.setTextColor(Color.YELLOW);
+                            snackbar.show();
+                        }
 //                    Toast.makeText(RegistrationActivity.this, response.code() + response.body().getStatus(), Toast.LENGTH_SHORT).show();
+                    }
                 }
 
                 @Override

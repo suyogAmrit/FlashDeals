@@ -102,7 +102,7 @@ public class CartActivity extends AppCompatActivity {
         c.setType(3);
         c.setTotalQuantity(String.valueOf(totalQunatity));
         c.setGrandTotal(String.valueOf(grandTotal));
-        list.add(0,c);
+        list.add(0, c);
         adapter.add(list);
     }
 
@@ -223,11 +223,13 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<PlaceOrderResponse> call, Response<PlaceOrderResponse> response) {
                 dialog.dismiss();
-                Log.i("status", response.body().getStatus());
-                if (response.body().getStatus().equals(AppConstants.SUCESS)) {
-                    long row = AppHelpers.clearCart(CartActivity.this);
-                    Log.i("DeletedRow", String.valueOf(row));
-                    finish();
+                if (response.isSuccessful()) {
+                    Log.i("status", response.body().getStatus());
+                    if (response.body().getStatus().equals(AppConstants.SUCESS)) {
+                        long row = AppHelpers.clearCart(CartActivity.this);
+                        Log.i("DeletedRow", String.valueOf(row));
+                        finish();
+                    }
                 }
             }
 

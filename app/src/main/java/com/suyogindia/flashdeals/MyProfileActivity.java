@@ -89,11 +89,13 @@ public class MyProfileActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Profile> call, Response<Profile> response) {
                 dialog.dismiss();
-                if (response.body().getStatus().equals("1")) {
-                    txtProfileName.setText("Name: " + response.body().getName());
-                    txtProfileEmail.setText("Email: " + response.body().getEmail());
-                    txtProfilePhone.setText("Mobile: " + response.body().getMobile_no());
-                    Toast.makeText(MyProfileActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                if (response.isSuccessful()) {
+                    if (response.body().getStatus().equals("1")) {
+                        txtProfileName.setText(response.body().getName());
+                        txtProfileEmail.setText(response.body().getEmail());
+                        txtProfilePhone.setText(response.body().getMobile_no());
+                        //Toast.makeText(MyProfileActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 

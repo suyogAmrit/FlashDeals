@@ -99,11 +99,12 @@ public class MakePaymentHelper {
             @Override
             public void onResponse(Call<HashResponse> call, Response<HashResponse> response) {
                 dialog.dismiss();
-                Log.i(AppConstants.STATUS, response.body().getResult());
-                String hash = response.body().getResult();
-                paymentParam.setMerchantHash(hash);
-                PayUmoneySdkInitilizer.startPaymentActivityForResult((OrderReviewActivity) myContext, paymentParam);
-
+                if (response.isSuccessful()) {
+                    Log.i(AppConstants.STATUS, response.body().getResult());
+                    String hash = response.body().getResult();
+                    paymentParam.setMerchantHash(hash);
+                    PayUmoneySdkInitilizer.startPaymentActivityForResult((OrderReviewActivity) myContext, paymentParam);
+                }
             }
 
             @Override

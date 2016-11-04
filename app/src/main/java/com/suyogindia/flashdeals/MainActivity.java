@@ -105,25 +105,34 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         toolbar.setTitle(getString(R.string.title_deals));
         setSupportActionBar(toolbar);
         getDataFromSharedPrefs();
+        if (userId.equals(AppConstants.NA)) {
+            Intent iOTP = new Intent(MainActivity.this, GetPhoneActivity.class);
+            startActivity(iOTP);
+            finish();
+        } else if (email.equals(AppConstants.NA)) {
+            Intent iReg = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(iReg);
+            finish();
+        } else {
+            initNavigationDrawer();
+            // First we need to check availability of play services
+            checkFireBaseSeriver();
+            if (checkPlayServices()) {
 
-        initNavigationDrawer();
-        // First we need to check availability of play services
-        checkFireBaseSeriver();
-        if (checkPlayServices()) {
-
-            // Building the GoogleApi client
-            buildGoogleApiClient();
-        }
-        getDeals();
-        fabCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (totalItem > 0) {
-                    Intent i = new Intent(MainActivity.this, CartActivity.class);
-                    startActivity(i);
-                }
+                // Building the GoogleApi client
+                buildGoogleApiClient();
             }
-        });
+            getDeals();
+            fabCart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (totalItem > 0) {
+                        Intent i = new Intent(MainActivity.this, CartActivity.class);
+                        startActivity(i);
+                    }
+                }
+            });
+        }
     }
 
     private void checkFireBaseSeriver() {
@@ -188,11 +197,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             @Override
             public void onResponse(Call<GetDealsResponse> call, Response<GetDealsResponse> response) {
                 dialog.dismiss();
-                Log.i(AppConstants.RESPONSE, response.body().getStatus());
-                if (response.body().getStatus().equals(AppConstants.SUCESS)) {
-                    createUi(response.body().getCategoryList());
-                } else {
-                    Toast.makeText(MainActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                if (response.isSuccessful()) {
+                    Log.i(AppConstants.RESPONSE, response.body().getStatus());
+                    if (response.body().getStatus().equals(AppConstants.SUCESS)) {
+                        createUi(response.body().getCategoryList());
+                    } else {
+                        Toast.makeText(MainActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
@@ -216,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         SharedPreferences shr = getSharedPreferences(AppConstants.USERPREFS, MODE_PRIVATE);
         userId = shr.getString(AppConstants.USERID, AppConstants.NA);
         email = shr.getString(AppConstants.EMAIL, AppConstants.NA);
-        checkCredentialAndRedirect();
+       // checkCredentialAndRedirect();
     }
 
     private void checkCredentialAndRedirect() {
