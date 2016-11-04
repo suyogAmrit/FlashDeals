@@ -3,14 +3,12 @@ package com.suyogindia.helpers;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.payUMoney.sdk.PayUmoneySdkInitilizer;
 import com.suyogindia.flashdeals.OrderReviewActivity;
 import com.suyogindia.model.HashRequest;
 import com.suyogindia.model.HashResponse;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,29 +38,11 @@ public class MakePaymentHelper {
 
     public MakePaymentHelper(Context myContext) {
         this.myContext = myContext;
+
         email = "sasikant.singh@rediffmail.com";
         TXNID = "0nf7" + System.currentTimeMillis();
     }
 
-    public static String hashCal(String str) {
-        byte[] hashseq = str.getBytes();
-        StringBuilder hexString = new StringBuilder();
-        try {
-            MessageDigest algorithm = MessageDigest.getInstance("SHA-512");
-            algorithm.reset();
-            algorithm.update(hashseq);
-            byte messageDigest[] = algorithm.digest();
-            for (byte aMessageDigest : messageDigest) {
-                String hex = Integer.toHexString(0xFF & aMessageDigest);
-                if (hex.length() == 1) {
-                    hexString.append("0");
-                }
-                hexString.append(hex);
-            }
-        } catch (NoSuchAlgorithmException ignored) {
-        }
-        return hexString.toString();
-    }
 
     public void initiatePayment(double amount) {
         PayUmoneySdkInitilizer.PaymentParam.Builder builder = new PayUmoneySdkInitilizer.PaymentParam.Builder();
@@ -90,6 +70,18 @@ public class MakePaymentHelper {
 //        Log.i("hash", serverCalculatedHash);
 //        paymentParam.setMerchantHash(serverCalculatedHash);
 //        PayUmoneySdkInitilizer.startPaymentActivityForResult((OrderReviewActivity) myContext, paymentParam);
+        getHash(paymentParam, amount);
+    }
+
+    private void getHash(PayUmoneySdkInitilizer.PaymentParam paymentParam, double amount) {
+        if (AppHelpers.isConnectingToInternet(myContext)) {
+            callWebServices(paymentParam, amount);
+        } else {
+            Toast.makeText(myContext, "Please Connect To Internet", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void callWebServices(final PayUmoneySdkInitilizer.PaymentParam paymentParam, double amount) {
         dialog = AppHelpers.showProgressDialog(myContext, AppConstants.WAIT);
         dialog.show();
         WebApi api = AppHelpers.setupRetrofit();

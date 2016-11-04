@@ -116,6 +116,7 @@ public class OrderReviewActivity extends AppCompatActivity {
                         data.getStringExtra(SdkConstants.PAYMENT_ID));
                 String paymentId =
                         data.getStringExtra(SdkConstants.PAYMENT_ID);
+
             } else if (resultCode == RESULT_CANCELED) {
                 Log.i(TAG, "cancelled");
             } else if (resultCode == PayUmoneySdkInitilizer.RESULT_FAILED) {
