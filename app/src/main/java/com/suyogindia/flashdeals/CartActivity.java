@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -119,13 +120,14 @@ public class CartActivity extends AppCompatActivity {
         CartItem item = list.get(adapterPosition);
         Seller mySeller = item.getSeller();
         mySeller.setDeleveryMode(a);
-
-        if (a == 1 && Double.parseDouble(mySeller.getMaxPrice()) > Double.parseDouble(mySeller.getTotalPrice())) {
-            grandTotal = totalQunatity + Double.parseDouble(mySeller.getShippingCharge());
-            mySeller.setShippingAdded(2);
-        } else if (a == 2 && mySeller.getShippingAdded() == 2) {
-            grandTotal = totalQunatity - Double.parseDouble(mySeller.getShippingCharge());
-            mySeller.setShippingAdded(1);
+        if (!TextUtils.isEmpty(mySeller.getMaxPrice())) {
+            if (a == 1 && Double.parseDouble(mySeller.getMaxPrice()) > Double.parseDouble(mySeller.getTotalPrice())) {
+                grandTotal = totalQunatity + Double.parseDouble(mySeller.getShippingCharge());
+                mySeller.setShippingAdded(2);
+            } else if (a == 2 && mySeller.getShippingAdded() == 2) {
+                grandTotal = totalQunatity - Double.parseDouble(mySeller.getShippingCharge());
+                mySeller.setShippingAdded(1);
+            }
         }
 
         CartItem grandItem = list.get(list.size() - 1);

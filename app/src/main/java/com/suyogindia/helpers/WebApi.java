@@ -99,4 +99,7 @@ public interface WebApi {
 
     @POST("user_order.php")
     Call<CreateOrderResponse> createOrder(@Body CreateOrderRequest request);
+
+    @POST("order_confirm.php")
+    Call<Result> sendOrderData(@Body Map<String,String>object);
 }

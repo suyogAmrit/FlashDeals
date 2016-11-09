@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Selection;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +28,7 @@ import com.payUMoney.sdk.SdkConstants;
 import com.suyogindia.adapters.OrderReviewAdapter;
 import com.suyogindia.helpers.AppConstants;
 import com.suyogindia.helpers.AppHelpers;
+import com.suyogindia.helpers.FlasDealApi;
 import com.suyogindia.helpers.MakePaymentHelper;
 import com.suyogindia.helpers.WebApi;
 import com.suyogindia.model.CartItem;
@@ -34,12 +36,15 @@ import com.suyogindia.model.CreateOrderItem;
 import com.suyogindia.model.CreateOrderRequest;
 import com.suyogindia.model.CreateOrderResponse;
 import com.suyogindia.model.PlaceOrderSeller;
+import com.suyogindia.model.Result;
 import com.suyogindia.model.ReviewItem;
 import com.suyogindia.model.ReviewOrderItem;
 import com.suyogindia.model.ReviewSeller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -73,6 +78,9 @@ public class OrderReviewActivity extends AppCompatActivity {
     String userId;
     Call<CreateOrderResponse> createOrderResponseCall;
     private String addressId;
+    String paymentId = "2016";
+    WebApi webApi;
+    Call<Result> resultCall;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -125,8 +133,8 @@ public class OrderReviewActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Log.i(TAG, "Success - Payment ID : " +
                         data.getStringExtra(SdkConstants.PAYMENT_ID));
-                String paymentId =
-                        data.getStringExtra(SdkConstants.PAYMENT_ID);
+//                paymentId =
+//                        data.getStringExtra(SdkConstants.PAYMENT_ID);
             } else if (resultCode == RESULT_CANCELED) {
                 Log.i(TAG, "cancelled");
                 Toast.makeText(this, "Payment Cancelled.", Toast.LENGTH_SHORT).show();
@@ -186,6 +194,9 @@ public class OrderReviewActivity extends AppCompatActivity {
                         MakePaymentHelper myMakePayment = new MakePaymentHelper(OrderReviewActivity.this);
 // TODO: 08/11/16 change to total amount
 //                        myMakePayment.initiatePayment(10.00);
+                        if (!TextUtils.isEmpty(orderId)){
+                            sendOrderDataToServer(paymentId,orderId,userId);
+                        }
                     } else {
                         Toast.makeText(OrderReviewActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -198,6 +209,34 @@ public class OrderReviewActivity extends AppCompatActivity {
                 Log.e(AppConstants.ERROR, t.getLocalizedMessage());
             }
         });
+    }
+
+    private void sendOrderDataToServer(String paymentId, String orderId, String userId) {
+        Map<String,String> mapOrder = new HashMap<>(3);
+        mapOrder.put("paymentId",paymentId);
+        mapOrder.put("orderId",orderId);
+        mapOrder.put("userId",userId);
+        webApi = AppHelpers.setupRetrofit();
+        resultCall = webApi.sendOrderData(mapOrder);
+        resultCall.enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(Call<Result> call, Response<Result> response) {
+                Log.v(AppConstants.RESPONSE,response.body().getStatus());
+                if (response.body().getStatus().equals("1")){
+                    AppHelpers.clearCart(OrderReviewActivity.this);
+                    Intent intent = new Intent(OrderReviewActivity.this,MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
+                Log.v(AppConstants.ERROR,t.getMessage());
+            }
+        });
+
+
     }
 
 
