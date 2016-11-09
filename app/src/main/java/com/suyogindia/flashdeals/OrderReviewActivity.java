@@ -28,12 +28,9 @@ import com.payUMoney.sdk.SdkConstants;
 import com.suyogindia.adapters.OrderReviewAdapter;
 import com.suyogindia.helpers.AppConstants;
 import com.suyogindia.helpers.AppHelpers;
-import com.suyogindia.helpers.FlasDealApi;
 import com.suyogindia.helpers.MakePaymentHelper;
 import com.suyogindia.helpers.WebApi;
 import com.suyogindia.model.CartItem;
-import com.suyogindia.model.CreateOrderItem;
-import com.suyogindia.model.CreateOrderRequest;
 import com.suyogindia.model.CreateOrderResponse;
 import com.suyogindia.model.PlaceOrderSeller;
 import com.suyogindia.model.Result;
@@ -77,10 +74,9 @@ public class OrderReviewActivity extends AppCompatActivity {
     String orderId = "";
     String userId;
     Call<CreateOrderResponse> createOrderResponseCall;
-    private String addressId;
-    String paymentId = "2016";
     WebApi webApi;
     Call<Result> resultCall;
+    private String addressId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -116,8 +112,8 @@ public class OrderReviewActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_place_order) {
 //            if (checkAllData()) {
-                //TODO uncomment the above lines and comment the bellows
-                sendOrderDetails();
+            //TODO uncomment the above lines and comment the bellows
+            sendOrderDetails();
 //            } else {
 //                Toast.makeText(this, "Some Items can't be delivered. Please remove the items to Proceed. ", Toast.LENGTH_LONG).show();
 //            }
@@ -190,13 +186,13 @@ public class OrderReviewActivity extends AppCompatActivity {
                     Log.i(AppConstants.STATUS, response.body().getStatus());
                     if (response.body().getStatus().equals(AppConstants.SUCESS)) {
                         orderId = response.body().getOrderId();
-                        Log.i("orderid",response.body().getOrderId());
+                        Log.i("orderid", response.body().getOrderId());
                         MakePaymentHelper myMakePayment = new MakePaymentHelper(OrderReviewActivity.this);
 // TODO: 08/11/16 change to total amount
 //                        myMakePayment.initiatePayment(10.00);
                         //Changes for send order data
-                        if (!TextUtils.isEmpty(orderId)){
-                            sendOrderDataToServer(paymentId,orderId,userId);
+                        if (!TextUtils.isEmpty(orderId)) {
+                            sendOrderDataToServer("2016", orderId, userId);
                         }
                     } else {
                         Toast.makeText(OrderReviewActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -212,20 +208,41 @@ public class OrderReviewActivity extends AppCompatActivity {
         });
     }
 
-    private void sendOrderDataToServer(String paymentId, String orderId, String userId) {
-        Map<String,String> mapOrder = new HashMap<>(3);
-        mapOrder.put("paymentId",paymentId);
-        mapOrder.put("orderId",orderId);
-        mapOrder.put("userId",userId);
+    private void sendOrderDataToServer(final String paymentId, final String orderId, final String userId) {
+        if (AppHelpers.isConnectingToInternet(this)) {
+            callWebServiceForPaymentConfirmation(paymentId, orderId, userId);
+        } else {
+            Snackbar snackbar = Snackbar.make(rvOrderReview, AppConstants.NONETWORK, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(AppConstants.TRYAGAIN, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            sendOrderDataToServer(paymentId, orderId, userId);
+                        }
+                    });
+            snackbar.setActionTextColor(Color.RED);
+            // Changing action button text color
+            View sbView = snackbar.getView();
+            TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            tvMessage.setTextColor(Color.YELLOW);
+            snackbar.show();
+        }
+
+    }
+
+    private void callWebServiceForPaymentConfirmation(String paymentId, String orderId, String userId) {
+        Map<String, String> mapOrder = new HashMap<>(3);
+        mapOrder.put(AppConstants.PAYMENTID, paymentId);
+        mapOrder.put("orderId", orderId);
+        mapOrder.put("userId", userId);
         webApi = AppHelpers.setupRetrofit();
         resultCall = webApi.sendOrderData(mapOrder);
         resultCall.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
-                Log.v(AppConstants.RESPONSE,response.body().getStatus());
-                if (response.body().getStatus().equals("1")){
+                Log.v(AppConstants.RESPONSE, response.body().getStatus());
+                if (response.body().getStatus().equals("1")) {
                     AppHelpers.clearCart(OrderReviewActivity.this);
-                    Intent intent = new Intent(OrderReviewActivity.this,MainActivity.class);
+                    Intent intent = new Intent(OrderReviewActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -233,7 +250,7 @@ public class OrderReviewActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Result> call, Throwable t) {
-                Log.v(AppConstants.ERROR,t.getMessage());
+                Log.e(AppConstants.ERROR, t.getMessage());
             }
         });
 
