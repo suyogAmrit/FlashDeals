@@ -36,4 +36,5 @@
     <string name="edit">Edit</string>
     <string name="remove">Remove</string>
     <string name="use_my_location">Use My Current Location</string>
+    <string name="exit_msg">Thank you for using <b>Flash Deal</b>. Are you sure you want to close the application?</string>
 </resources>

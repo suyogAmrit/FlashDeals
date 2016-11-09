@@ -21,11 +21,11 @@ import retrofit2.Response;
 public class MakePaymentHelper {
 
     private static final String TAG = MakePaymentHelper.class.getName();
-    private static final String MARCHANTID = "5640384";
+    private static final String MARCHANTID = "4942438";
     Context myContext;
     String email;
     ProgressDialog dialog;
-    private String KEY = "DISVeLKQ";
+    private String KEY = "LZbnxroJ";
     private String TXNID;
     private String PRODUCTINFO = "Flash_DEAL";
     private String FIRSTNAME = "suyog";
@@ -39,7 +39,7 @@ public class MakePaymentHelper {
     public MakePaymentHelper(Context myContext) {
         this.myContext = myContext;
 
-        email = "sasikant.singh@rediffmail.com";
+        email = myContext.getSharedPreferences(AppConstants.USERPREFS, Context.MODE_PRIVATE).getString(AppConstants.EMAIL, AppConstants.NA);
         TXNID = "0nf7" + System.currentTimeMillis();
     }
 
@@ -47,7 +47,7 @@ public class MakePaymentHelper {
     public void initiatePayment(double amount) {
         PayUmoneySdkInitilizer.PaymentParam.Builder builder = new PayUmoneySdkInitilizer.PaymentParam.Builder();
         builder.setMerchantId(MARCHANTID)
-                .setIsDebug(false)
+                .setIsDebug(true)
                 .setKey(KEY)
                 .setAmount(amount)
                 .setTnxId(TXNID)

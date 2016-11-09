@@ -8,7 +8,7 @@ public class ReviewOrderItem {
     int type;
     String seller_name, seller_email, seller_category;
 
-    String dealId, description, quantity_available, review_message, category_id, shipping_price, total_item_price, item_price,offer_price;
+    String dealId, description, quantity_available, review_message, category_id, shipping_price, total_item_price, item_price, offer_price, deliver_mode;
     int review_status;
 
     String footerItem;
@@ -20,17 +20,9 @@ public class ReviewOrderItem {
         this.seller_category = seller_category;
     }
 
-    public String getSeller_category() {
-        return seller_category;
-    }
-
-    public String getOffer_price() {
-        return offer_price;
-    }
-
     public ReviewOrderItem(int type, String dealId, String description, String quantity_available,
                            String review_message, String category_id, String shipping_price, String total_item_price,
-                           String item_price, String offer_price, int review_status) {
+                           String item_price, String offer_price,String deliver_mode, int review_status) {
         this.type = type;
         this.dealId = dealId;
         this.description = description;
@@ -41,12 +33,21 @@ public class ReviewOrderItem {
         this.total_item_price = total_item_price;
         this.item_price = item_price;
         this.offer_price = offer_price;
+        this.deliver_mode = deliver_mode;
         this.review_status = review_status;
     }
 
     public ReviewOrderItem(int type, String footerItem) {
         this.type = type;
         this.footerItem = footerItem;
+    }
+
+    public String getSeller_category() {
+        return seller_category;
+    }
+
+    public String getOffer_price() {
+        return offer_price;
     }
 
     public int getType() {
@@ -99,5 +100,9 @@ public class ReviewOrderItem {
 
     public String getFooterItem() {
         return footerItem;
+    }
+
+    public String getDeliver_mode() {
+        return deliver_mode;
     }
 }

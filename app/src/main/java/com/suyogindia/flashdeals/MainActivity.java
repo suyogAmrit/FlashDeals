@@ -1,6 +1,7 @@
 package com.suyogindia.flashdeals;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,7 +12,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,6 +29,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -91,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     DealsFragmentPagerAdapter adapter;
     int totalItem = 0;
     boolean doubleBackToExitPressedOnce = false;
+    Dialog exitDialog;
     private Location mLastLocation;
     // Google client to interact with Google API
     private GoogleApiClient mGoogleApiClient;
@@ -227,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         SharedPreferences shr = getSharedPreferences(AppConstants.USERPREFS, MODE_PRIVATE);
         userId = shr.getString(AppConstants.USERID, AppConstants.NA);
         email = shr.getString(AppConstants.EMAIL, AppConstants.NA);
-       // checkCredentialAndRedirect();
+        // checkCredentialAndRedirect();
     }
 
     private void checkCredentialAndRedirect() {
@@ -328,7 +331,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         checkPlayServices();
         getCartSize();
     }
-
 
     @Override
     public void onConnected(Bundle arg0) {
@@ -431,20 +433,28 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public void onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
-            return;
-        }
+        showExitDialog();
+    }
 
-        this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
-
-        new Handler().postDelayed(new Runnable() {
-
+    private void showExitDialog() {
+        exitDialog = new Dialog(MainActivity.this);
+        exitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        exitDialog.setContentView(R.layout.dialog_exit);
+        Button btnYes = (Button) exitDialog.findViewById(R.id.btn_yes);
+        Button btnNo = (Button) exitDialog.findViewById(R.id.btn_no);
+        btnYes.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                doubleBackToExitPressedOnce = false;
+            public void onClick(View v) {
+                exitDialog.dismiss();
+                finish();
             }
-        }, 2000);
+        });
+        btnNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exitDialog.dismiss();
+            }
+        });
+        exitDialog.show();
     }
 }

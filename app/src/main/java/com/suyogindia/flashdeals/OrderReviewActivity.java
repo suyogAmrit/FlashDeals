@@ -22,14 +22,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-;
 import com.payUMoney.sdk.PayUmoneySdkInitilizer;
 import com.payUMoney.sdk.SdkConstants;
 import com.suyogindia.adapters.OrderReviewAdapter;
 import com.suyogindia.helpers.AppConstants;
 import com.suyogindia.helpers.AppHelpers;
 import com.suyogindia.helpers.MakePaymentHelper;
+import com.suyogindia.helpers.WebApi;
 import com.suyogindia.model.CartItem;
+import com.suyogindia.model.CreateOrderItem;
+import com.suyogindia.model.CreateOrderRequest;
+import com.suyogindia.model.CreateOrderResponse;
 import com.suyogindia.model.PlaceOrderSeller;
 import com.suyogindia.model.ReviewItem;
 import com.suyogindia.model.ReviewOrderItem;
@@ -43,6 +46,8 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+;
 
 /**
  * Created by suyogcomputech on 26/10/16.
@@ -64,6 +69,9 @@ public class OrderReviewActivity extends AppCompatActivity {
     EditText etQty;
     Button btnOkay;
     Dialog d;
+    String orderId = "";
+    String userId;
+    Call<CreateOrderResponse> createOrderResponseCall;
     private String addressId;
 
     @Override
@@ -72,9 +80,13 @@ public class OrderReviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cart);
         ButterKnife.bind(this);
         setupUi();
-
+        getUserId();
         collectDataFromIntent();
         sendDataForReview();
+    }
+
+    private void getUserId() {
+        userId = getSharedPreferences(AppConstants.USERPREFS, MODE_PRIVATE).getString(AppConstants.USERID, AppConstants.NA);
     }
 
     private void setupUi() {
@@ -96,9 +108,8 @@ public class OrderReviewActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_place_order) {
 //            if (checkAllData()) {
-            //make Payment
-            MakePaymentHelper myMakePayment = new MakePaymentHelper(OrderReviewActivity.this);
-            myMakePayment.initiatePayment(10.00);
+                //TODO uncomment the above lines and comment the bellows
+                sendOrderDetails();
 //            } else {
 //                Toast.makeText(this, "Some Items can't be delivered. Please remove the items to Proceed. ", Toast.LENGTH_LONG).show();
 //            }
@@ -116,13 +127,15 @@ public class OrderReviewActivity extends AppCompatActivity {
                         data.getStringExtra(SdkConstants.PAYMENT_ID));
                 String paymentId =
                         data.getStringExtra(SdkConstants.PAYMENT_ID);
-
             } else if (resultCode == RESULT_CANCELED) {
                 Log.i(TAG, "cancelled");
+                Toast.makeText(this, "Payment Cancelled.", Toast.LENGTH_SHORT).show();
             } else if (resultCode == PayUmoneySdkInitilizer.RESULT_FAILED) {
                 Log.i(TAG, "failure");
+                Toast.makeText(this, "Transaction Failed.", Toast.LENGTH_SHORT).show();
             } else if (resultCode == PayUmoneySdkInitilizer.RESULT_BACK) {
                 Log.i(TAG, "User returned without login");
+                Toast.makeText(this, "Transaction Failed.", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -136,6 +149,57 @@ public class OrderReviewActivity extends AppCompatActivity {
         }
         return canOrder;
     }
+
+    private void sendOrderDetails() {
+        if (AppHelpers.isConnectingToInternet(this)) {
+            callWebServiceAndCreateOrder();
+        } else {
+            Snackbar snackbar = Snackbar.make(rvOrderReview, AppConstants.NONETWORK, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(AppConstants.TRYAGAIN, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            sendOrderDetails();
+                        }
+                    });
+            snackbar.setActionTextColor(Color.RED);
+            // Changing action button text color
+            View sbView = snackbar.getView();
+            TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            tvMessage.setTextColor(Color.YELLOW);
+            snackbar.show();
+        }
+    }
+
+    private void callWebServiceAndCreateOrder() {
+        dialog = AppHelpers.showProgressDialog(this, AppConstants.CREATEODER);
+        dialog.show();
+        createOrderResponseCall = AppHelpers.createOrder(OrderReviewActivity.this, lisOrders, lisSellers, addressId);
+        createOrderResponseCall.enqueue(new Callback<CreateOrderResponse>() {
+            @Override
+            public void onResponse(Call<CreateOrderResponse> call, Response<CreateOrderResponse> response) {
+                dialog.dismiss();
+                if (response.isSuccessful()) {
+                    Log.i(AppConstants.STATUS, response.body().getStatus());
+                    if (response.body().getStatus().equals(AppConstants.SUCESS)) {
+                        orderId = response.body().getOrderId();
+                        Log.i("orderid",response.body().getOrderId());
+                        MakePaymentHelper myMakePayment = new MakePaymentHelper(OrderReviewActivity.this);
+// TODO: 08/11/16 change to total amount
+//                        myMakePayment.initiatePayment(10.00);
+                    } else {
+                        Toast.makeText(OrderReviewActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CreateOrderResponse> call, Throwable t) {
+                dialog.dismiss();
+                Log.e(AppConstants.ERROR, t.getLocalizedMessage());
+            }
+        });
+    }
+
 
     private void sendDataForReview() {
         if (AppHelpers.isConnectingToInternet(this)) {
@@ -194,7 +258,8 @@ public class OrderReviewActivity extends AppCompatActivity {
             List<ReviewItem> itemList = s.getItems();
             for (ReviewItem item : itemList) {
                 ReviewOrderItem item2 = new ReviewOrderItem(2, item.getDealId(), item.getDescription(), item.getQuantity_available(),
-                        item.getReview_message(), item.getCategory_id(), item.getShipping_price(), item.getTotal_item_price(), item.getItem_price(), item.getOffer_price(), item.getReview_status());
+                        item.getReview_message(), item.getCategory_id(), item.getShipping_price(), item.getTotal_item_price(),
+                        item.getItem_price(), item.getOffer_price(), item.getDelivery_mode(), item.getReview_status());
                 listItems.add(item2);
             }
 
@@ -203,7 +268,7 @@ public class OrderReviewActivity extends AppCompatActivity {
 
         }
         ReviewOrderItem item5 = new ReviewOrderItem(4, orderReviewResponse.getGrand_total());
-        listItems.add(0,item5);
+        listItems.add(0, item5);
         ReviewOrderItem item4 = new ReviewOrderItem(5, orderReviewResponse.getAddress());
         listItems.add(item4);
         grandToal = Double.parseDouble(orderReviewResponse.getGrand_total());

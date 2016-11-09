@@ -6,6 +6,8 @@ import com.suyogindia.flashdeals.OrderReviewResponse;
 import com.suyogindia.flashdeals.SendCategoryPostData;
 import com.suyogindia.model.AddAddressResponse;
 import com.suyogindia.model.AddressResponse;
+import com.suyogindia.model.CreateOrderRequest;
+import com.suyogindia.model.CreateOrderResponse;
 import com.suyogindia.model.ForgotPasswordPostData;
 import com.suyogindia.model.ForgotPasswordResponse;
 import com.suyogindia.model.GenOtpPostData;
@@ -94,4 +96,7 @@ public interface WebApi {
 
     @POST("moneyhash.php")
     Call<HashResponse> getHash(@Body HashRequest data);
+
+    @POST("user_order.php")
+    Call<CreateOrderResponse> createOrder(@Body CreateOrderRequest request);
 }

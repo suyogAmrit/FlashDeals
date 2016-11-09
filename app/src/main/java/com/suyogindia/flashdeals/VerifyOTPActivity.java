@@ -57,11 +57,13 @@ public class VerifyOTPActivity extends AppCompatActivity {
 
     String phoneNumber;
     OTPReceiver otpReceiver;
-    int counterTime = 5 * 60 * 1000;
+    int counterTime = 2 * 60 * 1000;
     boolean disabled = false;
     IntentFilter filter;
     Call<GenOtpResponse> otpResponseCall;
     Call<VerifyOtpResponse> verifyOtpResponseCall;
+    MenuItem menuItem;
+    boolean showMenu = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -198,6 +200,7 @@ public class VerifyOTPActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_otp, menu);
+        menuItem = menu.findItem(R.id.action_verify);
         return true;
     }
 
@@ -211,10 +214,18 @@ public class VerifyOTPActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menuItem.setVisible(showMenu);
+        return true;
+    }
+
     private void verifyOTP(String otp) {
         if (AppHelpers.isConnectingToInternet(VerifyOTPActivity.this)) {
             dialog = AppHelpers.showProgressDialog(VerifyOTPActivity.this, AppConstants.VERFYOTPMSG);
             dialog.show();
+            showMenu = false;
+            invalidateOptionsMenu();
             WebApi api = AppHelpers.setupRetrofit();
             VerifyOtpPostData data = new VerifyOtpPostData(otp, phoneNumber);
             verifyOtpResponseCall = api.getVeryOtpResponse(data);
@@ -222,10 +233,13 @@ public class VerifyOTPActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<VerifyOtpResponse> call, Response<VerifyOtpResponse> response) {
                     dialog.dismiss();
+                    showMenu = true;
+                    invalidateOptionsMenu();
+
                     if (response.isSuccessful()) {
-                        Log.i("status",response.body().getStatus());
+                        Log.i("status", response.body().getStatus());
                         if (response.body().getStatus().equals(AppConstants.SUCESS)) {
-                            Log.i("response",response.body().getStatus());
+                            Log.i("response", response.body().getStatus());
                             String userId = response.body().getUserId();
                             //saveuserID
                             saveUserId(userId);
@@ -246,6 +260,9 @@ public class VerifyOTPActivity extends AppCompatActivity {
                 public void onFailure(Call<VerifyOtpResponse> call, Throwable t) {
                     dialog.dismiss();
                     Log.e("Error", t.getLocalizedMessage());
+                    showMenu = true;
+                    invalidateOptionsMenu();
+
                 }
             });
         } else {

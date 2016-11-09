@@ -17,6 +17,8 @@ import com.suyogindia.database.DataBaseHelper;
 import com.suyogindia.flashdeals.ClearCartService;
 import com.suyogindia.flashdeals.OrderReviewResponse;
 import com.suyogindia.model.CartItem;
+import com.suyogindia.model.CreateOrderRequest;
+import com.suyogindia.model.CreateOrderResponse;
 import com.suyogindia.model.Deals;
 import com.suyogindia.model.PlaceOrderItem;
 import com.suyogindia.model.PlaceOrderPostData;
@@ -217,5 +219,39 @@ public class AppHelpers {
         long row = helper.deleteFromCart(dealId);
         helper.close();
         return row;
+    }
+
+    public static Call<CreateOrderResponse> createOrder(Context context, ArrayList<CartItem> list, ArrayList<PlaceOrderSeller> sellerList, String addressId) {
+        SharedPreferences shr = context.getSharedPreferences(AppConstants.USERPREFS, Context.MODE_PRIVATE);
+        String userId = shr.getString(AppConstants.USERID, AppConstants.NA);
+        ArrayList<Integer> listRemovePos = new ArrayList<>();
+        for (PlaceOrderSeller seller : sellerList) {
+            String email = seller.getSellerEmail();
+            boolean found = false;
+            List<PlaceOrderItem> itemList = new ArrayList<>();
+            for (CartItem deal :
+                    list) {
+                if (deal.getType() == 1 && deal.getSellerEmail().equals(email)) {
+                    PlaceOrderItem item = new PlaceOrderItem(deal.getDelaId(), deal.getQty());
+                    itemList.add(item);
+                    found = true;
+                }
+
+            }
+            if (!found) {
+                listRemovePos.add(sellerList.indexOf(seller));
+            } else {
+                seller.setDeals(itemList);
+                seller.setAddressId(addressId);
+            }
+        }
+        for (int i : listRemovePos) {
+            sellerList.remove(i);
+        }
+        CreateOrderRequest data = new CreateOrderRequest(userId, addressId);
+        data.setSellerList(sellerList);
+        WebApi api = setupRetrofit();
+        return api.createOrder(data);
+
     }
 }
