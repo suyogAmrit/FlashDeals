@@ -86,6 +86,7 @@
                     android:maxLines="1"
                     android:background="@drawable/form_background"
                     android:padding="8dp"
+                    android:singleLine="true"
                     android:hint="Wife,Father,Mother,Kids"
                     android:id="@+id/etFamily"/>
                 <TextView
@@ -132,6 +133,7 @@
                     android:layout_marginRight="10dp"
                     android:textColor="@android:color/black"
                     android:maxLines="1"
+                    android:singleLine="true"
                     android:layout_marginTop="10dp"
                     android:padding="8dp"
                     android:id="@+id/etAlternaetPhone" />

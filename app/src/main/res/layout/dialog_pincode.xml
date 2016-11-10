@@ -14,7 +14,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-
+android:singleLine="true"
         android:ems="10"
         android:hint="Enter Pincode"
         android:inputType="numberSigned"

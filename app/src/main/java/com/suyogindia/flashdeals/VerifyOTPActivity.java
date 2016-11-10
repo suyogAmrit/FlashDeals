@@ -76,7 +76,7 @@ public class VerifyOTPActivity extends AppCompatActivity {
         phoneNumber = getIntent().getExtras().getString(AppConstants.MOBILENUMBER);
         Log.i("phn", phoneNumber);
         tvInstruction.setText(AppConstants.OTPINSTRUCTION + phoneNumber);
-        etOTP.addTextChangedListener(new MyTextWatcher());
+      //  etOTP.addTextChangedListener(new MyTextWatcher());
         updateUiForResend(true);
         generateOTP();
 
@@ -172,7 +172,7 @@ public class VerifyOTPActivity extends AppCompatActivity {
         } else {
             tvCounter.setVisibility(View.VISIBLE);
             btnResend.setEnabled(false);
-            CountDownTimer timer = new CountDownTimer(5 * 60 * 1000, 1000) {
+            CountDownTimer timer = new CountDownTimer(2 * 60 * 1000, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
                     long totalSecs = millisUntilFinished / 1000;

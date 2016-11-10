@@ -134,6 +134,8 @@
         android:ems="10"
         android:enabled="false"
         android:inputType="number"
+        android:maxLines="1"
+        android:singleLine="true"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="@+id/btn_add"

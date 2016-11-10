@@ -133,14 +133,15 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:background="@drawable/form_background"
         android:ems="10"
         android:hint="@string/hint_enter_email"
         android:inputType="textEmailAddress"
         android:padding="10dp"
+        android:singleLine="true"
+        android:maxLines="1"
         android:textColor="@android:color/black"
-        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
 
@@ -160,6 +161,8 @@
         android:hint="@string/hint_enter_password"
         android:inputType="textPassword"
         android:padding="10dp"
+        android:singleLine="true"
+        android:maxLines="1"
         android:textColor="@android:color/black"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -224,7 +227,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.50121653"
-        tools:layout_editor_absoluteX="192dp"
+        tools:layout_editor_absoluteX="206dp"
         tools:layout_editor_absoluteY="0dp" />
 
     <android.support.v7.widget.Toolbar

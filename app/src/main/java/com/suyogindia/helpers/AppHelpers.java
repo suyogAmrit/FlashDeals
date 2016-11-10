@@ -13,6 +13,8 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.suyogindia.database.DataBaseHelper;
 import com.suyogindia.flashdeals.ClearCartService;
 import com.suyogindia.model.OrderReviewResponse;
@@ -76,9 +78,12 @@ public class AppHelpers {
     }
 
     public static WebApi setupRetrofit() {
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(AppConstants.BASEURL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         return retrofit.create(WebApi.class);
     }
