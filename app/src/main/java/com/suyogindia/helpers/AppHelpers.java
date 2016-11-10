@@ -15,7 +15,7 @@ import android.util.Log;
 
 import com.suyogindia.database.DataBaseHelper;
 import com.suyogindia.flashdeals.ClearCartService;
-import com.suyogindia.flashdeals.OrderReviewResponse;
+import com.suyogindia.model.OrderReviewResponse;
 import com.suyogindia.model.CartItem;
 import com.suyogindia.model.CreateOrderRequest;
 import com.suyogindia.model.CreateOrderResponse;

@@ -32,6 +32,7 @@ import com.suyogindia.helpers.MakePaymentHelper;
 import com.suyogindia.helpers.WebApi;
 import com.suyogindia.model.CartItem;
 import com.suyogindia.model.CreateOrderResponse;
+import com.suyogindia.model.OrderReviewResponse;
 import com.suyogindia.model.PlaceOrderSeller;
 import com.suyogindia.model.Result;
 import com.suyogindia.model.ReviewItem;
@@ -129,8 +130,11 @@ public class OrderReviewActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Log.i(TAG, "Success - Payment ID : " +
                         data.getStringExtra(SdkConstants.PAYMENT_ID));
-//                paymentId =
-//                        data.getStringExtra(SdkConstants.PAYMENT_ID);
+               String paymentId =
+                        data.getStringExtra(SdkConstants.PAYMENT_ID);
+                if (!TextUtils.isEmpty(orderId)) {
+                    sendOrderDataToServer(paymentId, orderId, userId);
+                }
             } else if (resultCode == RESULT_CANCELED) {
                 Log.i(TAG, "cancelled");
                 Toast.makeText(this, "Payment Cancelled.", Toast.LENGTH_SHORT).show();
@@ -188,7 +192,7 @@ public class OrderReviewActivity extends AppCompatActivity {
                         orderId = response.body().getOrderId();
                         Log.i("orderid", response.body().getOrderId());
                         MakePaymentHelper myMakePayment = new MakePaymentHelper(OrderReviewActivity.this);
-// TODO: 08/11/16 change to total amount
+                        // TODO: 08/11/16 change to total amount
 //                        myMakePayment.initiatePayment(10.00);
                         //Changes for send order data
                         if (!TextUtils.isEmpty(orderId)) {

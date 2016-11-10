@@ -1,4 +1,4 @@
-package com.suyogindia.flashdeals;
+package com.suyogindia.model;
 
 import com.suyogindia.model.ReviewSeller;
 
