@@ -12,10 +12,17 @@ public class Address implements Parcelable {
     private String address;
     private String city;
     private String state;
-    private String country;
     private String zip;
     private String phone;
-    private String email;
+    private String plotno;
+
+    public String getPlotno() {
+        return plotno;
+    }
+
+    public void setPlotno(String plotno) {
+        this.plotno = plotno;
+    }
 
     public Address(){
         super();
@@ -52,14 +59,6 @@ public class Address implements Parcelable {
         this.state = state;
     }
 
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
     public String getZip() {
         return zip;
     }
@@ -76,23 +75,14 @@ public class Address implements Parcelable {
         this.phone = phone;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     protected Address(Parcel in) {
         id = in.readString();
         address = in.readString();
         city = in.readString();
         state = in.readString();
-        country = in.readString();
         zip = in.readString();
         phone = in.readString();
-        email = in.readString();
+        plotno = in.readString();
     }
 
     @Override
@@ -106,10 +96,9 @@ public class Address implements Parcelable {
         dest.writeString(address);
         dest.writeString(city);
         dest.writeString(state);
-        dest.writeString(country);
         dest.writeString(zip);
         dest.writeString(phone);
-        dest.writeString(email);
+        dest.writeString(plotno);
     }
 
     @SuppressWarnings("unused")

@@ -46,7 +46,7 @@ public class AddAddressActivity extends AppCompatActivity {
     Call<PlaceOrderResponse> placeOrderResponseCall;
     boolean isManageOrder;
     Toolbar toolbar;
-    private EditText etLocality, etCity, etState, etcountry, etZip, etPhone, etEmail;
+    private EditText etLocality, etCity, etState, etZip, etPhone,etplotno;
     private String userID;
 
     @Override
@@ -60,13 +60,12 @@ public class AddAddressActivity extends AppCompatActivity {
         }
         address = getIntent().getParcelableExtra(AppConstants.EXTRA_ADDRESS);
         showDilog("Please wait", "Saving your Address...");
+        etplotno = (EditText)findViewById(R.id.etplotno);
         etLocality = (EditText) findViewById(R.id.etLocality);
         etCity = (EditText) findViewById(R.id.etCity);
         etState = (EditText) findViewById(R.id.etState);
-        etcountry = (EditText) findViewById(R.id.etcountry);
         etZip = (EditText) findViewById(R.id.etZip);
         etPhone = (EditText) findViewById(R.id.etPhone);
-        etEmail = (EditText) findViewById(R.id.etEmail);
         Button btnSaveAddr = (Button) findViewById(R.id.btnSaveAddr);
         toolbar = (Toolbar) findViewById(R.id.toolbar_add_address);
         toolbar.setTitle("Enter Details");
@@ -80,24 +79,19 @@ public class AddAddressActivity extends AppCompatActivity {
             etLocality.setText(address.getAddress());
             etCity.setText(address.getCity());
             etState.setText(address.getState());
-            etcountry.setText(address.getCountry());
             etZip.setText(address.getZip());
             etPhone.setText(address.getPhone());
-            etEmail.setText(address.getEmail());
+            etplotno.setText(address.getPlotno());
         }
         btnSaveAddr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(etLocality.getText().toString()) || TextUtils.isEmpty(etCity.getText().toString())
-                        || TextUtils.isEmpty(etState.getText().toString()) || TextUtils.isEmpty(etcountry.getText().toString())
-                        || TextUtils.isEmpty(etZip.getText().toString()) || TextUtils.isEmpty(etPhone.getText().toString())
-                        || TextUtils.isEmpty(etEmail.getText().toString())) {
+                        || TextUtils.isEmpty(etState.getText().toString()) || TextUtils.isEmpty(etplotno.getText().toString())
+                        || TextUtils.isEmpty(etZip.getText().toString()) || TextUtils.isEmpty(etPhone.getText().toString())) {
                     Toast.makeText(AddAddressActivity.this, "Please fillup address details", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (!AppHelpers.isValidEmail(etEmail.getText().toString())) {
-                    etEmail.setError("Email not valid");
-                    return;
-                } else if (etPhone.getText().toString().equals("")) {
+                }else if (etPhone.getText().toString().equals("")) {
                     etPhone.setError("Number Not Valid");
                     return;
                 } else {
@@ -133,52 +127,85 @@ public class AddAddressActivity extends AppCompatActivity {
     }
 
     private void insertAddress(String userID) {
-        Map<String, String> userMap = new HashMap<String, String>(8);
-        userMap.put(AppConstants.EXTRA_USER_ID, userID);
-        userMap.put(AppConstants.EXTRA_USER_LOCALITY, etLocality.getText().toString());
-        userMap.put(AppConstants.EXTRA_USER_CITY, etCity.getText().toString());
-        userMap.put(AppConstants.EXTRA_USER_STATE, etState.getText().toString());
-        userMap.put(AppConstants.EXTRA_USER_COUNTRY, etcountry.getText().toString());
-        userMap.put(AppConstants.EXTRA_USER_ZIP, etZip.getText().toString());
-        userMap.put(AppConstants.EXTRA_USER_PHONE, etPhone.getText().toString());
-        userMap.put(AppConstants.EXTRA_USER_EMAIL, etEmail.getText().toString());
-        userDeatilsInsertCall = userApi.insertUserDetails(userMap);
-        userDeatilsInsertCall.enqueue(new Callback<AddAddressResponse>() {
-            @Override
-            public void onResponse(Call<AddAddressResponse> call, Response<AddAddressResponse> response) {
-                dialog.dismiss();
-                if (response.isSuccessful()) {
-                    Log.v("Respone", response.body().getStatus());
-                    if (response.body().getStatus().equals("1")) {
-                        if (isManageOrder) {
+        //TODO UPDATE
+        if (address!=null){
+            Map<String, String> userMapUpdate = new HashMap<String, String>(7);
+            userMapUpdate.put(AppConstants.EXTRA_ADDRESS_ID, address.getId());
+            userMapUpdate.put(AppConstants.EXTRA_USER_PLOTNO, etplotno.getText().toString());
+            userMapUpdate.put(AppConstants.EXTRA_USER_LOCALITY, etLocality.getText().toString());
+            userMapUpdate.put(AppConstants.EXTRA_USER_CITY, etCity.getText().toString());
+            userMapUpdate.put(AppConstants.EXTRA_USER_STATE, etState.getText().toString());
+            userMapUpdate.put(AppConstants.EXTRA_USER_ZIP, etZip.getText().toString());
+            userMapUpdate.put(AppConstants.EXTRA_USER_PHONE, etPhone.getText().toString());
+            userDeatilsInsertCall = userApi.updateUserDetails(userMapUpdate);
+            userDeatilsInsertCall.enqueue(new Callback<AddAddressResponse>() {
+                @Override
+                public void onResponse(Call<AddAddressResponse> call, Response<AddAddressResponse> response) {
+                    dialog.dismiss();
+                    if (response.isSuccessful()) {
+                        Log.v("Respone", response.body().getStatus());
+                        if (response.body().getStatus().equals("1")) {
+                            finish();
+                        }
+                            else {
+                            Toast.makeText(AddAddressActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<AddAddressResponse> call, Throwable t) {
+                    dialog.dismiss();
+                    Log.v("Error", t.getMessage());
+                }
+            });
+        }else {
+            Map<String, String> userMap = new HashMap<String, String>(7);
+            userMap.put(AppConstants.EXTRA_USER_ID, userID);
+            userMap.put(AppConstants.EXTRA_USER_PLOTNO, etplotno.getText().toString());
+            userMap.put(AppConstants.EXTRA_USER_LOCALITY, etLocality.getText().toString());
+            userMap.put(AppConstants.EXTRA_USER_CITY, etCity.getText().toString());
+            userMap.put(AppConstants.EXTRA_USER_STATE, etState.getText().toString());
+            userMap.put(AppConstants.EXTRA_USER_ZIP, etZip.getText().toString());
+            userMap.put(AppConstants.EXTRA_USER_PHONE, etPhone.getText().toString());
+            userDeatilsInsertCall = userApi.insertUserDetails(userMap);
+            userDeatilsInsertCall.enqueue(new Callback<AddAddressResponse>() {
+                @Override
+                public void onResponse(Call<AddAddressResponse> call, Response<AddAddressResponse> response) {
+                    dialog.dismiss();
+                    if (response.isSuccessful()) {
+                        Log.v("Respone", response.body().getStatus());
+                        if (response.body().getStatus().equals("1")) {
+                            if (isManageOrder) {
 //                        Intent intent = new Intent();
 //                        setResult(RESULT_OK, intent);
-                            finish();
+                                finish();
 //                        Intent intent = new Intent(AddAddressActivity.this,ShowAddressActivity.class);
 //                        startActivity(intent);
 //                        finish();
-                        } else {
+                            } else {
 //                        postOrders(response.body().getAddressId());
-                            String addreId = response.body().getAddressId();
-                            Intent i = new Intent(AddAddressActivity.this, OrderReviewActivity.class);
-                            i.putExtra(AppConstants.ADDRESSID, addreId);
-                            i.putParcelableArrayListExtra(AppConstants.ORDERDETAILS, lisOrders);
-                            i.putParcelableArrayListExtra(AppConstants.SELLERDEITALS, lisSellers);
-                            startActivity(i);
-                            finish();
+                                String addreId = response.body().getAddressId();
+                                Intent i = new Intent(AddAddressActivity.this, OrderReviewActivity.class);
+                                i.putExtra(AppConstants.ADDRESSID, addreId);
+                                i.putParcelableArrayListExtra(AppConstants.ORDERDETAILS, lisOrders);
+                                i.putParcelableArrayListExtra(AppConstants.SELLERDEITALS, lisSellers);
+                                startActivity(i);
+                                finish();
+                            }
+                        } else {
+                            Toast.makeText(AddAddressActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         }
-                    } else {
-                        Toast.makeText(AddAddressActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<AddAddressResponse> call, Throwable t) {
-                dialog.dismiss();
-                Log.v("Error", t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<AddAddressResponse> call, Throwable t) {
+                    dialog.dismiss();
+                    Log.v("Error", t.getMessage());
+                }
+            });
+        }
     }
 
 

@@ -22,6 +22,7 @@ import com.suyogindia.model.PlaceOrderPostData;
 import com.suyogindia.model.PlaceOrderResponse;
 import com.suyogindia.model.PostTokenData;
 import com.suyogindia.model.PostTokenResponse;
+import com.suyogindia.model.QuestionRequest;
 import com.suyogindia.model.RegisterUserPostData;
 import com.suyogindia.model.RegisterUserResponse;
 import com.suyogindia.model.Result;
@@ -101,5 +102,8 @@ public interface WebApi {
     Call<CreateOrderResponse> createOrder(@Body CreateOrderRequest request);
 
     @POST("order_confirm.php")
-    Call<Result> sendOrderData(@Body Map<String,String>object);
+    Call<Result> sendOrderData(@Body Map<String, String> object);
+
+    @POST("tell_me.php")
+    Call<Result> sendAnswers(@Body QuestionRequest request);
 }

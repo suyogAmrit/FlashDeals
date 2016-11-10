@@ -32,10 +32,6 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
         this.isManagedAddr = isManagedAddr;
     }
 
-    public void setMenuListener(MenuListener listener) {
-        mListener = listener;
-    }
-
     @Override
     public AddressViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.adr_list_items, parent, false);
@@ -77,7 +73,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     }
 
     public class AddressViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView txtAddr, txtCity, txtState, txtCountry, txtZip, txtPhone, txtEmail;
+        TextView txtAddr, txtCity, txtState, txtZip, txtPhone,txtPlotNo;
         LinearLayout btnSelect,txtEdit,txtRemove;
 
         public AddressViewHolder(View itemView) {
@@ -85,11 +81,10 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
             txtAddr = (TextView) itemView.findViewById(R.id.txtAddr);
             txtCity = (TextView) itemView.findViewById(R.id.txtCity);
             txtState = (TextView) itemView.findViewById(R.id.txtState);
-            txtCountry = (TextView) itemView.findViewById(R.id.txtCountry);
             txtZip = (TextView) itemView.findViewById(R.id.txtZip);
             txtPhone = (TextView) itemView.findViewById(R.id.txtPhone);
-            txtEmail = (TextView) itemView.findViewById(R.id.txtEmail);
             txtEdit = (LinearLayout) itemView.findViewById(R.id.txtEdit);
+            txtPlotNo = (TextView)itemView.findViewById(R.id.txtPlotNo);
             txtRemove = (LinearLayout) itemView.findViewById(R.id.txtRemove);
             btnSelect = (LinearLayout) itemView.findViewById(R.id.btn_address_select);
 //            txtEdit.setOnClickListener(this);
@@ -106,13 +101,12 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
         }
 
         public void bindData(Address myAddress) {
-            txtAddr.setText("Locality: " + myAddress.getAddress());
-            txtCity.setText("City: " + myAddress.getCity());
-            txtState.setText("State: " + myAddress.getState());
-            txtCountry.setText("Country: " + myAddress.getCountry());
-            txtZip.setText("Zip: " + myAddress.getZip());
-            txtPhone.setText("Phone: " + myAddress.getPhone());
-            txtEmail.setText("Email: " + myAddress.getEmail());
+            txtAddr.setText(myAddress.getAddress());
+            txtCity.setText(myAddress.getCity());
+            txtState.setText(myAddress.getState());
+            txtZip.setText(myAddress.getZip());
+            txtPhone.setText(myAddress.getPhone());
+            txtPlotNo.setText(myAddress.getPlotno());
             txtEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

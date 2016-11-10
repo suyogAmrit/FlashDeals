@@ -33,7 +33,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -80,7 +82,15 @@ public class AppHelpers {
                 .build();
         return retrofit.create(WebApi.class);
     }
+    public static OkHttpClient getSocketTime() {
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(15, TimeUnit.SECONDS)
+                .writeTimeout(15, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .build();
 
+        return client;
+    }
     public static ProgressDialog showProgressDialog(Context context, String genotpmessage) {
         ProgressDialog dialog = new ProgressDialog(context);
         dialog.setTitle(AppConstants.DALOGTITLE);

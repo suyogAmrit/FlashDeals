@@ -49,6 +49,7 @@ import com.suyogindia.helpers.WebApi;
 import com.suyogindia.model.Category;
 import com.suyogindia.model.GetDealsPostData;
 import com.suyogindia.model.GetDealsResponse;
+import com.suyogindia.model.QuestionRequest;
 
 import java.io.IOException;
 import java.util.List;
@@ -115,6 +116,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         } else if (email.equals(AppConstants.NA)) {
             Intent iReg = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(iReg);
+            finish();
+        } else if (!answers) {
+            Intent iAnswers = new Intent(MainActivity.this, QuestionRequest.class);
+            startActivity(iAnswers);
             finish();
         } else {
             initNavigationDrawer();
@@ -226,10 +231,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         tabs.setupWithViewPager(pager);
     }
 
+    boolean answers;
+
     private void getDataFromSharedPrefs() {
         SharedPreferences shr = getSharedPreferences(AppConstants.USERPREFS, MODE_PRIVATE);
         userId = shr.getString(AppConstants.USERID, AppConstants.NA);
         email = shr.getString(AppConstants.EMAIL, AppConstants.NA);
+        answers = shr.getBoolean(AppConstants.ANSWERS, false);
         // checkCredentialAndRedirect();
     }
 

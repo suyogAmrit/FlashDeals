@@ -46,6 +46,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     ProgressDialog dialog;
 
+
     String name, email, password, cPass;
     String userId;
     Call<RegisterUserResponse> call;
@@ -174,7 +175,7 @@ public class RegistrationActivity extends AppCompatActivity {
         editor.putString(AppConstants.EMAIL, email);
         editor.apply();
 
-        Intent i = new Intent(RegistrationActivity.this, SelectDealsActivity.class);
+        Intent i = new Intent(RegistrationActivity.this, QuestionaryActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i);
         finish();

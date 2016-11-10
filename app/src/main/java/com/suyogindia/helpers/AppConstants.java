@@ -1,5 +1,7 @@
 package com.suyogindia.helpers;
 
+import android.content.Context;
+
 /**
  * Created by suyogcomputech on 10/10/16.
  */
@@ -53,11 +55,12 @@ public class AppConstants {
     public static final String EXTRA_USER_LOCALITY = "address";
     public static final String EXTRA_USER_CITY = "city";
     public static final String EXTRA_USER_STATE = "state";
-    public static final String EXTRA_USER_COUNTRY = "country";
+    //public static final String EXTRA_USER_COUNTRY = "country";
     public static final String EXTRA_USER_ZIP = "zip";
     public static final String EXTRA_USER_PHONE = "phone";
-    public static final String EXTRA_USER_EMAIL = "email";
+    //public static final String EXTRA_USER_EMAIL = "email";
     public static final String EXTRA_ADDRESS_ID = "id";
+    public static final String EXTRA_USER_PLOTNO = "plotno";
 
     public static final int REQUEST_CODE_ADDRESS = 201;
     public static final String EXTRA_ADDRESS = "EXTRA_ADDRESS";
@@ -78,4 +81,9 @@ public class AppConstants {
     public static final String QTYERROR = "Enter Valid Quantity";
     public static final String WAIT = "Please Wait";
     public static final String PAYMENTID = "paymentId";
+
+    public static final int REQUEST_CODE_HOME = 201;
+    public static final int REQUEST_CODE_OFFICE = 202;
+    public static final String QUESTIONDIALOG = "Saving Your Answers";
+    public static final String ANSWERS = "user_answers";
 }

@@ -146,11 +146,7 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        if (addAddress) {
-            menu.getItem(0).setVisible(true);
-        } else {
-            menu.getItem(0).setVisible(false);
-        }
+        menu.getItem(0).setVisible(addAddress);
         return true;
     }
 

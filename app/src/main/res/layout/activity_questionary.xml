@@ -7,11 +7,101 @@
     android:orientation="vertical"
     tools:context="com.suyogindia.flashdeals.QuestionaryActivity">
     <include layout="@layout/toolbar"/>
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></RelativeLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="What is type of food you prefer.??"/>
+        android:layout_height="match_parent"
+        android:padding="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:maxLines="1"
+                    android:text="What is type of food you prefer.??"
+                    />
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spinFoodType"
+                    android:padding="15dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="What type Movie you prefer.??"
+                    android:maxLines="1"
+                    android:padding="10dp"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spinTypeMoview"
+                    android:padding="15dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:padding="10dp"
+                    android:text="Which Area do you usually travel for work.??"
+                    />
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spinTypeCity"
+                    android:padding="15dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text="Who else are in your family.??"
+                    android:padding="10dp"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:maxLines="1"
+                    android:padding="10dp"
+                    android:hint="Wife,Father,Mother,Kids"
+                    android:id="@+id/etFamily"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text="What is your Home Address.??"
+                    android:clickable="true"
+                    android:padding="10dp"
+                    android:id="@+id/txtHomeAddr"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:paddingTop="10dp"
+                    android:padding="10sp"
+                    android:clickable="true"
+                    android:text="What is your Office Address.??"
+                    android:id="@+id/txtOfficeAddr"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:padding="10dp"
+                    android:clickable="true"
+                    android:text="What is you alternate contact number"
+                    />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter 10 digit Number"
+                    android:textSize="13sp"
+                    android:padding="10dp"
+                    android:id="@+id/etAlternaetPhone" />
+        </LinearLayout>
+
+    </ScrollView>
 </LinearLayout>

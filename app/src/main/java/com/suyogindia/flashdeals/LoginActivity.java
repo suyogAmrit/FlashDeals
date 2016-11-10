@@ -246,7 +246,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         editor.putString(AppConstants.EMAIL, email);
         editor.apply();
 
-        Intent i = new Intent(LoginActivity.this, SelectDealsActivity.class);
+        //Intent i = new Intent(LoginActivity.this, SelectDealsActivity.class);
+        Intent i = new Intent(LoginActivity.this,QuestionaryActivity.class);
         i.putExtra(AppConstants.FROMPROFILE, false);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i);

@@ -9,6 +9,20 @@
     <EditText
         android:id="@+id/etLocality"
         android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/form_background"
+        android:gravity="center"
+        android:hint="Enter Locality"
+        android:padding="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/etplotno"
+        app:layout_constraintLeft_toLeftOf="@+id/etplotno"
+        app:layout_constraintRight_toRightOf="@+id/etplotno" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/etplotno"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginLeft="24dp"
@@ -17,13 +31,15 @@
         android:layout_marginTop="12dp"
         android:background="@drawable/form_background"
         android:gravity="center"
-        android:hint="Enter Locality"
+        android:hint="Enter Plot-No/House-No"
         android:padding="10dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_add_address"
         tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1" />
+        tools:layout_constraintRight_creator="1" >
+        <requestFocus/>
+    </EditText>
 
     <EditText
         android:id="@+id/etCity"
@@ -34,9 +50,9 @@
         android:gravity="center"
         android:hint="Enter City"
         android:padding="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/etLocality"
+        app:layout_constraintLeft_toLeftOf="@+id/etLocality"
         app:layout_constraintRight_toRightOf="@+id/etLocality"
-        app:layout_constraintLeft_toLeftOf="@+id/etLocality" />
+        app:layout_constraintTop_toBottomOf="@+id/etLocality" />
 
     <EditText
         android:id="@+id/etState"
@@ -54,21 +70,21 @@
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1" />
 
-    <EditText
-        android:id="@+id/etcountry"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:gravity="center"
-        android:hint="Enter Country"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintLeft_toLeftOf="@+id/etState"
-        app:layout_constraintRight_toRightOf="@+id/etState"
-        app:layout_constraintTop_toBottomOf="@+id/etState"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1"
-        android:background="@drawable/form_background"
-        android:padding="10dp"/>
+    <!--<EditText-->
+        <!--android:id="@+id/etcountry"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="12dp"-->
+        <!--android:background="@drawable/form_background"-->
+        <!--android:gravity="center"-->
+        <!--android:hint="Enter Country"-->
+        <!--android:padding="10dp"-->
+        <!--app:layout_constraintHorizontal_bias="1.0"-->
+        <!--app:layout_constraintLeft_toLeftOf="@+id/etState"-->
+        <!--app:layout_constraintRight_toRightOf="@+id/etState"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/etState"-->
+        <!--tools:layout_constraintLeft_creator="1"-->
+        <!--tools:layout_constraintRight_creator="1" />-->
 
     <EditText
         android:id="@+id/etZip"
@@ -81,9 +97,9 @@
         android:inputType="number"
         android:padding="10dp"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="@+id/etcountry"
-        app:layout_constraintRight_toRightOf="@+id/etcountry"
-        app:layout_constraintTop_toBottomOf="@+id/etcountry"
+        app:layout_constraintLeft_toLeftOf="@+id/etState"
+        app:layout_constraintRight_toRightOf="@+id/etState"
+        app:layout_constraintTop_toBottomOf="@+id/etState"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1" />
 
@@ -104,42 +120,25 @@
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1" />
 
-    <EditText
-        android:id="@+id/etEmail"
+    <Button
+        android:id="@+id/btnSaveAddr"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="64dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginRight="64dp"
+        android:layout_marginStart="64dp"
         android:layout_marginTop="12dp"
-        android:background="@drawable/form_background"
-        android:gravity="center"
-        android:hint="Enter Email"
-        android:inputType="textEmailAddress"
-        android:padding="10dp"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:background="@drawable/blue_button"
+        android:text="Save"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/etPhone"
         app:layout_constraintRight_toRightOf="@+id/etPhone"
         app:layout_constraintTop_toBottomOf="@+id/etPhone"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1" />
-
-    <Button
-        android:id="@+id/btnSaveAddr"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="@+id/etEmail"
-        app:layout_constraintRight_toRightOf="@+id/etEmail"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@+id/etEmail"
-        android:background="@drawable/blue_button"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:layout_marginStart="64dp"
-        android:layout_marginLeft="64dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginRight="64dp" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_add_address"
