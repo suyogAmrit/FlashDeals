@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             startActivity(iReg);
             finish();
         } else if (!answers) {
-            Intent iAnswers = new Intent(MainActivity.this, QuestionRequest.class);
+            Intent iAnswers = new Intent(MainActivity.this, QuestionaryActivity.class);
             startActivity(iAnswers);
             finish();
         } else {

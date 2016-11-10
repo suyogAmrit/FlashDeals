@@ -65,7 +65,6 @@ public class QuestionaryActivity extends AppCompatActivity implements  View.OnCl
     String foodString, moviewStriing, cityString;
     Address officeaddress, homeAddress = null;
 
-    boolean fromProfile = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +73,6 @@ public class QuestionaryActivity extends AppCompatActivity implements  View.OnCl
         ButterKnife.bind(this);
         toolbar.setTitle("Tell us More!");
         setSupportActionBar(toolbar);
-        fromProfile = getIntent().getExtras().getBoolean(AppConstants.FROMPROFILE);
         spinFoodAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, android.R.id.text1, spinFoodvalue);
         spinFoodType.setAdapter(spinFoodAdapter);
         spinMoviewAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, android.R.id.text1, spinMovieValue);
@@ -195,7 +193,7 @@ public class QuestionaryActivity extends AppCompatActivity implements  View.OnCl
                         editor.putBoolean(AppConstants.ANSWERS, true);
                         editor.apply();
                         Intent i = new Intent(QuestionaryActivity.this, SelectDealsActivity.class);
-                        i.putExtra(AppConstants.FROMPROFILE, fromProfile);
+                        i.putExtra(AppConstants.FROMPROFILE, false);
                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(i);
                         finish();
