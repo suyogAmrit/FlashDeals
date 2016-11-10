@@ -224,7 +224,6 @@ public class QuestionaryActivity extends AppCompatActivity implements  View.OnCl
             showSnackBar("Please provide Movie");
             return false;
         }else if (cityString.equals("") && spinTypeCity!=null && spinTypeMoview.getSelectedItem()==null){
-            Toast.makeText(QuestionaryActivity.this,"Please provide City",Toast.LENGTH_SHORT).show();
             showSnackBar("Please provide City");
             return false;
         }else if (homeAddress==null){
