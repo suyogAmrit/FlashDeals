@@ -2,7 +2,7 @@ package com.suyogindia.helpers;
 
 import com.suyogindia.flashdeals.CheckDeliverPostData;
 import com.suyogindia.flashdeals.CheckDeliveryResponse;
-import com.suyogindia.flashdeals.OrderReviewResponse;
+import com.suyogindia.model.OrderReviewResponse;
 import com.suyogindia.flashdeals.SendCategoryPostData;
 import com.suyogindia.model.AddAddressResponse;
 import com.suyogindia.model.AddressResponse;
