@@ -14,66 +14,88 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:focusableInTouchMode="true" >
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
+                    android:padding="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:maxLines="1"
-                    android:text="What is type of food you prefer.??"
+                    android:text="What is type of food you prefer?"
                     />
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/spinFoodType"
-                    android:padding="15dp"/>
+                    android:layout_marginTop="10dp"
+                    style="@style/spinner_style"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="What type Movie you prefer.??"
-                    android:maxLines="1"
-                    android:padding="10dp"/>
-                <Spinner
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="What type Movie you prefer?"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
+
+            <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/spinTypeMoview"
-                    android:padding="15dp"/>
+                    android:layout_marginTop="10dp"
+                    style="@style/spinner_style"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:padding="10dp"
-                    android:text="Which Area do you usually travel for work.??"
+                    android:padding="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="Which Area do you usually travel for work?"
                     />
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
                     android:id="@+id/spinTypeCity"
-                    android:padding="15dp"/>
+                    android:layout_marginTop="10dp"
+                    style="@style/spinner_style"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:text="Who else are in your family.??"
-                    android:padding="10dp"/>
+                    android:text="Who else are in your family?"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:padding="5dp"/>
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="10dp"
                     android:maxLines="1"
-                    android:padding="10dp"
+                    android:background="@drawable/form_background"
+                    android:padding="8dp"
                     android:hint="Wife,Father,Mother,Kids"
                     android:id="@+id/etFamily"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:text="What is your Home Address.??"
+                    android:text="What is your Home Address?"
                     android:clickable="true"
-                    android:padding="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:padding="5dp"
                     android:id="@+id/txtHomeAddr"/>
 
                 <TextView
@@ -81,27 +103,40 @@
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:paddingTop="10dp"
-                    android:padding="10sp"
+                    android:padding="5dp"
                     android:clickable="true"
-                    android:text="What is your Office Address.??"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="What is your Office Address?"
                     android:id="@+id/txtOfficeAddr"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:padding="10dp"
+                    android:padding="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:clickable="true"
-                    android:text="What is you alternate contact number"
+                    android:text="What is your alternate contact number?"
                     />
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Enter 10 digit Number"
                     android:textSize="13sp"
-                    android:padding="10dp"
+                    android:inputType="number"
+                    android:background="@drawable/form_background"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@android:color/black"
+                    android:maxLines="1"
+                    android:layout_marginTop="10dp"
+                    android:padding="8dp"
                     android:id="@+id/etAlternaetPhone" />
         </LinearLayout>
 
     </ScrollView>
+
+
 </LinearLayout>

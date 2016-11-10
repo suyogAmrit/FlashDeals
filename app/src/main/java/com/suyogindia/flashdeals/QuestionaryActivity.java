@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,6 +57,8 @@ public class QuestionaryActivity extends AppCompatActivity implements  View.OnCl
     EditText etAlternaetPhone;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.activity_questionary)
+    LinearLayout linearLayout;
 
     String[] spinFoodvalue = {"Veg", "Non-Veg"};
     String[] spinMovieValue = {"Hindi", "English"};
@@ -73,12 +76,15 @@ public class QuestionaryActivity extends AppCompatActivity implements  View.OnCl
         ButterKnife.bind(this);
         toolbar.setTitle("Tell us More!");
         setSupportActionBar(toolbar);
-        spinFoodAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, android.R.id.text1, spinFoodvalue);
+        spinFoodAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item, R.id.txtSpinnerValue, spinFoodvalue);
         spinFoodType.setAdapter(spinFoodAdapter);
-        spinMoviewAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, android.R.id.text1, spinMovieValue);
+        spinMoviewAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item, R.id.txtSpinnerValue, spinMovieValue);
         spinTypeMoview.setAdapter(spinMoviewAdapter);
-        spinCityAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, android.R.id.text1, spincityvalue);
+        spinCityAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item, R.id.txtSpinnerValue, spincityvalue);
         spinTypeCity.setAdapter(spinCityAdapter);
+        foodString = spinFoodvalue[0];
+        moviewStriing = spinMovieValue[0];
+        cityString = spincityvalue[0];
         spinFoodType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -124,9 +130,9 @@ public class QuestionaryActivity extends AppCompatActivity implements  View.OnCl
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.action_next) {
-            //if (validate()) {
+            if (validate()) {
                 sedAnswers();
-            //}
+            }
         }
         return false;
     }
@@ -143,7 +149,6 @@ public class QuestionaryActivity extends AppCompatActivity implements  View.OnCl
                         }
                     });
             snackbar.setActionTextColor(Color.RED);
-            // Changing action button text color
             View sbView = snackbar.getView();
             TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
             tvMessage.setTextColor(Color.YELLOW);
@@ -158,7 +163,7 @@ public class QuestionaryActivity extends AppCompatActivity implements  View.OnCl
         dialog.show();
         String userId = getSharedPreferences(AppConstants.USERPREFS, MODE_PRIVATE).getString(AppConstants.USERID, AppConstants.NA);
 
-        QuestionRequest request = new QuestionRequest(userId);
+        QuestionRequest request = new QuestionRequest("c756499e18a1815bf47a200d63f7f965");
         ArrayList<Address> list = new ArrayList<>();
         list.add(officeaddress);
         list.add(homeAddress);
@@ -212,18 +217,28 @@ public class QuestionaryActivity extends AppCompatActivity implements  View.OnCl
     }
 
     private boolean validate() {
-        //Todo
         if (foodString.equals("") && spinFoodType==null && spinFoodType.getSelectedItem()==null){
-            Toast.makeText(QuestionaryActivity.this,"Please provide Type of Food",Toast.LENGTH_SHORT).show();
+            showSnackBar("Please provide Type of Food");
             return false;
         }else if (moviewStriing.equals("") && spinTypeMoview!=null && spinTypeMoview.getSelectedItem()==null){
-            Toast.makeText(QuestionaryActivity.this,"Please provide Movie",Toast.LENGTH_SHORT).show();
+            showSnackBar("Please provide Movie");
             return false;
-        }else if (cityString.equals("") && spinTypeCity!=null && spinTypeMoview.getSelectedItem()!=null){
+        }else if (cityString.equals("") && spinTypeCity!=null && spinTypeMoview.getSelectedItem()==null){
             Toast.makeText(QuestionaryActivity.this,"Please provide City",Toast.LENGTH_SHORT).show();
+            showSnackBar("Please provide City");
+            return false;
+        }else if (homeAddress==null){
+            showSnackBar("Please provide HomeAddress");
             return false;
         }
-        return true;
+        else if (!AppHelpers.isValidMobile(etAlternaetPhone.getText().toString().trim())){
+            etAlternaetPhone.setError("Please provide a valid Phone Number");
+            return false;
+        }
+        else {
+            etAlternaetPhone.setError(null);
+            return true;
+        }
     }
 
     @Override
@@ -249,12 +264,30 @@ public class QuestionaryActivity extends AppCompatActivity implements  View.OnCl
         if (requestCode == AppConstants.REQUEST_CODE_HOME) {
             if (resultCode == RESULT_OK) {
                 homeAddress = data.getParcelableExtra(AppConstants.EXTRA_ADDRESS);
+                if (homeAddress!=null){
+                    txtHomeAddr.setVisibility(View.GONE);
+                }else {
+                    txtHomeAddr.setVisibility(View.VISIBLE);
+                }
             }
         }
         if (requestCode == AppConstants.REQUEST_CODE_OFFICE) {
             if (resultCode == RESULT_OK) {
                 officeaddress = data.getParcelableExtra(AppConstants.EXTRA_ADDRESS);
+                if (officeaddress!=null){
+                    txtOfficeAddr.setVisibility(View.GONE);
+                }else {
+                    txtOfficeAddr.setVisibility(View.VISIBLE);
+                }
             }
         }
     }
+    private void showSnackBar(String message){
+        Snackbar snackbar = Snackbar.make(linearLayout, message, Snackbar.LENGTH_SHORT);
+        View sbView = snackbar.getView();
+        TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        tvMessage.setTextColor(Color.YELLOW);
+        snackbar.show();
+    }
+
 }

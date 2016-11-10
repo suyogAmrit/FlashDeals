@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.suyogindia.helpers.AppConstants;
+import com.suyogindia.helpers.AppHelpers;
 import com.suyogindia.model.Address;
 
 
@@ -42,7 +43,7 @@ public class HomeOfficeAddressActivity extends AppCompatActivity {
                         || TextUtils.isEmpty(etZip.getText().toString()) || TextUtils.isEmpty(etPhone.getText().toString())) {
                     Toast.makeText(HomeOfficeAddressActivity.this, "Please fillup address details", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (etPhone.getText().toString().equals("")) {
+                } else if (etPhone.getText().toString().equals("") && AppHelpers.isValidMobile(etPhone.getText().toString().trim())) {
                     etPhone.setError("Number Not Valid");
                     return;
                 } else {
