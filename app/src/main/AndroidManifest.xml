@@ -98,7 +98,8 @@
         <activity android:name=".ShowOrderDetailsActivity" />
         <activity android:name=".MyProfileActivity" />
         <activity android:name=".OrderReviewActivity" />
-        <activity android:name=".QuestionaryActivity" >
+        <activity android:name=".QuestionaryActivity">
+
         </activity>
         <activity android:name=".HomeOfficeAddressActivity"></activity>
     </application>

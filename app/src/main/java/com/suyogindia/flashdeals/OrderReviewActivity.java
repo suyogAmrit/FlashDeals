@@ -77,6 +77,7 @@ public class OrderReviewActivity extends AppCompatActivity {
     Call<CreateOrderResponse> createOrderResponseCall;
     WebApi webApi;
     Call<Result> resultCall;
+    Dialog confirmOderDialog;
     private String addressId;
 
     @Override
@@ -130,7 +131,7 @@ public class OrderReviewActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Log.i(TAG, "Success - Payment ID : " +
                         data.getStringExtra(SdkConstants.PAYMENT_ID));
-               String paymentId =
+                String paymentId =
                         data.getStringExtra(SdkConstants.PAYMENT_ID);
                 if (!TextUtils.isEmpty(orderId)) {
                     sendOrderDataToServer(paymentId, orderId, userId);
@@ -234,6 +235,8 @@ public class OrderReviewActivity extends AppCompatActivity {
     }
 
     private void callWebServiceForPaymentConfirmation(String paymentId, String orderId, String userId) {
+        dialog=AppHelpers.showProgressDialog(OrderReviewActivity.this,AppConstants.ORDERCONFRMMSG);
+        dialog.show();
         Map<String, String> mapOrder = new HashMap<>(3);
         mapOrder.put(AppConstants.PAYMENTID, paymentId);
         mapOrder.put("orderId", orderId);
@@ -243,22 +246,41 @@ public class OrderReviewActivity extends AppCompatActivity {
         resultCall.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
+                dialog.dismiss();
                 Log.v(AppConstants.RESPONSE, response.body().getStatus());
                 if (response.body().getStatus().equals("1")) {
                     AppHelpers.clearCart(OrderReviewActivity.this);
-                    Intent intent = new Intent(OrderReviewActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
+                    showOrderSucessDialog();
                 }
             }
 
             @Override
             public void onFailure(Call<Result> call, Throwable t) {
+                dialog.dismiss();
                 Log.e(AppConstants.ERROR, t.getMessage());
+                Toast.makeText(OrderReviewActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
-
+    private void showOrderSucessDialog() {
+        confirmOderDialog = new Dialog(this);
+        confirmOderDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        confirmOderDialog.setContentView(R.layout.dialog_order_sucess);
+        TextView tvOrderID = (TextView) confirmOderDialog.findViewById(R.id.tv_dialog_order_id);
+        tvOrderID.setText("Order Id: " + orderId);
+        Button btnOkay = (Button) confirmOderDialog.findViewById(R.id.btn_confirm);
+        btnOkay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmOderDialog.dismiss();
+                Intent i = new Intent(OrderReviewActivity.this, MainActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+        confirmOderDialog.setCancelable(false);
+        confirmOderDialog.show();
     }
 
 

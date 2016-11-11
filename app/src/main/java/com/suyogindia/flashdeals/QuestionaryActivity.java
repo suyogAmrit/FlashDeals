@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -39,7 +40,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class QuestionaryActivity extends AppCompatActivity implements  View.OnClickListener {
+public class QuestionaryActivity extends AppCompatActivity implements View.OnClickListener {
 
     @BindView(R.id.spinFoodType)
     Spinner spinFoodType;
@@ -67,7 +68,7 @@ public class QuestionaryActivity extends AppCompatActivity implements  View.OnCl
 
     String foodString, moviewStriing, cityString;
     Address officeaddress, homeAddress = null;
-
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,7 @@ public class QuestionaryActivity extends AppCompatActivity implements  View.OnCl
         ButterKnife.bind(this);
         toolbar.setTitle("Tell us More!");
         setSupportActionBar(toolbar);
+        iim = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         spinFoodAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item, R.id.txtSpinnerValue, spinFoodvalue);
         spinFoodType.setAdapter(spinFoodAdapter);
         spinMoviewAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item, R.id.txtSpinnerValue, spinMovieValue);
@@ -131,6 +133,7 @@ public class QuestionaryActivity extends AppCompatActivity implements  View.OnCl
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.action_next) {
             if (validate()) {
+
                 sedAnswers();
             }
         }
@@ -156,14 +159,12 @@ public class QuestionaryActivity extends AppCompatActivity implements  View.OnCl
         }
     }
 
-    ProgressDialog dialog;
-
     private void callWebServices() {
         dialog = AppHelpers.showProgressDialog(this, AppConstants.QUESTIONDIALOG);
         dialog.show();
         String userId = getSharedPreferences(AppConstants.USERPREFS, MODE_PRIVATE).getString(AppConstants.USERID, AppConstants.NA);
 
-        QuestionRequest request = new QuestionRequest("c756499e18a1815bf47a200d63f7f965");
+        QuestionRequest request = new QuestionRequest(userId);
         ArrayList<Address> list = new ArrayList<>();
         list.add(officeaddress);
         list.add(homeAddress);
@@ -172,7 +173,7 @@ public class QuestionaryActivity extends AppCompatActivity implements  View.OnCl
         listAnswrs.add(moviewStriing);
         listAnswrs.add(cityString);
         listAnswrs.add(etFamily.getText().toString());
-        listAnswrs.add(etAlternaetPhone.getText().toString());
+        listAnswrs.add("+91" + etAlternaetPhone.getText().toString());
         //TODO add all strings serially
         request.setAddressList(list);
         request.setAnswerList(listAnswrs);
@@ -202,6 +203,8 @@ public class QuestionaryActivity extends AppCompatActivity implements  View.OnCl
                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(i);
                         finish();
+                    } else {
+                        Toast.makeText(QuestionaryActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -215,26 +218,26 @@ public class QuestionaryActivity extends AppCompatActivity implements  View.OnCl
         });
 
     }
-
+    InputMethodManager iim;
     private boolean validate() {
-        if (foodString.equals("") && spinFoodType==null && spinFoodType.getSelectedItem()==null){
+
+        iim.hideSoftInputFromInputMethod(etAlternaetPhone.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+        if (foodString.equals("") && spinFoodType == null && spinFoodType.getSelectedItem() == null) {
             showSnackBar("Please provide Type of Food");
             return false;
-        }else if (moviewStriing.equals("") && spinTypeMoview!=null && spinTypeMoview.getSelectedItem()==null){
+        } else if (moviewStriing.equals("") && spinTypeMoview != null && spinTypeMoview.getSelectedItem() == null) {
             showSnackBar("Please provide Movie");
             return false;
-        }else if (cityString.equals("") && spinTypeCity!=null && spinTypeMoview.getSelectedItem()==null){
+        } else if (cityString.equals("") && spinTypeCity != null && spinTypeMoview.getSelectedItem() == null) {
             showSnackBar("Please provide City");
             return false;
-        }else if (homeAddress==null){
-            showSnackBar("Please provide HomeAddress");
+        } else if (homeAddress == null && officeaddress == null) {
+            showSnackBar("Please provide One Address");
             return false;
-        }
-        else if (!AppHelpers.isValidMobile(etAlternaetPhone.getText().toString().trim())){
+        } else if (!AppHelpers.isValidMobile(etAlternaetPhone.getText().toString().trim())) {
             etAlternaetPhone.setError("Please provide a valid Phone Number");
             return false;
-        }
-        else {
+        } else {
             etAlternaetPhone.setError(null);
             return true;
         }
@@ -245,6 +248,7 @@ public class QuestionaryActivity extends AppCompatActivity implements  View.OnCl
         getMenuInflater().inflate(R.menu.menu_questions, menu);
         return true;
     }
+
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.txtHomeAddr) {
@@ -263,9 +267,9 @@ public class QuestionaryActivity extends AppCompatActivity implements  View.OnCl
         if (requestCode == AppConstants.REQUEST_CODE_HOME) {
             if (resultCode == RESULT_OK) {
                 homeAddress = data.getParcelableExtra(AppConstants.EXTRA_ADDRESS);
-                if (homeAddress!=null){
+                if (homeAddress != null) {
                     txtHomeAddr.setVisibility(View.GONE);
-                }else {
+                } else {
                     txtHomeAddr.setVisibility(View.VISIBLE);
                 }
             }
@@ -273,15 +277,16 @@ public class QuestionaryActivity extends AppCompatActivity implements  View.OnCl
         if (requestCode == AppConstants.REQUEST_CODE_OFFICE) {
             if (resultCode == RESULT_OK) {
                 officeaddress = data.getParcelableExtra(AppConstants.EXTRA_ADDRESS);
-                if (officeaddress!=null){
+                if (officeaddress != null) {
                     txtOfficeAddr.setVisibility(View.GONE);
-                }else {
+                } else {
                     txtOfficeAddr.setVisibility(View.VISIBLE);
                 }
             }
         }
     }
-    private void showSnackBar(String message){
+
+    private void showSnackBar(String message) {
         Snackbar snackbar = Snackbar.make(linearLayout, message, Snackbar.LENGTH_SHORT);
         View sbView = snackbar.getView();
         TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);

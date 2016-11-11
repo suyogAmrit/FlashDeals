@@ -146,10 +146,12 @@ public class CartActivity extends AppCompatActivity {
 
         if (item.getItemId() == R.id.action_place_order) {
             boolean modeDelivery = true;
-            for (CartItem cartItem : list) {
-                if (cartItem.getType() == 2) {
-                    if (cartItem.getSeller().getDeleveryMode() == 0) {
+            for (int i = 0;i<list.size();i++) {
+                if (list.get(i).getType() == 2) {
+                    if (list.get(i).getSeller().getDeleveryMode() == 0) {
                         modeDelivery = false;
+                        rvCart.scrollToPosition(i);
+                        break;
                     }
                 }
             }
@@ -189,7 +191,7 @@ public class CartActivity extends AppCompatActivity {
                 // Changing action button text color
                 View sbView = snackbar.getView();
                 TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-                tvMessage.setTextColor(Color.YELLOW);
+                tvMessage.setTextColor(Color.RED);
                 snackbar.show();
             }
         }

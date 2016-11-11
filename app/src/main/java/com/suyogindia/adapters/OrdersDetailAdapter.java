@@ -75,7 +75,7 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
 
                     itemsViewHolder.txtItemDesc.setText(orders.getOrders().getDescription());
                     itemsViewHolder.txtItemMrp.setText(AppConstants.RUPEE + orders.getOrders().getMrp());
-                    itemsViewHolder.txtItemOfferPrice.setText(orders.getOrders().getOffer_price());
+                    itemsViewHolder.txtItemOfferPrice.setText(AppConstants.RUPEE +orders.getOrders().getOffer_price());
                     itemsViewHolder.txtItemDiscount.setText(orders.getOrders().getDiscount() + "%");
                     itemsViewHolder.txtItemOfferStartTime.setText(orders.getOrders().getOffer_start_time());
                     itemsViewHolder.txtItemOfferEndTime.setText(orders.getOrders().getOffer_end_time());

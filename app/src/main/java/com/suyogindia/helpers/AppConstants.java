@@ -86,4 +86,7 @@ public class AppConstants {
     public static final int REQUEST_CODE_OFFICE = 202;
     public static final String QUESTIONDIALOG = "Saving Your Answers";
     public static final String ANSWERS = "user_answers";
+    public static final String CARTUPDATE = "Item Added";
+    public static final String GOTOCART = "GO TO CART";
+    public static final String ORDERCONFRMMSG = "Checking Order Details";
 }

@@ -109,13 +109,10 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
                             //addressAdapter.setMenuListener(ShowAddressActivity.this);
 
                             Log.i("itemid", menuItem.getItemId() + "");
-                            if (addresListData.size() > 3) {
-                                addAddress = false;
+                            if (addresListData.size() == 0) {
 
-                            } else {
-                                addAddress = true;
-
-                            }
+                                fireAddAddressIntent();
+                            } else addAddress = addresListData.size() <= 3;
                             invalidateOptionsMenu();
                         }
                     }
@@ -162,19 +159,26 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.action_add_address) {
-            Intent intent = new Intent(ShowAddressActivity.this, AddAddressActivity.class);
-            Bundle b = new Bundle();
-            intent.putExtras(b);
-            intent.putExtra(AppConstants.EXTRA_MANAGE_ADDR, isManagedAddr);
-            startActivity(intent);
-            if (!isManagedAddr) {
-                b.putParcelableArrayList(AppConstants.ORDERDETAILS, lisOrders);
-                b.putParcelableArrayList(AppConstants.SELLERDEITALS, lisSellers);
-                finish();
-            }
+            fireAddAddressIntent();
+
             return true;
         }
         return false;
+    }
+
+    private void fireAddAddressIntent() {
+        Intent intent = new Intent(ShowAddressActivity.this, AddAddressActivity.class);
+        Bundle b = new Bundle();
+
+        intent.putExtra(AppConstants.EXTRA_MANAGE_ADDR, isManagedAddr);
+        if (!isManagedAddr) {
+            b.putParcelableArrayList(AppConstants.ORDERDETAILS, lisOrders);
+            b.putParcelableArrayList(AppConstants.SELLERDEITALS, lisSellers);
+            intent.putExtras(b);
+        }
+        startActivity(intent);
+        if (!isManagedAddr)
+            finish();
     }
 
 //    @Override
@@ -288,6 +292,7 @@ public class ShowAddressActivity extends AppCompatActivity implements AddressAda
                         }
                     }
                 }
+
                 @Override
                 public void onFailure(Call<Result> call, Throwable t) {
                     Log.v("Error", t.getMessage());

@@ -133,7 +133,7 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
                 String value = s.toString();
 
                 if (detailsType == 2) {
-                    if (Integer.parseInt(value) > 0) {
+                    if (Integer.parseInt(value) > 1) {
                         btnMinus.setVisibility(View.VISIBLE);
                     } else {
                         btnMinus.setVisibility(View.INVISIBLE);
@@ -274,7 +274,8 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
     private void setupUI() {
         toolbar.setTitle("Add Quantity");
         setSupportActionBar(toolbar);
-        qty = totalPrice = "0";
+        qty = "1";
+        totalPrice = myDeals.getOffer_price();
         tvDesc.setText(myDeals.getDesciption());
         tvDiscount.setText(myDeals.getDiscount() + "%");
         tvMrp.setText(AppConstants.RUPEE + myDeals.getMrp());
@@ -308,10 +309,10 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
         if (value != 0) {
             if (detailsType == 2) {
                 double totalPriceValue = Double.parseDouble(myDeals.getOffer_price()) * value;
-                totalPrice = String.valueOf(totalPriceValue);
+                totalPrice = Double.toString(totalPriceValue);
             } else if (detailsType == 1) {
                 double totalPriceValue = Double.parseDouble(cartItem.getOfferPrice()) * value;
-                totalPrice = String.valueOf(totalPriceValue);
+                totalPrice = Double.toString(totalPriceValue);
             }
         } else {
             totalPrice = "0";
@@ -341,8 +342,21 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
                 if (detailsType == 2) {
                     long row = AppHelpers.addToCart(this, qty, totalPrice, myDeals);
                     if (row > 0) {
-                        Toast.makeText(this, "Item Added To Cart", Toast.LENGTH_SHORT).show();
-                        finish();
+                        Snackbar snackbar = Snackbar.make(etQty, AppConstants.CARTUPDATE, Snackbar.LENGTH_INDEFINITE)
+                                .setAction(AppConstants.GOTOCART, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent i = new Intent(DealsDetailsActivity.this, CartActivity.class);
+                                        startActivity(i);
+                                        finish();
+                                    }
+                                });
+                        snackbar.setActionTextColor(Color.GREEN);
+                        // Changing action button text color
+                        View sbView = snackbar.getView();
+                        TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                        tvMessage.setTextColor(Color.YELLOW);
+                        snackbar.show();
                     } else {
                         Snackbar snackbar = Snackbar.make(etQty, AppConstants.WENTWRONG, Snackbar.LENGTH_SHORT);
 
