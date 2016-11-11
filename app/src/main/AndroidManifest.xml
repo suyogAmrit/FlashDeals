@@ -22,8 +22,12 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <activity android:name=".GetPhoneActivity" />
-        <activity android:name=".VerifyOTPActivity" />
+        <activity
+            android:name=".GetPhoneActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".VerifyOTPActivity"
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".VerifyOTPService"
@@ -35,7 +39,9 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".LoginActivity" />
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -57,31 +63,49 @@
         <!-- <data android:scheme="@string/fb_login_protocol_scheme" /> -->
         <!-- </intent-filter> -->
         <!-- </activity> -->
-        <activity android:name=".RegistrationActivity" />
-        <activity android:name=".ForgotPasswordActivity" />
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".RegistrationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SelectDealsActivity" />
+        <activity
+            android:name=".SelectDealsActivity"
+            android:screenOrientation="portrait" >
+
+        </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".DealsDetailsActivity" />
-        <activity android:name=".CartActivity" />
+        <activity
+            android:name=".DealsDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CartActivity"
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".ClearCartService"
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".AddAddressActivity" />
-        <activity android:name=".ShowAddressActivity" />
+        <activity
+            android:name=".AddAddressActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ShowAddressActivity"
+            android:screenOrientation="portrait" />
 
         <service android:name=".MyFirebaseMessagingService">
             <intent-filter>
@@ -94,14 +118,26 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".MyOrdersActivity" />
-        <activity android:name=".ShowOrderDetailsActivity" />
-        <activity android:name=".MyProfileActivity" />
-        <activity android:name=".OrderReviewActivity" />
-        <activity android:name=".QuestionaryActivity">
+        <activity
+            android:name=".MyOrdersActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ShowOrderDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MyProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".OrderReviewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".QuestionaryActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".HomeOfficeAddressActivity"></activity>
+        <activity
+            android:name=".HomeOfficeAddressActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

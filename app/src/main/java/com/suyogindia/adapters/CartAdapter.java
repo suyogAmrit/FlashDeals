@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -108,6 +107,8 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public void add(List<CartItem> list) {
+        Log.i("total",list.size()+"");
+
         cartDataList.clear();
         cartDataList.addAll(list);
         notifyDataSetChanged();
@@ -138,9 +139,9 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
         public void bindData(CartItem item) {
-            Log.i("total", item.getGrandTotal());
+            Log.i("adaptotal", item.getGrandTotal());
             tvTotalQty.setText(item.getTotalQuantity().substring(0, item.getTotalQuantity().length() - 2));
-            tvTotalPrice.setText(AppConstants.RUPEE  +" "+ item.getGrandTotal());
+            tvTotalPrice.setText(AppConstants.RUPEE + " " + item.getGrandTotal());
         }
     }
 
@@ -162,9 +163,13 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             final Seller mySeller = item.getSeller();
             tvTotal.setText(mySeller.getTotalPrice());
-            tvShippingCharge.setText(AppConstants.RUPEE  +" "+ mySeller.getShippingCharge());
-            tvSellerShippingInfo.setText("This seller Provides Free Home delivery above " + AppConstants.RUPEE + mySeller.getMaxPrice()
-                    + " – below " + AppConstants.RUPEE + mySeller.getMaxPrice() + ", " + AppConstants.RUPEE + mySeller.getShippingCharge() + " chargable.");
+            if (mySeller.getShippingCharge().equals("0.00")) {
+                tvSellerShippingInfo.setVisibility(View.GONE);
+            } else {
+                tvShippingCharge.setText(AppConstants.RUPEE + " " + mySeller.getShippingCharge());
+                tvSellerShippingInfo.setText("This seller Provides Free Home delivery above " + AppConstants.RUPEE + mySeller.getMaxPrice()
+                        + " – below " + AppConstants.RUPEE + mySeller.getMaxPrice() + ", " + AppConstants.RUPEE + mySeller.getShippingCharge() + " chargeable.");
+            }
             rgMode.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -178,15 +183,16 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     }
                 }
             });
-            if (mySeller.getShippingAdded() == 1) {
+            Log.i("shipping Added",mySeller.getShippingAdded()+"");
+            if (mySeller.getShippingAdded() == 2) {
                 tvshippingText.setVisibility(View.VISIBLE);
                 tvShippingCharge.setVisibility(View.VISIBLE);
-                double grandTotal = Double.parseDouble(mySeller.getTotalPrice()) + Double.parseDouble(mySeller.getMaxPrice());
-                tvGrandTotal.setText(String.valueOf(grandTotal));
+                double grandTotal = Double.parseDouble(mySeller.getTotalPrice()) + Double.parseDouble(mySeller.getShippingCharge());
+                tvGrandTotal.setText(AppConstants.RUPEE + " " + String.valueOf(grandTotal));
             } else {
                 tvshippingText.setVisibility(View.GONE);
                 tvShippingCharge.setVisibility(View.GONE);
-                tvGrandTotal.setText(AppConstants.RUPEE +" "+ mySeller.getTotalPrice());
+                tvGrandTotal.setText(AppConstants.RUPEE + " " + mySeller.getTotalPrice());
             }
         }
 
@@ -212,9 +218,9 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
         public void bindData(CartItem item) {
-            tvTotal.setText(AppConstants.RUPEE  +" "+ item.getTotalPrice());
+            tvTotal.setText(AppConstants.RUPEE + " " + item.getTotalPrice());
             tvQty.setText(item.getQty());
-            tvOfferPrice.setText(AppConstants.RUPEE  +" "+ item.getOfferPrice());
+            tvOfferPrice.setText(AppConstants.RUPEE + " " + item.getOfferPrice());
             tvDesc.setText(item.getDesc());
             btnRemove.setOnClickListener(new View.OnClickListener() {
                 @Override

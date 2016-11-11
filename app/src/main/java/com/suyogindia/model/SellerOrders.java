@@ -9,25 +9,20 @@ import java.util.ArrayList;
  * Created by Tanmay on 10/21/2016.
  */
 
-public class SellerOrders implements Parcelable{
-    public String getSeller_name() {
-        return seller_name;
-    }
+public class SellerOrders implements Parcelable {
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<SellerOrders> CREATOR = new Parcelable.Creator<SellerOrders>() {
+        @Override
+        public SellerOrders createFromParcel(Parcel in) {
+            return new SellerOrders(in);
+        }
 
-    public void setSeller_name(String seller_name) {
-        this.seller_name = seller_name;
-    }
-
+        @Override
+        public SellerOrders[] newArray(int size) {
+            return new SellerOrders[size];
+        }
+    };
     private String seller_name;
-
-    public String getSeller_email() {
-        return seller_email;
-    }
-
-    public void setSeller_email(String seller_email) {
-        this.seller_email = seller_email;
-    }
-
     private String seller_email;
     private String delevery_mode;
     private String shipping_charge;
@@ -38,10 +33,54 @@ public class SellerOrders implements Parcelable{
     private String zip;
     private String phone;
     private String email;
-    private ArrayList<ItemOrders>items;
+    private ArrayList<ItemOrders> items;
     private String seller_order_id;
     private String delevery_status;
     private String seller_address;
+    private String rating;
+    private String user_delevery_status;
+    private int TYPE;
+
+    public SellerOrders() {
+        super();
+    }
+
+    protected SellerOrders(Parcel in) {
+        seller_name = in.readString();
+        delevery_mode = in.readString();
+        shipping_charge = in.readString();
+        address = in.readString();
+        city = in.readString();
+        state = in.readString();
+        country = in.readString();
+        zip = in.readString();
+        phone = in.readString();
+        email = in.readString();
+        items = in.readArrayList(null);
+        TYPE = in.readInt();
+        seller_order_id = in.readString();
+        delevery_status = in.readString();
+        user_delevery_status = in.readString();
+        seller_email = in.readString();
+        rating = in.readString();
+        seller_address = in.readString();
+    }
+
+    public String getSeller_name() {
+        return seller_name;
+    }
+
+    public void setSeller_name(String seller_name) {
+        this.seller_name = seller_name;
+    }
+
+    public String getSeller_email() {
+        return seller_email;
+    }
+
+    public void setSeller_email(String seller_email) {
+        this.seller_email = seller_email;
+    }
 
     public String getSeller_address() {
         return seller_address;
@@ -59,8 +98,6 @@ public class SellerOrders implements Parcelable{
         this.rating = rating;
     }
 
-    private String rating;
-
     public String getUser_delevery_status() {
         return user_delevery_status;
     }
@@ -68,8 +105,6 @@ public class SellerOrders implements Parcelable{
     public void setUser_delevery_status(String user_delevery_status) {
         this.user_delevery_status = user_delevery_status;
     }
-
-    private String user_delevery_status;
 
     public String getDelevery_status() {
         return delevery_status;
@@ -94,8 +129,6 @@ public class SellerOrders implements Parcelable{
     public void setTYPE(int TYPE) {
         this.TYPE = TYPE;
     }
-
-    private int TYPE;
 
     public String getDelevery_mode() {
         return delevery_mode;
@@ -176,29 +209,6 @@ public class SellerOrders implements Parcelable{
     public void setItems(ArrayList<ItemOrders> items) {
         this.items = items;
     }
-    public SellerOrders(){
-        super();
-    }
-    protected SellerOrders(Parcel in) {
-        seller_name = in.readString();
-        delevery_mode = in.readString();
-        shipping_charge = in.readString();
-        address = in.readString();
-        city = in.readString();
-        state = in.readString();
-        country = in.readString();
-        zip = in.readString();
-        phone = in.readString();
-        email = in.readString();
-        items = in.readArrayList(null);
-        TYPE = in.readInt();
-        seller_order_id = in.readString();
-        delevery_status = in.readString();
-        user_delevery_status = in.readString();
-        seller_email = in.readString();
-        rating = in.readString();
-        seller_address = in.readString();
-    }
 
     @Override
     public int describeContents() {
@@ -226,16 +236,4 @@ public class SellerOrders implements Parcelable{
         dest.writeString(rating);
         dest.writeString(seller_address);
     }
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<SellerOrders> CREATOR = new Parcelable.Creator<SellerOrders>() {
-        @Override
-        public SellerOrders createFromParcel(Parcel in) {
-            return new SellerOrders(in);
-        }
-
-        @Override
-        public SellerOrders[] newArray(int size) {
-            return new SellerOrders[size];
-        }
-    };
 }

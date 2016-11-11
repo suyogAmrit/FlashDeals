@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.suyogindia.helpers.AppConstants;
 import com.suyogindia.helpers.AppHelpers;
@@ -245,13 +246,7 @@ public class VerifyOTPActivity extends AppCompatActivity {
                             saveUserId(userId);
 
                         } else {
-                            Snackbar snackbar = Snackbar.make(etOTP, response.body().getMessage(), Snackbar.LENGTH_SHORT);
-
-                            // Changing action button text color
-                            View sbView = snackbar.getView();
-                            TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-                            tvMessage.setTextColor(Color.YELLOW);
-                            snackbar.show();
+                            Toast.makeText(VerifyOTPActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }

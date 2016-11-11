@@ -151,9 +151,11 @@ public class OrderReviewActivity extends AppCompatActivity {
 
     private boolean checkAllData() {
         boolean canOrder = true;
-        for (ReviewOrderItem item : listItems) {
-            if (item.getType() == 2 && item.getReview_status() == 0) {
+        for (int i=0;i<listItems.size();i++) {
+            if (listItems.get(i).getType() == 2 && listItems.get(i).getReview_status() == 0) {
                 canOrder = false;
+                rvOrderReview.scrollToPosition(i);
+                break;
             }
         }
         return canOrder;
@@ -341,12 +343,12 @@ public class OrderReviewActivity extends AppCompatActivity {
             List<ReviewItem> itemList = s.getItems();
             for (ReviewItem item : itemList) {
                 ReviewOrderItem item2 = new ReviewOrderItem(2, item.getDealId(), item.getDescription(), item.getQuantity_available(),
-                        item.getReview_message(), item.getCategory_id(), item.getShipping_price(), item.getTotal_item_price(),
+                        item.getReview_message(), item.getCategory_id(),
                         item.getItem_price(), item.getOffer_price(), item.getDelivery_mode(), item.getReview_status());
                 listItems.add(item2);
             }
 
-            ReviewOrderItem item3 = new ReviewOrderItem(3, s.getSellerwise_total_price());
+            ReviewOrderItem item3 = new ReviewOrderItem(3, s.getSeller_item_price(),s.getSeller_shipping_charge(),s.getSeller_total_price());
             listItems.add(item3);
 
         }

@@ -215,7 +215,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onResponse(Call<RegisterUserResponse> call, Response<RegisterUserResponse> response) {
                 dialog.dismiss();
                 if (response.isSuccessful()) {
-                    Log.i("responsecode", String.valueOf(response.code()));
+                    Log.i("responsecode", response.body().getMessage()+response.body().getStatus());
 
                     if (response.body().getStatus().equals(AppConstants.SUCESS)) {
                         saveEmailAndMove(response.body().getEmail());

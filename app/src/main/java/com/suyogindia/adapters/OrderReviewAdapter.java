@@ -48,7 +48,7 @@ public class OrderReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_review_seller, parent, false);
             return new SellerFooterHolder(v);
         } else if (viewType == TYPE_GRAND) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_review_seller, parent, false);
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_review_grand_total, parent, false);
             return new GrandTotalHolder(v);
         } else if (viewType == TYPE_ADDRESS) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_cart_header, parent, false);
@@ -135,10 +135,7 @@ public class OrderReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView tvTotal;
         @BindView(R.id.tv_review_message)
         TextView tvMessge;
-        @BindView(R.id.tv_shipping_charge)
-        TextView tvShippingChages;
-        @BindView(R.id.tv_total_amount)
-        TextView tvTotalAmount;
+
         @BindView(R.id.btn_cart_edit)
         LinearLayout btnEdit;
         @BindView(R.id.btn_cart_remove)
@@ -154,8 +151,7 @@ public class OrderReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             tvOfferPrice.setText(AppConstants.RUPEE + " " + item.getOffer_price());
             tvQty.setText(item.getQuantity_available());
             tvTotal.setText(AppConstants.RUPEE + " " + item.getItem_price());
-            tvShippingChages.setText(AppConstants.RUPEE + " " + item.getShipping_price());
-            tvTotalAmount.setText(AppConstants.RUPEE + " " + item.getTotal_item_price());
+
             if (item.getReview_status() == 0) {
                 tvMessge.setVisibility(View.VISIBLE);
                 tvMessge.setText(item.getReview_message());
@@ -184,8 +180,12 @@ public class OrderReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     class SellerFooterHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.tv_grand_total)
-        TextView tvTotal;
+        @BindView(R.id.tv_total_item_price)
+        TextView tvTotalItem;
+        @BindView(R.id.tv_shipping_charges)
+        TextView tvShippingCarges;
+        @BindView(R.id.tv_seller_total)
+        TextView tvSellerTotal;
 
         public SellerFooterHolder(View itemView) {
             super(itemView);
@@ -193,7 +193,9 @@ public class OrderReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         public void bind(ReviewOrderItem item) {
-            tvTotal.setText(AppConstants.RUPEE + " " + item.getFooterItem());
+            tvTotalItem.setText(AppConstants.RUPEE + " " + item.getSeller_item_price());
+            tvShippingCarges.setText(AppConstants.RUPEE + " " + item.getSeller_shipping_charge());
+            tvSellerTotal.setText(AppConstants.RUPEE + " " + item.getSeller_total_price());
         }
     }
 

@@ -69,6 +69,7 @@ public class QuestionaryActivity extends AppCompatActivity implements View.OnCli
     String foodString, moviewStriing, cityString;
     Address officeaddress, homeAddress = null;
     ProgressDialog dialog;
+    InputMethodManager iim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,8 +167,11 @@ public class QuestionaryActivity extends AppCompatActivity implements View.OnCli
 
         QuestionRequest request = new QuestionRequest(userId);
         ArrayList<Address> list = new ArrayList<>();
-        list.add(officeaddress);
-        list.add(homeAddress);
+        if (officeaddress != null) {
+            list.add(officeaddress);
+        }
+        if (homeAddress != null)
+            list.add(homeAddress);
         ArrayList<String> listAnswrs = new ArrayList<>();
         listAnswrs.add(foodString);
         listAnswrs.add(moviewStriing);
@@ -218,7 +222,7 @@ public class QuestionaryActivity extends AppCompatActivity implements View.OnCli
         });
 
     }
-    InputMethodManager iim;
+
     private boolean validate() {
 
         iim.hideSoftInputFromInputMethod(etAlternaetPhone.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);

@@ -75,23 +75,7 @@ public class SelectDealsActivity extends AppCompatActivity {
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rvDeals.setLayoutManager(llm);
         listSelectedIds = new ArrayList<>();
-        adapter = new SelectDealsAdapter(this, new SelectDealsAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(ListCategoryResponse.Category item) {
-                boolean notPresent = true;
-                for (int i = 0; i < listSelectedIds.size(); i++) {
-                    String s = listSelectedIds.get(i);
-                    if (s.equals(item.getId())) {
-                        listSelectedIds.remove(i);
-                        notPresent = false;
-                        break;
-                    }
-                }
-                if (notPresent) {
-                    listSelectedIds.add(item.getId());
-                }
-            }
-        });
+        adapter = new SelectDealsAdapter(this);
 
         rvDeals.setAdapter(adapter);
     }
@@ -162,7 +146,7 @@ public class SelectDealsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_okay) {
             Log.i("size", String.valueOf(listSelectedIds.size()));
-            if (listSelectedIds.size() > 0) {
+            if (getSelectedDelas()) {
                 sendSelectedCategories();
             } else {
                 Snackbar snackbar = Snackbar.make(rvDeals, AppConstants.SELCTCATEGORY, Snackbar.LENGTH_SHORT);
@@ -174,8 +158,25 @@ public class SelectDealsActivity extends AppCompatActivity {
                 tvMessage.setTextColor(Color.YELLOW);
                 snackbar.show();
             }
+
         }
         return true;
+    }
+
+    private boolean getSelectedDelas() {
+        List<Integer> selectedPos = new ArrayList<>();
+        for (int i = 0; i < adapter.listSelected.size(); i++) {
+            if (adapter.listSelected.get(i)) {
+                selectedPos.add(i);
+            }
+        }
+        if (selectedPos.size() > 0) {
+            for (int i : selectedPos) {
+                listSelectedIds.add(adapter.list.get(i).getId());
+            }
+            return true;
+        } else
+            return false;
     }
 
     public void sendSelectedCategories() {

@@ -7,12 +7,21 @@ import java.util.List;
  */
 
 public class ReviewSeller {
-    String  sellerwise_total_price,seller_name, seller_email,category;
+    String  seller_name, seller_email,category,seller_item_price,seller_shipping_charge,seller_total_price;
     List<ReviewItem> items;
 
-    public String getSellerwise_total_price() {
-        return sellerwise_total_price;
+    public String getSeller_item_price() {
+        return seller_item_price;
     }
+
+    public String getSeller_shipping_charge() {
+        return seller_shipping_charge;
+    }
+
+    public String getSeller_total_price() {
+        return seller_total_price;
+    }
+
 
     public String getSeller_name() {
         return seller_name;

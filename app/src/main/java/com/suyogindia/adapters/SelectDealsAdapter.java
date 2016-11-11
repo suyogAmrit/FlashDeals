@@ -21,16 +21,13 @@ import java.util.List;
  */
 
 public class SelectDealsAdapter extends RecyclerView.Adapter<SelectDealsAdapter.ViewHolder> {
-    private final OnItemClickListener listener;
+   public List<Boolean> listSelected;
     private Context myContext;
-    private List<ListCategoryResponse.Category> list;
+    public List<ListCategoryResponse.Category> list;
 
-
-    public SelectDealsAdapter(Context myContext, OnItemClickListener listener) {
+    public SelectDealsAdapter(Context myContext) {
         this.myContext = myContext;
         list = new ArrayList<>();
-
-        this.listener = listener;
 
     }
 
@@ -38,6 +35,7 @@ public class SelectDealsAdapter extends RecyclerView.Adapter<SelectDealsAdapter.
         list.clear();
         list.addAll(categoryList);
         notifyDataSetChanged();
+        listSelected = new ArrayList<>(list.size());
     }
 
     @Override
@@ -49,8 +47,8 @@ public class SelectDealsAdapter extends RecyclerView.Adapter<SelectDealsAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.bind(list.get(position), listener);
-
+        holder.bind(list.get(position));
+        listSelected.add(false);
     }
 
     @Override
@@ -61,9 +59,6 @@ public class SelectDealsAdapter extends RecyclerView.Adapter<SelectDealsAdapter.
             return 0;
     }
 
-    public interface OnItemClickListener {
-        void onItemClick(ListCategoryResponse.Category item);
-    }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle;
@@ -75,20 +70,31 @@ public class SelectDealsAdapter extends RecyclerView.Adapter<SelectDealsAdapter.
             tvTitle = (TextView) itemView.findViewById(R.id.tv_select_deal_title);
             chDeal = (CheckBox) itemView.findViewById(R.id.ch_deals);
             cvDeals = (CardView) itemView.findViewById(R.id.cv_select_deals);
-            chDeal.setEnabled(false);
         }
 
-        void bind(final ListCategoryResponse.Category category, final OnItemClickListener listener) {
+        void bind(final ListCategoryResponse.Category category) {
             tvTitle.setText(category.getName());
             cvDeals.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (chDeal.isChecked()) {
+//                    if (chDeal.isChecked()) {
+//                        chDeal.setChecked(false);
+//                    } else {
+//                        chDeal.setChecked(true);
+//                    }
+                    if (listSelected.get(getAdapterPosition())) {
+                        listSelected.set(getAdapterPosition(), false);
                         chDeal.setChecked(false);
                     } else {
+                        listSelected.set(getAdapterPosition(), true);
                         chDeal.setChecked(true);
                     }
-                    listener.onItemClick(category);
+                }
+            });
+            chDeal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    listSelected.set(getAdapterPosition(), isChecked);
                 }
             });
         }

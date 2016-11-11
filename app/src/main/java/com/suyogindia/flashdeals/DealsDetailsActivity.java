@@ -247,9 +247,9 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
     private void setupUI(CheckDeliveryResponse body) {
         tvDelivery.setText(body.getMessage());
         if (body.getDelevery_area_status().equals(AppConstants.SUCESS)) {
-            tvDelivery.setTextColor(Color.parseColor("#d32f2f"));
-        } else {
             tvDelivery.setTextColor(Color.parseColor("#004D40"));
+        } else {
+            tvDelivery.setTextColor(Color.parseColor("#d32f2f"));
         }
         SharedPreferences shr = getSharedPreferences(AppConstants.USERPREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = shr.edit();

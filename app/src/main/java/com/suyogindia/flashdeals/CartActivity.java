@@ -90,7 +90,8 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void getGrandTotal() {
-
+        grandTotal = 0;
+        totalQunatity = 0;
         for (CartItem c : list) {
             if (c.getType() == 2) {
                 grandTotal = grandTotal + Double.parseDouble(c.getSeller().getTotalPrice());
@@ -120,17 +121,22 @@ public class CartActivity extends AppCompatActivity {
         CartItem item = list.get(adapterPosition);
         Seller mySeller = item.getSeller();
         mySeller.setDeleveryMode(a);
+        Log.i("sipping charge", mySeller.getShippingCharge());
         if (!TextUtils.isEmpty(mySeller.getMaxPrice())) {
-            if (a == 1 && Double.parseDouble(mySeller.getMaxPrice()) > Double.parseDouble(mySeller.getTotalPrice())) {
-                grandTotal = totalQunatity + Double.parseDouble(mySeller.getShippingCharge());
-                mySeller.setShippingAdded(2);
-            } else if (a == 2 && mySeller.getShippingAdded() == 2) {
-                grandTotal = totalQunatity - Double.parseDouble(mySeller.getShippingCharge());
-                mySeller.setShippingAdded(1);
+            if (a == 1) {
+                if (Double.parseDouble(mySeller.getMaxPrice()) > Double.parseDouble(mySeller.getTotalPrice())) {
+                    grandTotal = grandTotal + Double.parseDouble(mySeller.getShippingCharge());
+                    mySeller.setShippingAdded(2);
+                }
+
+            } else if (a == 2) {
+                if (mySeller.getShippingAdded() == 2) {
+                    grandTotal = grandTotal - Double.parseDouble(mySeller.getShippingCharge());
+                    mySeller.setShippingAdded(1);
+                }
             }
         }
-
-        CartItem grandItem = list.get(list.size() - 1);
+        CartItem grandItem = list.get(0);
         grandItem.setGrandTotal(String.valueOf(grandTotal));
         adapter.add(list);
     }
@@ -146,7 +152,7 @@ public class CartActivity extends AppCompatActivity {
 
         if (item.getItemId() == R.id.action_place_order) {
             boolean modeDelivery = true;
-            for (int i = 0;i<list.size();i++) {
+            for (int i = 0; i < list.size(); i++) {
                 if (list.get(i).getType() == 2) {
                     if (list.get(i).getSeller().getDeleveryMode() == 0) {
                         modeDelivery = false;

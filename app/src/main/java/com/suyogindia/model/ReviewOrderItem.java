@@ -8,29 +8,33 @@ public class ReviewOrderItem {
     int type;
     String seller_name, seller_email, seller_category;
 
-    String dealId, description, quantity_available, review_message, category_id, shipping_price, total_item_price, item_price, offer_price, deliver_mode;
+    String dealId, description, quantity_available, review_message, category_id, item_price, offer_price, deliver_mode;
     int review_status;
-
+    String seller_item_price, seller_shipping_charge, seller_total_price;
     String footerItem;
 
     public ReviewOrderItem(int type, String seller_name, String seller_email, String seller_category) {
         this.type = type;
-        this.seller_name = seller_name;
-        this.seller_email = seller_email;
-        this.seller_category = seller_category;
+        if (type == 1) {
+            this.seller_name = seller_name;
+            this.seller_email = seller_email;
+            this.seller_category = seller_category;
+        } else if (type == 3) {
+            this.seller_item_price = seller_name;
+            this.seller_shipping_charge = seller_email;
+            this.seller_total_price = seller_category;
+        }
     }
 
     public ReviewOrderItem(int type, String dealId, String description, String quantity_available,
-                           String review_message, String category_id, String shipping_price, String total_item_price,
-                           String item_price, String offer_price,String deliver_mode, int review_status) {
+                           String review_message, String category_id,
+                           String item_price, String offer_price, String deliver_mode, int review_status) {
         this.type = type;
         this.dealId = dealId;
         this.description = description;
         this.quantity_available = quantity_available;
         this.review_message = review_message;
         this.category_id = category_id;
-        this.shipping_price = shipping_price;
-        this.total_item_price = total_item_price;
         this.item_price = item_price;
         this.offer_price = offer_price;
         this.deliver_mode = deliver_mode;
@@ -82,12 +86,16 @@ public class ReviewOrderItem {
         return category_id;
     }
 
-    public String getShipping_price() {
-        return shipping_price;
+    public String getSeller_item_price() {
+        return seller_item_price;
     }
 
-    public String getTotal_item_price() {
-        return total_item_price;
+    public String getSeller_shipping_charge() {
+        return seller_shipping_charge;
+    }
+
+    public String getSeller_total_price() {
+        return seller_total_price;
     }
 
     public String getItem_price() {
