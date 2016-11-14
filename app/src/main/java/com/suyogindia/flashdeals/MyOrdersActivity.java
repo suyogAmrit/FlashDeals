@@ -2,13 +2,17 @@ package com.suyogindia.flashdeals;
 
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.suyogindia.adapters.OrdersDetailAdapter;
@@ -63,17 +67,33 @@ public class MyOrdersActivity extends AppCompatActivity {
         retrofit = new Retrofit.Builder().baseUrl(AppConstants.BASEURL).addConverterFactory(GsonConverterFactory.create()).build();
         flasDealApi = retrofit.create(FlasDealApi.class);
         orderseList = new ArrayList<>();
-        dialog = AppHelpers.showProgressDialog(MyOrdersActivity.this, "Showing Orders...");
-        dialog.show();
+
+        getMyOrders();
+    }
+
+    private void getMyOrders() {
         if (AppHelpers.isConnectingToInternet(MyOrdersActivity.this)) {
             showMyOrders();
         } else {
-            Toast.makeText(MyOrdersActivity.this, AppConstants.PLEASE_CONNCT, Toast.LENGTH_SHORT).show();
+            Snackbar snackbar = Snackbar.make(rcvMyOrders, AppConstants.NONETWORK, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(AppConstants.TRYAGAIN, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            getMyOrders();
+                        }
+                    });
+            snackbar.setActionTextColor(Color.RED);
+            View sbView = snackbar.getView();
+            TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            tvMessage.setTextColor(Color.YELLOW);
+            snackbar.show();
         }
 
     }
 
     private void showMyOrders() {
+        dialog = AppHelpers.showProgressDialog(MyOrdersActivity.this, "Showing Orders...");
+        dialog.show();
         Map<String, String> orderMap = new HashMap<>(1);
         orderMap.put(AppConstants.USERID, userId);
         orderResponseCall = flasDealApi.getMyOrders(orderMap);
@@ -86,7 +106,7 @@ public class MyOrdersActivity extends AppCompatActivity {
                     if (response.body().getStatus().equals("1")) {
                         orderseList = response.body().getOrder();
                         //if (orderseList != null && orderseList.size() > 0)
-                            //adapter.add(getItemOrdersFrom(orderseList));
+                        //adapter.add(getItemOrdersFrom(orderseList));
 
                     }
                 }
@@ -95,7 +115,7 @@ public class MyOrdersActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<OrderDetailResponse> call, Throwable t) {
                 dialog.dismiss();
-                Log.v(AppConstants.ERROR, t.getMessage());
+                Log.e(AppConstants.ERROR, t.getMessage());
             }
         });
     }

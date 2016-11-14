@@ -26,9 +26,9 @@ import java.util.ArrayList;
  */
 
 public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapter.MyOrderDetailsViewHolder> {
-    public static final int TYPE_SELLER = 0;
-    public static final int TYPE_ITEMS = 1;
-    public static final int TYPE_STATUS = 2;
+    private static final int TYPE_SELLER = 0;
+    private static final int TYPE_ITEMS = 1;
+    private static final int TYPE_STATUS = 2;
     private Context context;
     //private ArrayList<OrderItem> list;
     private ArrayList<ItemOrder>list;
