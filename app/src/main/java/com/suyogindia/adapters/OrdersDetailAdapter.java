@@ -174,7 +174,6 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
 
     @Override
     public int getItemViewType(int position) {
-        //return super.getItemViewType(position);
         if (list.get(position).getType() == 0) {
             return TYPE_SELLER;
         }else if (list.get(position).getType()==2){
