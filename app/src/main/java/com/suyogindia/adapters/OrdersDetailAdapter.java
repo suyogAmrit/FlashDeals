@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -13,10 +14,10 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.suyogindia.flashdeals.MyOrdersActivity;
+import com.suyogindia.flashdeals.OrdersActivity;
 import com.suyogindia.flashdeals.R;
 import com.suyogindia.helpers.AppConstants;
-import com.suyogindia.model.OrderItem;
+import com.suyogindia.model.ItemOrder;
 
 import java.util.ArrayList;
 
@@ -29,7 +30,8 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
     public static final int TYPE_ITEMS = 1;
     public static final int TYPE_STATUS = 2;
     private Context context;
-    private ArrayList<OrderItem> list;
+    //private ArrayList<OrderItem> list;
+    private ArrayList<ItemOrder>list;
 
 
     public OrdersDetailAdapter(Context context) {
@@ -56,7 +58,7 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
 
     @Override
     public void onBindViewHolder(MyOrderDetailsViewHolder holder, final int position) {
-        final OrderItem orders = list.get(position);
+        final ItemOrder orders = list.get(position);
         switch (orders.getType()) {
             case 0:
                 if (holder instanceof SellersViewHolder) {
@@ -67,18 +69,37 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
                     sellersViewHolder.txtSellerOrderId.setText("Order Id: " + orders.getSeller_order_id());
                     sellersViewHolder.txtSellerAddr.setText(orders.getSeller_address());
                     sellersViewHolder.txtSellerPhone.setText(orders.getPhone());
+                    sellersViewHolder.txtSellerShippingCharge.setText(AppConstants.RUPEE+orders.getShipping_charge());
+                    sellersViewHolder.txtSellerTotalPrice.setText(AppConstants.RUPEE+orders.getSeller_total_price());
+                    sellersViewHolder.imgCall.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ((OrdersActivity)context).requestCallSeller(orders.getPhone());
+                        }
+                    });
+                    sellersViewHolder.txtSellerOrderDate.setText("Ordered date:"+orders.getOrder_date());
                 }
                 break;
             case 1:
                 if (holder instanceof ItemsViewHolder) {
                     ItemsViewHolder itemsViewHolder = (ItemsViewHolder) holder;
 
-                    itemsViewHolder.txtItemDesc.setText(orders.getOrders().getDescription());
-                    itemsViewHolder.txtItemMrp.setText(AppConstants.RUPEE + orders.getOrders().getMrp());
-                    itemsViewHolder.txtItemOfferPrice.setText(AppConstants.RUPEE +orders.getOrders().getOffer_price());
-                    itemsViewHolder.txtItemDiscount.setText(orders.getOrders().getDiscount() + "%");
-                    itemsViewHolder.txtItemOfferStartTime.setText(orders.getOrders().getOffer_start_time());
-                    itemsViewHolder.txtItemOfferEndTime.setText(orders.getOrders().getOffer_end_time());
+//                    itemsViewHolder.txtItemDesc.setText(orders.getOrders().getDescription());
+//                    itemsViewHolder.txtItemMrp.setText(AppConstants.RUPEE + orders.getOrders().getMrp());
+//                    itemsViewHolder.txtItemOfferPrice.setText(AppConstants.RUPEE +orders.getOrders().getOffer_price());
+//                    itemsViewHolder.txtItemDiscount.setText(orders.getOrders().getDiscount() + "%");
+//                    itemsViewHolder.txtItemOfferStartTime.setText(orders.getOrders().getOffer_start_time());
+//                    itemsViewHolder.txtItemOfferEndTime.setText(orders.getOrders().getOffer_end_time());
+
+                    itemsViewHolder.txtItemDesc.setText(orders.getItem().getDescription());
+                    itemsViewHolder.txtItemMrp.setText(AppConstants.RUPEE + orders.getItem().getMrp());
+                    itemsViewHolder.txtItemOfferPrice.setText(AppConstants.RUPEE +orders.getItem().getOffer_price());
+                    itemsViewHolder.txtItemDiscount.setText(orders.getItem().getDiscount() + "%");
+                    itemsViewHolder.txtItemOfferStartTime.setText(orders.getItem().getOffer_start_time());
+                    itemsViewHolder.txtItemOfferEndTime.setText(orders.getItem().getOffer_end_time());
+                    itemsViewHolder.txtItemTotalAmount.setText(AppConstants.RUPEE+orders.getItem().getTotal_price());
+                    itemsViewHolder.txtQuantity.setText(""+orders.getItem().getQuantity());
+                    itemsViewHolder.txtOrderDate.setText(orders.getItem().getOrder_date());
                 }
                 break;
             case 2:
@@ -108,16 +129,16 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
                             String ids;
                             if (checkedId == R.id.yesRadioGrp) {
                                 ids = "1";
-                                ((MyOrdersActivity) context).sendRadioRespond(orders.getSeller_order_id(), ids);
-                                if (!TextUtils.isEmpty(MyOrdersActivity.responseString)) {
-                                    if (MyOrdersActivity.responseString.equals("1")) {
+                                ((OrdersActivity) context).sendRadioRespond(orders.getSeller_order_id(), ids);
+                                if (!TextUtils.isEmpty(OrdersActivity.responseString)) {
+                                    if (OrdersActivity.responseString.equals("1")) {
                                         statsusViewHolder.relYesNo.setVisibility(View.GONE);
                                     }
                                 }
                             }
                             if (checkedId == R.id.noRadioGrp) {
                                 ids = "2";
-                                ((MyOrdersActivity) context).sendRadioRespond(orders.getSeller_order_id(), ids);
+                                ((OrdersActivity) context).sendRadioRespond(orders.getSeller_order_id(), ids);
                                 statsusViewHolder.relYesNo.setVisibility(View.VISIBLE);
                             }
                         }
@@ -127,7 +148,7 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
                     statsusViewHolder.ratingSeller.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                         @Override
                         public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                            ((MyOrdersActivity) context).rateSeller(orders.getSeller_email(), MyOrdersActivity.userDemoid, orders.getSeller_order_id(), rating);
+                            ((OrdersActivity) context).rateSeller(orders.getSeller_email(), OrdersActivity.userDemoid, orders.getSeller_order_id(), rating);
                         }
                     });
 
@@ -153,20 +174,20 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
         }
     }
 
-    public void add(ArrayList<OrderItem> itemOrdersFrom) {
+    public void add(ArrayList<ItemOrder> itemOrdersFrom) {
         list.clear();
         list.addAll(itemOrdersFrom);
         notifyDataSetChanged();
     }
 
     public class SellersViewHolder extends MyOrderDetailsViewHolder {
-        TextView txtSellerEmail, txtSellerDlvryMode, txtSellerShippingCharge, txtSellerAddr, txtSellerCity, txtSellerState, txtSellerCountry, txtSellerZip, txtSellerPhone, txtSellerAddrEmail, txtSellerOrderId, txtSellerDeliveryStatus;
-
+        TextView txtSellerEmail, txtSellerDlvryMode, txtSellerShippingCharge, txtSellerAddr, txtSellerCity, txtSellerState, txtSellerCountry, txtSellerZip, txtSellerPhone, txtSellerAddrEmail, txtSellerOrderId, txtSellerDeliveryStatus,txtSellerTotalPrice,txtSellerOrderDate;
+        ImageView imgCall;
         public SellersViewHolder(View itemView) {
             super(itemView);
             txtSellerEmail = (TextView) itemView.findViewById(R.id.txtSellerEmail);
 //            txtSellerDlvryMode = (TextView)itemView.findViewById(R.id.txtSellerDlvryMode);
-//            txtSellerShippingCharge = (TextView)itemView.findViewById(R.id.txtSellerShippingCharge);
+            txtSellerShippingCharge = (TextView)itemView.findViewById(R.id.txtSellerShippingCharge);
             txtSellerAddr = (TextView) itemView.findViewById(R.id.txtSellerAddr);
 //            txtSellerCity = (TextView)itemView.findViewById(R.id.txtSellerCity);
 //            txtSellerState = (TextView)itemView.findViewById(R.id.txtSellerState);
@@ -176,11 +197,14 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
 //            txtSellerAddrEmail = (TextView)itemView.findViewById(R.id.txtSellerAddrEmail);
             txtSellerOrderId = (TextView) itemView.findViewById(R.id.txtSellerOrderId);
             //txtSellerDeliveryStatus = (TextView)itemView.findViewById(R.id.txtSellerDeliveryStatus);
+            txtSellerTotalPrice = (TextView)itemView.findViewById(R.id.txtSellerTotalPrice);
+            imgCall = (ImageView)itemView.findViewById(R.id.imgCall);
+            txtSellerOrderDate = (TextView)itemView.findViewById(R.id.txtSellerOrderDate);
         }
     }
 
     public class ItemsViewHolder extends MyOrderDetailsViewHolder {
-        TextView txtItemDesc, txtItemMrp, txtItemOfferPrice, txtItemDiscount, txtItemOfferStartTime, txtItemOfferEndTime;
+        TextView txtItemDesc, txtItemMrp, txtItemOfferPrice, txtItemDiscount, txtItemOfferStartTime, txtItemOfferEndTime,txtItemTotalAmount,txtQuantity,txtOrderDate;
 
         public ItemsViewHolder(View itemView) {
             super(itemView);
@@ -190,6 +214,10 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
             txtItemDiscount = (TextView) itemView.findViewById(R.id.txtItemDiscount);
             txtItemOfferStartTime = (TextView) itemView.findViewById(R.id.txtItemOfferStartTime);
             txtItemOfferEndTime = (TextView) itemView.findViewById(R.id.txtItemOfferEndTime);
+            txtItemTotalAmount = (TextView)itemView.findViewById(R.id.txtItemTotalAmount);
+            txtQuantity = (TextView)itemView.findViewById(R.id.txtQuantity);
+            txtOrderDate = (TextView)itemView.findViewById(R.id.txtOrderDate);
+
         }
     }
 

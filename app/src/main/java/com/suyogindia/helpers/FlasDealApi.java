@@ -1,5 +1,6 @@
 package com.suyogindia.helpers;
 
+import com.suyogindia.model.MyOrderResponse;
 import com.suyogindia.model.OrderDetailResponse;
 import com.suyogindia.model.OrderResponse;
 import com.suyogindia.model.Profile;
@@ -18,6 +19,9 @@ import retrofit2.http.POST;
 public interface FlasDealApi {
     @POST("user_order_show.php")
     Call<OrderDetailResponse> getMyOrders(@Body Map<String,String>object);
+    //Last new Change
+    @POST("user_order_show.php")
+    Call<MyOrderResponse> getMyOrder(@Body Map<String,String>object);
     @POST("user_order_detail_show.php")
     Call<OrderDetailResponse> getAllOrderDetails(@Body Map<String,String>object);
     @POST("show_user_profile.php")

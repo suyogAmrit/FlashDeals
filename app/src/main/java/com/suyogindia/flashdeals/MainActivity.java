@@ -262,7 +262,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                         myDrawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     case R.id.nav_my_orders:
-                        Intent intent = new Intent(MainActivity.this, MyOrdersActivity.class);
+                        //Intent intent = new Intent(MainActivity.this, MyOrdersActivity.class);
+                        Intent intent = new Intent(MainActivity.this,OrdersActivity.class);
                         startActivity(intent);
                         break;
 

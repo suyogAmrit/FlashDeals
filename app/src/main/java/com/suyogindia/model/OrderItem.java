@@ -13,6 +13,18 @@ public class OrderItem implements Parcelable{
     private String user_delevery_status;
     private String rating;
     private String phone;
+    private String seller_address;
+    private String seller_city;
+    private String seller_state;
+    private String seller_country;
+    private String seller_zip;
+    private String seller_phone;
+    private String email;
+    //ItemOrders orders;
+    ItemOrders orders;
+    private String seller_order_id;
+    private String delevery_status;
+    private String seller_email;
 
     public String getPhone() {
         return phone;
@@ -41,16 +53,11 @@ public class OrderItem implements Parcelable{
         this.seller_address = seller_address;
     }
 
-    private String seller_address;
-    private String seller_city;
-    private String seller_state;
-    private String seller_country;
-    private String seller_zip;
-    private String seller_phone;
-    private String email;
-    ItemOrders orders;
-    private String seller_order_id;
-    private String delevery_status;
+
+
+
+
+
 
     public String getSeller_email() {
         return seller_email;
@@ -60,7 +67,7 @@ public class OrderItem implements Parcelable{
         this.seller_email = seller_email;
     }
 
-    private String seller_email;
+
 
     protected  OrderItem(Parcel in){
         type = in.readInt();
