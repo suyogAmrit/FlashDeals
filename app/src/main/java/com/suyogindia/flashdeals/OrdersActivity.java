@@ -112,7 +112,7 @@ public class OrdersActivity extends AppCompatActivity {
     private ArrayList<ItemOrder> getItemOrdersFrom(ArrayList<Order> orderseList) {
         ArrayList<ItemOrder> itemOrdersArrayList = new ArrayList<>();
         for (Order order : orderseList) {
-            ItemOrder itemSeller = new ItemOrder(0, order.getSeller_name(), order.getSeller_order_id(), order.getSeller_address(), order.getPhone(),order.getShipping_charge(),order.getSeller_total_price(),order.getOrder_date());
+            ItemOrder itemSeller = new ItemOrder(0, order.getSeller_name(), order.getSeller_order_id(), order.getSeller_address(), order.getPhone(),order.getShipping_charge(),order.getSeller_total_price(),order.getOrder_date(),order.getContact_number());
             itemOrdersArrayList.add(itemSeller);
             ArrayList<Item> arrayList = order.getItems();
             for (Item i : arrayList) {
@@ -120,7 +120,9 @@ public class OrdersActivity extends AppCompatActivity {
                 item.setItem(i);
                 itemOrdersArrayList.add(item);
             }
-            ItemOrder orderItem = new ItemOrder(2, order.getSeller_name(), order.getDelevery_mode(), order.getShipping_charge(),
+            ItemOrder itemdelivery = new ItemOrder(2,order.getDelevery_info());
+            itemOrdersArrayList.add(itemdelivery);
+            ItemOrder orderItem = new ItemOrder(3, order.getSeller_name(), order.getDelevery_mode(), order.getShipping_charge(),
                     order.getAddress(), order.getCity(), order.getState(), order.getCountry(), order.getZip(), order.getPhone(), order.getEmail(), order.getDelevery_status(), order.getUser_delevery_status(), order.getSeller_order_id(), order.getSeller_email(), order.getRating());
             itemOrdersArrayList.add(orderItem);
         }

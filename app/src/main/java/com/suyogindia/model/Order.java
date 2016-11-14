@@ -28,6 +28,27 @@ public class Order implements Parcelable{
     private String email;
     private double seller_total_price;
     private String order_date;
+    private String contact_number;
+
+    public DeleiveryInfo getDelevery_info() {
+        return delevery_info;
+    }
+
+    public void setDelevery_info(DeleiveryInfo delevery_info) {
+        this.delevery_info = delevery_info;
+    }
+
+    private DeleiveryInfo delevery_info;
+
+
+
+    public String getContact_number() {
+        return contact_number;
+    }
+
+    public void setContact_number(String contact_number) {
+        this.contact_number = contact_number;
+    }
 
     public String getOrder_date() {
         return order_date;
@@ -68,6 +89,7 @@ public class Order implements Parcelable{
         items = in.createTypedArrayList(Item.CREATOR);
         seller_total_price =in.readDouble();
         order_date = in.readString();
+        contact_number = in.readString();
     }
 
     public static final Creator<Order> CREATOR = new Creator<Order>() {
@@ -246,5 +268,6 @@ public class Order implements Parcelable{
         dest.writeTypedList(items);
         dest.writeDouble(seller_total_price);
         dest.writeString(order_date);
+        dest.writeString(contact_number);
     }
 }

@@ -28,7 +28,8 @@ import java.util.ArrayList;
 public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapter.MyOrderDetailsViewHolder> {
     public static final int TYPE_SELLER = 0;
     public static final int TYPE_ITEMS = 1;
-    public static final int TYPE_STATUS = 2;
+    public static final int TYPE_DELIVERY = 2;
+    public static final int TYPE_STATUS = 3;
     private Context context;
     //private ArrayList<OrderItem> list;
     private ArrayList<ItemOrder>list;
@@ -49,6 +50,10 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
             View view = LayoutInflater.from(context).inflate(R.layout.item_list, parent, false);
             return new ItemsViewHolder(view);
         }
+        if (viewType == TYPE_DELIVERY){
+            View view = LayoutInflater.from(context).inflate(R.layout.delivery_info,parent,false);
+            return new DeliveryViewHolder(view);
+        }
         if (viewType == TYPE_STATUS) {
             View view = LayoutInflater.from(context).inflate(R.layout.status_list, parent, false);
             return new StatsusViewHolder(view);
@@ -68,13 +73,13 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
                     }
                     sellersViewHolder.txtSellerOrderId.setText("Order Id: " + orders.getSeller_order_id());
                     sellersViewHolder.txtSellerAddr.setText(orders.getSeller_address());
-                    sellersViewHolder.txtSellerPhone.setText(orders.getPhone());
+                    sellersViewHolder.txtSellerPhone.setText(orders.getContact_number());
                     sellersViewHolder.txtSellerShippingCharge.setText(AppConstants.RUPEE+orders.getShipping_charge());
                     sellersViewHolder.txtSellerTotalPrice.setText(AppConstants.RUPEE+orders.getSeller_total_price());
                     sellersViewHolder.imgCall.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ((OrdersActivity)context).requestCallSeller(orders.getPhone());
+                            ((OrdersActivity)context).requestCallSeller(orders.getContact_number());
                         }
                     });
                     sellersViewHolder.txtSellerOrderDate.setText("Ordered date:"+orders.getOrder_date());
@@ -83,13 +88,6 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
             case 1:
                 if (holder instanceof ItemsViewHolder) {
                     ItemsViewHolder itemsViewHolder = (ItemsViewHolder) holder;
-
-//                    itemsViewHolder.txtItemDesc.setText(orders.getOrders().getDescription());
-//                    itemsViewHolder.txtItemMrp.setText(AppConstants.RUPEE + orders.getOrders().getMrp());
-//                    itemsViewHolder.txtItemOfferPrice.setText(AppConstants.RUPEE +orders.getOrders().getOffer_price());
-//                    itemsViewHolder.txtItemDiscount.setText(orders.getOrders().getDiscount() + "%");
-//                    itemsViewHolder.txtItemOfferStartTime.setText(orders.getOrders().getOffer_start_time());
-//                    itemsViewHolder.txtItemOfferEndTime.setText(orders.getOrders().getOffer_end_time());
 
                     itemsViewHolder.txtItemDesc.setText(orders.getItem().getDescription());
                     itemsViewHolder.txtItemMrp.setText(AppConstants.RUPEE + orders.getItem().getMrp());
@@ -103,6 +101,18 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
                 }
                 break;
             case 2:
+                if (holder instanceof DeliveryViewHolder){
+                    DeliveryViewHolder deliveryViewHolder = (DeliveryViewHolder) holder;
+                    if (orders.getDelevery_info().getDelevery_mode().equals("2")){
+                        deliveryViewHolder.txtdeliveryInfo.setText("Please pick from Seller");
+                    }else {
+                            deliveryViewHolder.txtdeliveryInfo.setText("Delivery Address : " + orders.getDelevery_info().getAddress() + "," +
+                                    orders.getDelevery_info().getCity() + "," + orders.getDelevery_info().getState() + "," + orders.getDelevery_info().getCountry()
+                                    + "," + orders.getDelevery_info().getZip() + "," + orders.getDelevery_info().getEmail() + "," + orders.getDelevery_info().getPhone());
+                    }
+                }
+                break;
+            case 3:
                 if (holder instanceof StatsusViewHolder) {
                     final StatsusViewHolder statsusViewHolder = (StatsusViewHolder) holder;
                     if (orders.getDelevery_status().equals("0")) {
@@ -167,7 +177,10 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
         //return super.getItemViewType(position);
         if (list.get(position).getType() == 0) {
             return TYPE_SELLER;
-        } else if (list.get(position).getType() == 2) {
+        }else if (list.get(position).getType()==2){
+            return TYPE_DELIVERY;
+        }
+        else if (list.get(position).getType() == 3) {
             return TYPE_STATUS;
         } else {
             return TYPE_ITEMS;
@@ -238,6 +251,13 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
             yesRadioGrp = (RadioButton) itemView.findViewById(R.id.yesRadioGrp);
             noRadioGrp = (RadioButton) itemView.findViewById(R.id.noRadioGrp);
             ratingSeller = (RatingBar) itemView.findViewById(R.id.ratingSeller);
+        }
+    }
+    public class DeliveryViewHolder extends MyOrderDetailsViewHolder{
+        TextView txtdeliveryInfo;
+        public DeliveryViewHolder(View itemView) {
+            super(itemView);
+            txtdeliveryInfo = (TextView)itemView.findViewById(R.id.txtdeliveryInfo);
         }
     }
 

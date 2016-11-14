@@ -10,6 +10,24 @@ import android.os.Parcelable;
 public class ItemOrder implements Parcelable{
     int type;
     private double seller_total_price;
+    private String contact_number;
+
+    public DeleiveryInfo getDelevery_info() {
+        return delevery_info;
+    }
+
+    public void setDelevery_info(DeleiveryInfo delevery_info) {
+        this.delevery_info = delevery_info;
+    }
+
+    private DeleiveryInfo delevery_info;
+
+    public ItemOrder(int i, DeleiveryInfo deleiveryInfo) {
+        this.type = i;
+        this.delevery_info = deleiveryInfo;
+    }
+
+
 
     public String getOrder_date() {
         return order_date;
@@ -50,6 +68,7 @@ public class ItemOrder implements Parcelable{
         item = in.readParcelable(Item.class.getClassLoader());
         seller_total_price = in.readDouble();
         order_date = in.readString();
+        contact_number = in.readString();
     }
 
     public static final Creator<ItemOrder> CREATOR = new Creator<ItemOrder>() {
@@ -231,6 +250,14 @@ public class ItemOrder implements Parcelable{
         return 0;
     }
 
+    public String getContact_number() {
+        return contact_number;
+    }
+
+    public void setContact_number(String contact_number) {
+        this.contact_number = contact_number;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(type);
@@ -253,6 +280,7 @@ public class ItemOrder implements Parcelable{
         dest.writeParcelable(item, flags);
         dest.writeDouble(seller_total_price);
         dest.writeString(order_date);
+        dest.writeString(contact_number);
     }
     public ItemOrder(int type, String seller_name, String seller_delevery_mode, double seller_shipping_charge, String seller_address, String seller_city, String seller_state, String seller_country, String seller_zip, String seller_phone, String email,String delevery_status,String user_delevery_status,String seller_order_id,String seller_email,float rating) {
         this.type = type;
@@ -273,7 +301,7 @@ public class ItemOrder implements Parcelable{
         this.rating = rating;
     }
 
-    public ItemOrder(int type, String seller_name, String seller_order_id,String seller_address,String phone,double shiping_charge,double seller_total_price, String order_date) {
+    public ItemOrder(int type, String seller_name, String seller_order_id,String seller_address,String phone,double shiping_charge,double seller_total_price, String order_date,String contact_number) {
         this.type = type;
         this.seller_name = seller_name;
         this.seller_order_id = seller_order_id;
@@ -282,5 +310,6 @@ public class ItemOrder implements Parcelable{
         this.shipping_charge = shiping_charge;
         this.seller_total_price = seller_total_price;
         this.order_date = order_date;
+        this.contact_number = contact_number;
     }
 }
