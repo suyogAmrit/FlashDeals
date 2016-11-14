@@ -3,14 +3,15 @@
     <item
         android:id="@+id/nav_deals"
         android:icon="@drawable/ic_product"
-        android:title="Deals" />
+        android:title="DEALS" />
     <item
         android:id="@+id/nav_my_orders"
         android:icon="@drawable/ic_order"
-        android:title="My Orders" />
+        android:title="MY ORDERS" />
 
-    <item android:id="@+id/nav_profile"
+    <item
+        android:id="@+id/nav_profile"
         android:icon="@drawable/ic_profile"
-        android:title="My Profile"/>
+        android:title="MY PROFILE" />
 
 </menu>

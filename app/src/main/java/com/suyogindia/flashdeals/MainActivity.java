@@ -274,17 +274,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 return true;
             }
         });
-        View header = myNavigationView.getHeaderView(0);
-        TextView tvEmail = (TextView) header.findViewById(R.id.tv_email);
-        tvEmail.setText(email);
-        imgEditProfile = (LinearLayout) header.findViewById(R.id.imgEditProfile);
-        imgEditProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MyProfileActivity.class);
-                startActivity(intent);
-            }
-        });
+//        View header = myNavigationView.getHeaderView(0);
+//        TextView tvEmail = (TextView) header.findViewById(R.id.tv_email);
+//        tvEmail.setText(email);
+//        imgEditProfile = (LinearLayout) header.findViewById(R.id.imgEditProfile);
+//        imgEditProfile.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MainActivity.this, MyProfileActivity.class);
+//                startActivity(intent);
+//            }
+//        });
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, myDrawerLayout, toolbar,
                 R.string.drawer_open, R.string.drawer_close) {
             @Override

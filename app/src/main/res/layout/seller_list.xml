@@ -1,207 +1,222 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="5dp"
         android:orientation="horizontal">
+
         <TextView
+            android:id="@+id/txtSellerOrderId"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:id="@+id/txtSellerOrderId"
             android:layout_alignParentLeft="true"
             android:layout_weight="0.35"
-            android:textSize="13sp"
-            android:textStyle="bold"
             android:maxLines="1"
-            />
+            android:textColor="@android:color/black"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
         <TextView
+            android:id="@+id/txtSellerOrderDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:layout_weight="0.65"
-            android:id="@+id/txtSellerOrderDate"
             android:layout_alignParentRight="true"
-            android:textSize="13sp"
-            android:textStyle="bold"
+            android:layout_weight="0.65"
             android:gravity="end|right"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            android:textColor="@android:color/black"
+            android:textSize="13sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:text="Name"
-            android:textSize="15sp"
             android:textColor="@android:color/black"
-            android:layout_alignParentLeft="true"/>
+            android:textSize="15sp" />
+
         <TextView
+            android:id="@+id/txtSellerEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txtSellerEmail"
-            android:paddingRight="3dp"
-            android:textSize="14sp"
+            android:layout_alignParentRight="true"
             android:maxLines="1"
-            android:layout_alignParentRight="true"/>
+            android:paddingRight="3dp"
+            android:textSize="14sp" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:text="Address"
-            android:textSize="15sp"
             android:textColor="@android:color/black"
-            android:layout_alignParentLeft="true"/>
+            android:textSize="15sp" />
+
         <TextView
+            android:id="@+id/txtSellerAddr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:paddingRight="3dp"
-            android:textSize="14sp"
-            android:maxLines="1"
             android:layout_alignParentRight="true"
-            android:id="@+id/txtSellerAddr"/>
+            android:layout_marginTop="5dp"
+            android:maxLines="1"
+            android:paddingRight="3dp"
+            android:textSize="14sp" />
 
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:text="Phone"
-            android:textSize="15sp"
             android:textColor="@android:color/black"
-            android:layout_alignParentLeft="true"/>
+            android:textSize="15sp" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp"
             android:layout_alignParentRight="true"
-            >
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
             <TextView
+                android:id="@+id/txtSellerPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
                 android:maxLines="1"
                 android:text="63737837837378"
-                android:id="@+id/txtSellerPhone"/>
+                android:textSize="14sp" />
+
             <ImageView
+                android:id="@+id/imgCall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
                 android:maxLines="1"
                 android:src="@android:drawable/ic_menu_call"
-                android:id="@+id/imgCall"/>
+                android:textSize="14sp" />
         </LinearLayout>
 
     </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Shipping Charge"
-            android:textSize="15sp"
-            android:textColor="@android:color/black"
-            android:layout_alignParentLeft="true"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="14sp"
-            android:maxLines="1"
-            android:layout_marginTop="5dp"
-            android:layout_alignParentRight="true"
-            android:id="@+id/txtSellerShippingCharge"/>
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Total Amount"
-            android:textSize="15sp"
-            android:textColor="@android:color/black"
-            android:layout_alignParentLeft="true"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="14sp"
-            android:maxLines="1"
-            android:layout_marginTop="5dp"
-            android:layout_alignParentRight="true"
-            android:id="@+id/txtSellerTotalPrice"/>
-    </RelativeLayout>
-        <!--<TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="5dp"
-            android:id="@+id/txtSellerDlvryMode"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="5dp"
-            android:id="@+id/txtSellerDeliveryStatus"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="5dp"
-            android:id="@+id/txtSellerShippingCharge"/>-->
 
-        <!--<TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="5dp"
-            android:id="@+id/txtSellerCity"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="Shipping Charge"
             android:textColor="@android:color/black"
-            android:layout_marginTop="5dp"
-            android:id="@+id/txtSellerState"/>
+            android:textSize="15sp" />
+
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/txtSellerShippingCharge"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
+            android:layout_alignParentRight="true"
             android:layout_marginTop="5dp"
-            android:id="@+id/txtSellerCountry"/>
+            android:maxLines="1"
+            android:textColor="@android:color/black"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="Total Amount"
             android:textColor="@android:color/black"
-            android:layout_marginTop="5dp"
-            android:id="@+id/txtSellerZip"/>
+            android:textSize="15sp" />
+
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/txtSellerTotalPrice"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
+            android:layout_alignParentRight="true"
             android:layout_marginTop="5dp"
-            android:id="@+id/txtSellerPhone"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:maxLines="1"
             android:textColor="@android:color/black"
-            android:layout_marginTop="5dp"
-            android:id="@+id/txtSellerAddrEmail"/>-->
-    </LinearLayout>
+            android:textSize="14sp" />
+    </RelativeLayout>
+    <!--<TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="5dp"
+        android:id="@+id/txtSellerDlvryMode"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="5dp"
+        android:id="@+id/txtSellerDeliveryStatus"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="5dp"
+        android:id="@+id/txtSellerShippingCharge"/>-->
+
+    <!--<TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="5dp"
+        android:id="@+id/txtSellerCity"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="5dp"
+        android:id="@+id/txtSellerState"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="5dp"
+        android:id="@+id/txtSellerCountry"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="5dp"
+        android:id="@+id/txtSellerZip"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="5dp"
+        android:id="@+id/txtSellerPhone"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="5dp"
+        android:id="@+id/txtSellerAddrEmail"/>-->
+</LinearLayout>
