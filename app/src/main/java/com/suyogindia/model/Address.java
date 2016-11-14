@@ -8,6 +8,18 @@ import android.os.Parcelable;
  */
 
 public class Address implements Parcelable {
+    @SuppressWarnings("unused")
+    public static final Creator<Address> CREATOR = new Creator<Address>() {
+        @Override
+        public Address createFromParcel(Parcel in) {
+            return new Address(in);
+        }
+
+        @Override
+        public Address[] newArray(int size) {
+            return new Address[size];
+        }
+    };
     private String id;
     private String address;
     private String city;
@@ -15,6 +27,30 @@ public class Address implements Parcelable {
     private String zip;
     private String phone;
     private String plotno;
+    private int type;
+
+    public Address() {
+        super();
+    }
+
+    protected Address(Parcel in) {
+        id = in.readString();
+        address = in.readString();
+        city = in.readString();
+        state = in.readString();
+        zip = in.readString();
+        phone = in.readString();
+        plotno = in.readString();
+        type = in.readInt();
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public String getPlotno() {
         return plotno;
@@ -24,9 +60,6 @@ public class Address implements Parcelable {
         this.plotno = plotno;
     }
 
-    public Address(){
-        super();
-    }
     public String getId() {
         return id;
     }
@@ -75,16 +108,6 @@ public class Address implements Parcelable {
         this.phone = phone;
     }
 
-    protected Address(Parcel in) {
-        id = in.readString();
-        address = in.readString();
-        city = in.readString();
-        state = in.readString();
-        zip = in.readString();
-        phone = in.readString();
-        plotno = in.readString();
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -99,18 +122,6 @@ public class Address implements Parcelable {
         dest.writeString(zip);
         dest.writeString(phone);
         dest.writeString(plotno);
+        dest.writeInt(type);
     }
-
-    @SuppressWarnings("unused")
-    public static final Creator<Address> CREATOR = new Creator<Address>() {
-        @Override
-        public Address createFromParcel(Parcel in) {
-            return new Address(in);
-        }
-
-        @Override
-        public Address[] newArray(int size) {
-            return new Address[size];
-        }
-    };
 }

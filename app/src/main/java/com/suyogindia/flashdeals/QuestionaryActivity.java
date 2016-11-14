@@ -272,6 +272,7 @@ public class QuestionaryActivity extends AppCompatActivity implements View.OnCli
             if (resultCode == RESULT_OK) {
                 homeAddress = data.getParcelableExtra(AppConstants.EXTRA_ADDRESS);
                 if (homeAddress != null) {
+                    homeAddress.setType(0);
                     txtHomeAddr.setVisibility(View.GONE);
                 } else {
                     txtHomeAddr.setVisibility(View.VISIBLE);
@@ -282,6 +283,7 @@ public class QuestionaryActivity extends AppCompatActivity implements View.OnCli
             if (resultCode == RESULT_OK) {
                 officeaddress = data.getParcelableExtra(AppConstants.EXTRA_ADDRESS);
                 if (officeaddress != null) {
+                    officeaddress.setType(1);
                     txtOfficeAddr.setVisibility(View.GONE);
                 } else {
                     txtOfficeAddr.setVisibility(View.VISIBLE);
