@@ -266,7 +266,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                         Intent intent = new Intent(MainActivity.this,OrdersActivity.class);
                         startActivity(intent);
                         break;
-
+                    case  R.id.nav_profile:
+                        Intent intent1 = new Intent(MainActivity.this,MyProfileActivity.class);
+                        startActivity(intent1);
+                        break;
                 }
                 return true;
             }
