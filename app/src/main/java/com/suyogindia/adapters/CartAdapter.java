@@ -3,6 +3,7 @@ package com.suyogindia.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.squareup.picasso.Picasso;
 import com.suyogindia.flashdeals.CartActivity;
 import com.suyogindia.flashdeals.DealsDetailsActivity;
 import com.suyogindia.flashdeals.R;
+import com.suyogindia.helpers.AndroidUtils;
 import com.suyogindia.helpers.AppConstants;
+import com.suyogindia.helpers.TextDrawable;
 import com.suyogindia.model.CartItem;
 import com.suyogindia.model.Seller;
 
@@ -228,13 +230,14 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tvOfferPrice.setText(AppConstants.RUPEE + " " + item.getOfferPrice());
             tvDesc.setText(item.getDesc());
             Log.i("url",item.getImage_url());
-            Glide.with(myContext)
-                    .load(item.getImage_url())
-                    .override(110, 115)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .placeholder(R.drawable.ic_picasa)
-                    .into(ivDeal);
+
+            TextDrawable drawable = new TextDrawable(item.getDesc(), AndroidUtils.dpToPx(myContext,20));
+            if (!TextUtils.isEmpty(item.getImage_url())){
+                Picasso.with(myContext).load(item.getImage_url()).resize(400,400).error(drawable).placeholder(drawable).into(ivDeal);
+            }
+            else {
+                ivDeal.setImageDrawable(drawable);
+            }
             btnRemove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -84,6 +84,7 @@ public class AppHelpers {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(AppConstants.BASEURL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(getSocketTime())
                 .build();
         return retrofit.create(WebApi.class);
     }

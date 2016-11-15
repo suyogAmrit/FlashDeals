@@ -27,10 +27,11 @@
         android:layout_marginStart="8dp"
         app:layout_constraintLeft_toRightOf="@+id/iv_deal"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_details"
         android:minLines="2"
-        app:layout_constraintRight_toRightOf="@+id/tv_mrp" />
+        app:layout_constraintRight_toRightOf="@+id/tv_mrp"
+        app:layout_constraintHorizontal_bias="0.87" />
 
     <TextView
         android:id="@+id/tv_seller"

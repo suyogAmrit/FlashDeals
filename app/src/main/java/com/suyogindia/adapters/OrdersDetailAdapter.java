@@ -14,11 +14,12 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.squareup.picasso.Picasso;
 import com.suyogindia.flashdeals.OrdersActivity;
 import com.suyogindia.flashdeals.R;
+import com.suyogindia.helpers.AndroidUtils;
 import com.suyogindia.helpers.AppConstants;
+import com.suyogindia.helpers.TextDrawable;
 import com.suyogindia.model.ItemOrder;
 
 import java.util.ArrayList;
@@ -100,13 +101,20 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
                     itemsViewHolder.txtItemTotalAmount.setText(AppConstants.RUPEE + orders.getItem().getTotal_price());
                     itemsViewHolder.txtQuantity.setText("" + orders.getItem().getQuantity());
                     itemsViewHolder.txtOrderDate.setText(orders.getItem().getOrder_date());
-                    Glide.with(context)
-                            .load(orders.getItem().getImage_url())
-                            .skipMemoryCache(true)
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .override(80,80)
-                            .placeholder(R.drawable.ic_picasa)
-                            .into(itemsViewHolder.ivDeal);
+//                    Glide.with(context)
+//                            .load(orders.getItem().getImage_url())
+//                            .skipMemoryCache(true)
+//                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                            .override(80,80)
+//                            .placeholder(R.drawable.ic_picasa)
+//                            .into(itemsViewHolder.ivDeal);
+                    TextDrawable drawable = new TextDrawable(orders.getItem().getDescription(), AndroidUtils.dpToPx(context,20));
+                    if (!TextUtils.isEmpty(orders.getItem().getImage_url())){
+                        Picasso.with(context).load(orders.getItem().getImage_url()).resize(400,400).error(drawable).placeholder(drawable).into(itemsViewHolder.ivDeal);
+                    }
+                    else {
+                        itemsViewHolder.ivDeal.setImageDrawable(drawable);
+                    }
 
                 }
                 break;
