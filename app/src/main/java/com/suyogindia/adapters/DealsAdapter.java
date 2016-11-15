@@ -3,7 +3,6 @@ package com.suyogindia.adapters;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +12,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.suyogindia.flashdeals.MainActivity;
 import com.suyogindia.flashdeals.R;
-import com.suyogindia.helpers.AndroidUtils;
 import com.suyogindia.helpers.AppConstants;
 import com.suyogindia.helpers.AppHelpers;
-import com.suyogindia.helpers.TextDrawable;
 import com.suyogindia.model.Deals;
 
 import java.util.ArrayList;
@@ -89,20 +87,13 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.ViewHolder> 
 
         void bind(final Deals myDeals, final OnItemClickListener listener) {
             tvDesc.setText(myDeals.getDesciption());
-//            Glide.with(myContext)
-//                    .load(myDeals.getImage_url())
-//                    .override(80, 80)
-//                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-//                    .skipMemoryCache(true)
-//                    .placeholder(R.drawable.ic_picasa)
-//                    .into(ivDeal);
-            TextDrawable drawable = new TextDrawable(myDeals.getDesciption(), AndroidUtils.dpToPx(myContext,20));
-            if (!TextUtils.isEmpty(myDeals.getImage_url())){
-                Picasso.with(myContext).load(myDeals.getImage_url()).resize(400,400).error(drawable).placeholder(drawable).into(ivDeal);
-            }
-            else {
-                ivDeal.setImageDrawable(drawable);
-            }
+            Glide.with(myContext)
+                    .load(myDeals.getImage_url())
+                    .override(80, 80)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .placeholder(R.drawable.ic_picasa)
+                    .into(ivDeal);
             tvDiscount.setText(AppConstants.DISCOUNT + ": " + myDeals.getDiscount() + "%");
             tvSeller.setText(myDeals.getSeller_name());
             tvOfferPrice.setText("Offer Price: " + AppConstants.RUPEE + " " + myDeals.getOffer_price());

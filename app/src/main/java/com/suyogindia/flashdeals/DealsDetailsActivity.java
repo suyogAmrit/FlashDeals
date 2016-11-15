@@ -17,7 +17,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
@@ -32,16 +31,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.squareup.picasso.Picasso;
-import com.suyogindia.helpers.AndroidUtils;
 import com.suyogindia.helpers.AppConstants;
 import com.suyogindia.helpers.AppHelpers;
-import com.suyogindia.helpers.TextDrawable;
 import com.suyogindia.helpers.WebApi;
 import com.suyogindia.model.CartItem;
 import com.suyogindia.model.Deals;
@@ -276,15 +274,8 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
         tvSeller.setText(cartItem.getSellerName());
         etQty.setText(qty);
         tvTotal.setText(AppConstants.RUPEE + totalPrice);
-//        Glide.with(this).load(cartItem.getImage_url()).diskCacheStrategy(DiskCacheStrategy.NONE)
-//                .skipMemoryCache(true).override(140, 140).placeholder(R.drawable.ic_picasa).into(ivDeal);
-        TextDrawable drawable = new TextDrawable(cartItem.getDesc(), AndroidUtils.dpToPx(DealsDetailsActivity.this,20));
-        if (!TextUtils.isEmpty(cartItem.getImage_url())){
-            Picasso.with(DealsDetailsActivity.this).load(cartItem.getImage_url()).resize(400,400).error(drawable).placeholder(drawable).into(ivDeal);
-        }
-        else {
-            ivDeal.setImageDrawable(drawable);
-        }
+        Glide.with(this).load(cartItem.getImage_url()).diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true).override(140, 140).placeholder(R.drawable.ic_picasa).into(ivDeal);
 
     }
 
@@ -301,13 +292,8 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
         etQty.setText(qty);
         btnMinus.setVisibility(View.INVISIBLE);
         tvTotal.setText(AppConstants.RUPEE + totalPrice);
-        TextDrawable drawable = new TextDrawable(myDeals.getDesciption(), AndroidUtils.dpToPx(DealsDetailsActivity.this,20));
-        if (!TextUtils.isEmpty(myDeals.getImage_url())){
-            Picasso.with(DealsDetailsActivity.this).load(myDeals.getImage_url()).resize(400,400).error(drawable).placeholder(drawable).into(ivDeal);
-        }
-        else {
-            ivDeal.setImageDrawable(drawable);
-        }
+        Glide.with(this).load(myDeals.getImage_url()).diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true).override(140, 140).placeholder(R.drawable.ic_picasa).into(ivDeal);
     }
 
     @OnClick(R.id.btn_add)

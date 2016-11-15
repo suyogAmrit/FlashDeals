@@ -2,7 +2,6 @@ package com.suyogindia.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +9,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.suyogindia.flashdeals.OrderReviewActivity;
 import com.suyogindia.flashdeals.R;
-import com.suyogindia.helpers.AndroidUtils;
 import com.suyogindia.helpers.AppConstants;
 import com.suyogindia.helpers.AppHelpers;
-import com.suyogindia.helpers.TextDrawable;
 import com.suyogindia.model.ReviewOrderItem;
 
 import java.util.ArrayList;
@@ -158,13 +156,13 @@ public class OrderReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             tvOfferPrice.setText(AppConstants.RUPEE + " " + item.getOffer_price());
             tvQty.setText(item.getQuantity_available());
             tvTotal.setText(AppConstants.RUPEE + " " + item.getItem_price());
-            TextDrawable drawable = new TextDrawable(item.getDescription(), AndroidUtils.dpToPx(mContext,20));
-            if (!TextUtils.isEmpty(item.getImage_url())){
-                Picasso.with(mContext).load(item.getImage_url()).resize(400,400).error(drawable).placeholder(drawable).into(ivDeal);
-            }
-            else {
-                ivDeal.setImageDrawable(drawable);
-            }
+            Glide.with(mContext)
+                    .load(item.getImage_url())
+                    .override(80, 80)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .placeholder(R.drawable.ic_picasa)
+                    .into(ivDeal);
             if (item.getReview_status() == 0) {
                 tvMessge.setVisibility(View.VISIBLE);
                 tvMessge.setText(item.getReview_message());
