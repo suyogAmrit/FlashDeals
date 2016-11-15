@@ -7,7 +7,18 @@ import android.os.Parcelable;
  * Created by Tanmay on 11/14/2016.
  */
 
-public class Item implements Parcelable{
+public class Item implements Parcelable {
+    public static final Creator<Item> CREATOR = new Creator<Item>() {
+        @Override
+        public Item createFromParcel(Parcel in) {
+            return new Item(in);
+        }
+
+        @Override
+        public Item[] newArray(int size) {
+            return new Item[size];
+        }
+    };
     private String description;
     private double mrp;
     private double offer_price;
@@ -17,8 +28,24 @@ public class Item implements Parcelable{
     private double total_price;
     private int quantity;
     private String order_date;
-    public Item(){
+    private String image_url;
+
+    public Item() {
         super();
+    }
+
+    private Item(Parcel in) {
+        description = in.readString();
+        mrp = in.readDouble();
+        offer_price = in.readDouble();
+        discount = in.readString();
+        offer_start_time = in.readString();
+        offer_end_time = in.readString();
+        total_price = in.readDouble();
+        quantity = in.readInt();
+        order_date = in.readString();
+        image_url = in.readString();
+
     }
 
     public double getTotal_price() {
@@ -44,32 +71,6 @@ public class Item implements Parcelable{
     public void setOrder_date(String order_date) {
         this.order_date = order_date;
     }
-
-    private Item(Parcel in) {
-        description = in.readString();
-        mrp = in.readDouble();
-        offer_price = in.readDouble();
-        discount = in.readString();
-        offer_start_time = in.readString();
-        offer_end_time = in.readString();
-        total_price = in.readDouble();
-        quantity = in.readInt();
-        order_date = in.readString();
-
-    }
-
-    public static final Creator<Item> CREATOR = new Creator<Item>() {
-        @Override
-        public Item createFromParcel(Parcel in) {
-            return new Item(in);
-        }
-
-        @Override
-        public Item[] newArray(int size) {
-            return new Item[size];
-        }
-    };
-
 
     public String getDescription() {
         return description;
@@ -135,5 +136,10 @@ public class Item implements Parcelable{
         dest.writeDouble(total_price);
         dest.writeInt(quantity);
         dest.writeString(order_date);
+        dest.writeString(image_url);
+    }
+
+    public String getImage_url() {
+        return image_url;
     }
 }

@@ -33,6 +33,7 @@ public class DataBaseHelper {
     private static final String SHIPPINGCHARGE = "shipping_carge";
     private static final String MAXQTY = "max_quantity";
     private static final String CATEGORY = "deal_category";
+    private static final String IMAGEURL = "image_url";
 
     private static final String CARTTABLE = "cart";
     private static final String DATABASE = "flashdeals";
@@ -72,6 +73,7 @@ public class DataBaseHelper {
             cv.put(TOTALPRICE, totalPrice);
             cv.put(MAXQTY, myDeals.getQuantity());
             cv.put(CATEGORY, myDeals.getCategory());
+            cv.put(IMAGEURL, myDeals.getImage_url());
 
             Log.i("qty", cv.getAsString(MAXQTY));
             row = myDatabase.insert(CARTTABLE, null, cv);
@@ -105,9 +107,9 @@ public class DataBaseHelper {
         if (sellerList != null) {
             for (Seller s :
                     sellerList) {
-                String[] cartData = {DEALID, DEALDESC, MRP, OFFERPRICE, TOTALPRICE, DISCOUNT, QUANTITY, MAXQTY, SELLEREMAIL};
+                String[] cartData = {DEALID, DEALDESC, MRP, OFFERPRICE, TOTALPRICE, DISCOUNT, QUANTITY, MAXQTY, SELLEREMAIL,IMAGEURL};
                 Cursor mCursor = myDatabase.query(CARTTABLE, cartData, SELLEREMAIL + "=?", new String[]{s.getEmail()}, null, null, null);
-                CartItem item1 = new CartItem(null, null, null, null, null, null, null, null, null);
+                CartItem item1 = new CartItem(null, null, null, null, null, null, null, null, null,null);
                 item1.setType(0);
                 item1.setSellerName(s.getName());
                 item1.setCategory(s.getCategory());
@@ -125,15 +127,16 @@ public class DataBaseHelper {
                         String qunatity = mCursor.getString(mCursor.getColumnIndex(QUANTITY));
                         String maxQty = mCursor.getString(mCursor.getColumnIndex(MAXQTY));
                         String sellerEmail = mCursor.getString(mCursor.getColumnIndex(SELLEREMAIL));
+                        String image_url = mCursor.getString(mCursor.getColumnIndex(IMAGEURL));
                         Log.i("toalitemPrice", totaPrice);
-                        CartItem item2 = new CartItem(dealId, desc, mrp, offerPrice, qunatity, discount, totaPrice, maxQty, sellerEmail);
+                        CartItem item2 = new CartItem(dealId, desc, mrp, offerPrice, qunatity, discount, totaPrice, maxQty, sellerEmail,image_url);
                         item2.setType(1);
                         sellerTotalPrice = sellerTotalPrice + Double.parseDouble(totaPrice);
                         cartItemList.add(item2);
                     }
                     mCursor.close();
                     s.setTotalPrice(String.valueOf(sellerTotalPrice));
-                    CartItem item3 = new CartItem(null, null, null, null, null, null, null, null, null);
+                    CartItem item3 = new CartItem(null, null, null, null, null, null, null, null, null,null);
                     item3.setSeller(s);
                     item3.setType(2);
                     cartItemList.add(item3);
@@ -192,8 +195,8 @@ public class DataBaseHelper {
         @Override
         public void onCreate(SQLiteDatabase db) {
             String sql = "CREATE TABLE " + CARTTABLE + "( " + ID + " PRIMARY KEY," + DEALID + " TEXT," + DEALDESC + " TEXT," + CATEGORY + " TEXT," +
-                    SELLEREMAIL + " TEXT," + MRP + " TEXT," + DISCOUNT + " TEXT," + OFFERPRICE + " TEXT," + SELLERNAME + " TEXT,"
-                    + QUANTITY + " TEXT," + MAXQTY + " TEXT," + MAXPRICE + " TEXT," + SHIPPINGCHARGE + " TEXT," + TOTALPRICE + " TEXT);";
+                    SELLEREMAIL + " TEXT," + MRP + " TEXT," + DISCOUNT + " TEXT," + OFFERPRICE + " TEXT," + SELLERNAME + " TEXT," + IMAGEURL + " TEXT," +
+                    QUANTITY + " TEXT," + MAXQTY + " TEXT," + MAXPRICE + " TEXT," + SHIPPINGCHARGE + " TEXT," + TOTALPRICE + " TEXT);";
             db.execSQL(sql);
         }
 

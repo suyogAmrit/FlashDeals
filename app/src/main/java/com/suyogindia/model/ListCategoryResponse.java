@@ -24,7 +24,12 @@ public class ListCategoryResponse {
     }
 
     public class Category {
-        String id, name,status;
+        String id, name, status;
+        String image_url;
+
+        public String getImage_url() {
+            return image_url;
+        }
 
         public String getStatus() {
             return status;

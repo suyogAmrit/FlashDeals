@@ -8,9 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.suyogindia.flashdeals.MainActivity;
 import com.suyogindia.flashdeals.R;
 import com.suyogindia.helpers.AppConstants;
@@ -69,6 +72,7 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.ViewHolder> 
         CardView cvDeal;
         TextView tvSeller, tvDiscount, tvDesc, tvOfferPrice;
         ImageButton btnQuickAdd;
+        ImageView ivDeal;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -78,13 +82,21 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.ViewHolder> 
             tvOfferPrice = (TextView) itemView.findViewById(R.id.tv_offer_price);
             cvDeal = (CardView) itemView.findViewById(R.id.cv_deal);
             btnQuickAdd = (ImageButton) itemView.findViewById(R.id.btn_quick_add);
+            ivDeal = (ImageView) itemView.findViewById(R.id.iv_deal);
         }
 
         void bind(final Deals myDeals, final OnItemClickListener listener) {
             tvDesc.setText(myDeals.getDesciption());
-            tvDiscount.setText(AppConstants.DISCOUNT + ": " + myDeals.getDiscount()+"%");
+            Glide.with(myContext)
+                    .load(myDeals.getImage_url())
+                    .override(80, 80)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .placeholder(R.drawable.ic_picasa)
+                    .into(ivDeal);
+            tvDiscount.setText(AppConstants.DISCOUNT + ": " + myDeals.getDiscount() + "%");
             tvSeller.setText(myDeals.getSeller_name());
-            tvOfferPrice.setText("Offer Price: "+AppConstants.RUPEE +" "+ myDeals.getOffer_price());
+            tvOfferPrice.setText("Offer Price: " + AppConstants.RUPEE + " " + myDeals.getOffer_price());
             btnQuickAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

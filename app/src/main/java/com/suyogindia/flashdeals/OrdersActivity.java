@@ -93,6 +93,7 @@ public class OrdersActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Log.v(AppConstants.RESPONSE, response.body().getStatus());
                     if (response.body().getStatus().equals("1")) {
+                        orderseList.clear();
                         orderseList.addAll(response.body().getOrder());
                         recyclerOrders.setAdapter(adapter);
                         if (orderseList != null && orderseList.size() > 0)

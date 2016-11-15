@@ -7,10 +7,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.suyogindia.flashdeals.CartActivity;
 import com.suyogindia.flashdeals.DealsDetailsActivity;
 import com.suyogindia.flashdeals.R;
@@ -107,7 +110,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public void add(List<CartItem> list) {
-        Log.i("total",list.size()+"");
+        Log.i("total", list.size() + "");
 
         cartDataList.clear();
         cartDataList.addAll(list);
@@ -183,7 +186,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     }
                 }
             });
-            Log.i("shipping Added",mySeller.getShippingAdded()+"");
+            Log.i("shipping Added", mySeller.getShippingAdded() + "");
             if (mySeller.getShippingAdded() == 2) {
                 tvshippingText.setVisibility(View.VISIBLE);
                 tvShippingCharge.setVisibility(View.VISIBLE);
@@ -206,6 +209,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private class GenericViewHolder extends RecyclerView.ViewHolder {
         LinearLayout btnEdit, btnRemove;
         TextView tvDesc, tvOfferPrice, tvQty, tvTotal;
+        ImageView ivDeal;
 
         public GenericViewHolder(View v) {
             super(v);
@@ -215,6 +219,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tvOfferPrice = (TextView) v.findViewById(R.id.tv_cart_offer_price);
             tvQty = (TextView) v.findViewById(R.id.tv_cart_qty);
             tvTotal = (TextView) v.findViewById(R.id.tv_cart_total);
+            ivDeal = (ImageView) v.findViewById(R.id.iv_deal);
         }
 
         public void bindData(CartItem item) {
@@ -222,6 +227,14 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tvQty.setText(item.getQty());
             tvOfferPrice.setText(AppConstants.RUPEE + " " + item.getOfferPrice());
             tvDesc.setText(item.getDesc());
+            Log.i("url",item.getImage_url());
+            Glide.with(myContext)
+                    .load(item.getImage_url())
+                    .override(110, 115)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .placeholder(R.drawable.ic_picasa)
+                    .into(ivDeal);
             btnRemove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

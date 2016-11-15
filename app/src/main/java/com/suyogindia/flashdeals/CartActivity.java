@@ -100,7 +100,7 @@ public class CartActivity extends AppCompatActivity {
                 totalQunatity = totalQunatity + Integer.parseInt(c.getQty());
             }
         }
-        CartItem c = new CartItem(null, null, null, null, null, null, null, null, null);
+        CartItem c = new CartItem(null, null, null, null, null, null, null, null, null,null);
         c.setType(3);
         c.setTotalQuantity(String.valueOf(totalQunatity));
         c.setGrandTotal(String.valueOf(grandTotal));

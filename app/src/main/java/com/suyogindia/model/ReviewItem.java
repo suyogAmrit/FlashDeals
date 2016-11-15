@@ -5,7 +5,7 @@ package com.suyogindia.model;
  */
 
 public class ReviewItem {
-    String dealId, description, quantity_available, review_message, category_id, delivery_mode;
+    String dealId, description, quantity_available, review_message, category_id, delivery_mode,image_url;
     int review_status;
     String   item_price, offer_price;
 
@@ -44,5 +44,9 @@ public class ReviewItem {
 
     public String getDelivery_mode() {
         return delivery_mode;
+    }
+
+    public String getImage_url() {
+        return image_url;
     }
 }

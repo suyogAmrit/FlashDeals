@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -72,7 +73,7 @@ public class SelectDealsActivity extends AppCompatActivity {
     private void setupUi() {
         toolbar.setTitle("Select The Deals");
         setSupportActionBar(toolbar);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
+        GridLayoutManager llm = new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false);
         rvDeals.setLayoutManager(llm);
         listSelectedIds = new ArrayList<>();
         adapter = new SelectDealsAdapter(this);
@@ -122,6 +123,7 @@ public class SelectDealsActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ListCategoryResponse> call, Throwable t) {
                 dialog.dismiss();
+
                 Log.e(AppConstants.ERROR, t.getLocalizedMessage());
                 Toast.makeText(SelectDealsActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }

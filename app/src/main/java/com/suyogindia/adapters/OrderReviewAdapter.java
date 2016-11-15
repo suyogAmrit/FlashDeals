@@ -5,9 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.suyogindia.flashdeals.OrderReviewActivity;
 import com.suyogindia.flashdeals.R;
 import com.suyogindia.helpers.AppConstants;
@@ -140,6 +143,8 @@ public class OrderReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         LinearLayout btnEdit;
         @BindView(R.id.btn_cart_remove)
         LinearLayout btnRemove;
+        @BindView(R.id.iv_deal)
+        ImageView ivDeal;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
@@ -151,7 +156,8 @@ public class OrderReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             tvOfferPrice.setText(AppConstants.RUPEE + " " + item.getOffer_price());
             tvQty.setText(item.getQuantity_available());
             tvTotal.setText(AppConstants.RUPEE + " " + item.getItem_price());
-
+            Glide.with(mContext).load(item.getImage_url()).diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true).override(110, 110).placeholder(R.drawable.ic_picasa).into(ivDeal);
             if (item.getReview_status() == 0) {
                 tvMessge.setVisibility(View.VISIBLE);
                 tvMessge.setText(item.getReview_message());

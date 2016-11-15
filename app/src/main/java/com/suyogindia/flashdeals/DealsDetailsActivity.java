@@ -26,10 +26,13 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -84,6 +87,8 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
     TextView tvDelivery;
     @BindView(R.id.ibtn_edit_location)
     ImageButton btnEdit;
+    @BindView(R.id.iv_deal)
+    ImageView ivDeal;
     String qty, totalPrice;
     int detailsType;
     CartItem cartItem;
@@ -269,6 +274,9 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
         tvSeller.setText(cartItem.getSellerName());
         etQty.setText(qty);
         tvTotal.setText(AppConstants.RUPEE + totalPrice);
+        Glide.with(this).load(cartItem.getImage_url()).diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true).override(140, 140).placeholder(R.drawable.ic_picasa).into(ivDeal);
+
     }
 
     private void setupUI() {
@@ -284,7 +292,7 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
         etQty.setText(qty);
         btnMinus.setVisibility(View.INVISIBLE);
         tvTotal.setText(AppConstants.RUPEE + totalPrice);
-
+        Glide.with(this).load(myDeals.getImage_url()).override(140, 140).placeholder(R.drawable.ic_picasa).into(ivDeal);
 
     }
 

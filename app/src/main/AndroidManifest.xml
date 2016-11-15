@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:name="com.suyogindia.helpers.FlashDealApplication"
@@ -135,7 +135,9 @@
         <activity
             android:name=".HomeOfficeAddressActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".OrdersActivity"></activity>
+        <activity
+            android:name=".OrdersActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

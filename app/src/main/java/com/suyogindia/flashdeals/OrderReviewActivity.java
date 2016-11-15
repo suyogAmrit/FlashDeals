@@ -23,8 +23,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.payUMoney.sdk.PayUmoneySdkInitilizer;
 import com.payUMoney.sdk.SdkConstants;
+import com.payUMoney.sdk.SdkSession;
 import com.suyogindia.adapters.OrderReviewAdapter;
 import com.suyogindia.helpers.AppConstants;
 import com.suyogindia.helpers.AppHelpers;
@@ -125,27 +125,36 @@ public class OrderReviewActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode ==
-                PayUmoneySdkInitilizer.PAYU_SDK_PAYMENT_REQUEST_CODE) {
+        //if(data!=null) {
+        if (requestCode == SdkSession.PAYMENT_SUCCESS) {
             if (resultCode == RESULT_OK) {
-                Log.i(TAG, "Success - Payment ID : " +
-                        data.getStringExtra(SdkConstants.PAYMENT_ID));
-                String paymentId =
-                        data.getStringExtra(SdkConstants.PAYMENT_ID);
-                if (!TextUtils.isEmpty(orderId)) {
-                    sendOrderDataToServer(paymentId, orderId, userId);
-                }
-            } else if (resultCode == RESULT_CANCELED) {
-                Log.i(TAG, "cancelled");
-                Toast.makeText(this, "Payment Cancelled.", Toast.LENGTH_SHORT).show();
-            } else if (resultCode == PayUmoneySdkInitilizer.RESULT_FAILED) {
-                Log.i(TAG, "failure");
-                Toast.makeText(this, "Transaction Failed.", Toast.LENGTH_SHORT).show();
-            } else if (resultCode == PayUmoneySdkInitilizer.RESULT_BACK) {
-                Log.i(TAG, "User returned without login");
-                Toast.makeText(this, "Transaction Failed.", Toast.LENGTH_SHORT).show();
+                Log.i("app_activity", "success");
+                Log.i("paymentID", data.getStringExtra("paymentId"));
+//                Intent intent = new Intent(this, paymentSuccess.class);
+//                intent.putExtra(SdkConstants.RESULT, "success");
+//                intent.putExtra(SdkConstants.PAYMENT_ID, data.getStringExtra("paymentId"));
+//                startActivity(intent);
+                // finish();
             }
+
+            if (resultCode == RESULT_CANCELED) {
+                Log.i("app_activity", "failure");
+
+                if (data != null) {
+                    if (data.getStringExtra(SdkConstants.RESULT).equals("cancel")) {
+
+                    } else {
+//                        Intent intent = new Intent(this, paymentSuccess.class);
+//                        intent.putExtra(SdkConstants.RESULT, "failure");
+//                        startActivity(intent);
+                    }
+                }
+                //Write your code if there's no result
+            }
+        }
+        //}
+        if (!TextUtils.isEmpty(orderId)) {
+            sendOrderDataToServer("2016", orderId, userId);
         }
     }
 
@@ -196,11 +205,9 @@ public class OrderReviewActivity extends AppCompatActivity {
                         Log.i("orderid", response.body().getOrderId());
                         MakePaymentHelper myMakePayment = new MakePaymentHelper(OrderReviewActivity.this);
                         // TODO: 08/11/16 change to total amount
-//                        myMakePayment.initiatePayment(10.00);
+                        myMakePayment.initiatePayment(10.00);
                         //Changes for send order data
-                        if (!TextUtils.isEmpty(orderId)) {
-                            sendOrderDataToServer("2016", orderId, userId);
-                        }
+
                     } else {
                         Toast.makeText(OrderReviewActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -344,7 +351,7 @@ public class OrderReviewActivity extends AppCompatActivity {
             for (ReviewItem item : itemList) {
                 ReviewOrderItem item2 = new ReviewOrderItem(2, item.getDealId(), item.getDescription(), item.getQuantity_available(),
                         item.getReview_message(), item.getCategory_id(),
-                        item.getItem_price(), item.getOffer_price(), item.getDelivery_mode(), item.getReview_status());
+                        item.getItem_price(), item.getOffer_price(), item.getDelivery_mode(),item.getImage_url(), item.getReview_status());
                 listItems.add(item2);
             }
 

@@ -19,7 +19,7 @@ public class CartItem implements Parcelable {
             return new CartItem[size];
         }
     };
-    String delaId, desc, mrp, offerPrice, qty, discount, totalPrice, maxqty, sellerEmail;
+    String delaId, desc, mrp, offerPrice, qty, discount, totalPrice, maxqty, sellerEmail,image_url;
     int type;
     Seller seller;
     String sellerName;
@@ -31,7 +31,7 @@ public class CartItem implements Parcelable {
         this.qty = qty;
     }
 
-    public CartItem(String delaId, String desc, String mrp, String offerPrice, String qty, String discount, String totalPrice, String maxqty, String sellerEmail) {
+    public CartItem(String delaId, String desc, String mrp, String offerPrice, String qty, String discount, String totalPrice, String maxqty, String sellerEmail, String image_url) {
         this.delaId = delaId;
         this.desc = desc;
         this.mrp = mrp;
@@ -41,6 +41,7 @@ public class CartItem implements Parcelable {
         this.totalPrice = totalPrice;
         this.maxqty = maxqty;
         this.sellerEmail = sellerEmail;
+        this.image_url = image_url;
     }
 
     public String getCategory() {
@@ -63,7 +64,12 @@ public class CartItem implements Parcelable {
         sellerName = in.readString();
         maxqty = in.readString();
         sellerEmail = in.readString();
+        image_url = in.readString();
 
+    }
+
+    public String getImage_url() {
+        return image_url;
     }
 
     public String getGrandTotal() {
@@ -164,5 +170,6 @@ public class CartItem implements Parcelable {
         dest.writeString(sellerName);
         dest.writeString(maxqty);
         dest.writeString(sellerEmail);
+        dest.writeString(image_url);
     }
 }
