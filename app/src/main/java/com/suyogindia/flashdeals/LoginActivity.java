@@ -215,10 +215,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onResponse(Call<RegisterUserResponse> call, Response<RegisterUserResponse> response) {
                 dialog.dismiss();
                 if (response.isSuccessful()) {
-                    Log.i("responsecode", response.body().getMessage()+response.body().getStatus());
+                    Log.i("responsecode", response.body().getMessage() + response.body().getStatus());
 
                     if (response.body().getStatus().equals(AppConstants.SUCESS)) {
-                        saveEmailAndMove(response.body().getEmail());
+                        saveEmailAndMove(response.body().getEmail(), response.body().getTell_us());
                     } else {
                         Snackbar snackbar = Snackbar.make(etPassword, response.body().getMessage(), Snackbar.LENGTH_SHORT);
 
@@ -240,18 +240,26 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     }
 
-    private void saveEmailAndMove(String email) {
+    private void saveEmailAndMove(String email, String tell_us) {
         SharedPreferences shr = getSharedPreferences(AppConstants.USERPREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = shr.edit();
         editor.putString(AppConstants.EMAIL, email);
         editor.apply();
 
         //Intent i = new Intent(LoginActivity.this, SelectDealsActivity.class);
-        Intent i = new Intent(LoginActivity.this,QuestionaryActivity.class);
-        i.putExtra(AppConstants.FROMPROFILE, false);
-        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(i);
-        finish();
+        if (tell_us.equals("0")) {
+            Intent i = new Intent(LoginActivity.this, QuestionaryActivity.class);
+            i.putExtra(AppConstants.FROMPROFILE, false);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
+            finish();
+        } else if (tell_us.equals("1")) {
+            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+            i.putExtra(AppConstants.FROMPROFILE, false);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
+            finish();
+        }
     }
 
     private void setupUI() {
@@ -329,7 +337,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         Log.i("response", response.body().getMessage());
 
                         if (response.body().getStatus().equals(AppConstants.SUCESS)) {
-                            saveEmailAndMove(response.body().getEmail());
+                            saveEmailAndMove(response.body().getEmail(), response.body().getTell_us());
                         } else {
                             Snackbar snackbar = Snackbar.make(etPassword, response.body().getMessage(), Snackbar.LENGTH_SHORT);
 

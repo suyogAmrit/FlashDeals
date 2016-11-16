@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -227,11 +228,11 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tvQty.setText(item.getQty());
             tvOfferPrice.setText(AppConstants.RUPEE + " " + item.getOfferPrice());
             tvDesc.setText(item.getDesc());
-            Log.i("url",item.getImage_url());
+            Log.i("url", item.getImage_url());
 
             Glide.with(myContext)
                     .load(item.getImage_url())
-                    .override(80, 80)
+                    .override(100, 120)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
                     .placeholder(R.drawable.ic_picasa)

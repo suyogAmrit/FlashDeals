@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:orientation="vertical"-->
-    <!--app:cardCornerRadius="5dp"-->
-    <!--app:cardElevation="3dp"-->
-    <!--app:cardUseCompatPadding="true">-->
-
-<LinearLayout android:layout_width="match_parent"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="3dp"
-    android:layout_margin="3dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    app:cardCornerRadius="5dp"
+    app:cardElevation="3dp"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:orientation="vertical"
+        android:padding="3dp">
 
         <LinearLayout
             android:id="@+id/btn_address_select"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -39,6 +40,7 @@
                     android:layout_marginLeft="15dp"
                     android:maxLines="1" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -145,6 +147,13 @@
         </LinearLayout>
 
 
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/darker_gray" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -161,7 +170,6 @@
                 android:layout_marginRight="2dp"
                 android:layout_marginStart="2dp"
                 android:layout_weight="1"
-                android:background="@drawable/blue_button"
                 android:clickable="true"
                 android:elevation="1dp"
                 android:gravity="center|center_horizontal"
@@ -188,10 +196,18 @@
                         android:layout_weight="1"
                         android:clickable="true"
                         android:text="@string/edit"
-                        android:textColor="@android:color/white" />
+                        android:textColor="@color/colorPrimary" />
                 </LinearLayout>
 
             </LinearLayout>
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:background="@android:color/darker_gray" />
 
             <LinearLayout
                 android:id="@+id/txtRemove"
@@ -203,7 +219,6 @@
                 android:layout_marginRight="2dp"
                 android:layout_marginStart="2dp"
                 android:layout_weight="1"
-                android:background="@drawable/red_button"
                 android:clickable="true"
                 android:elevation="1dp"
                 android:gravity="center|center_horizontal"
@@ -229,7 +244,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_weight="1"
                         android:text="@string/remove"
-                        android:textColor="@android:color/white" />
+                        android:textColor="@color/colorAccent" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -237,4 +252,4 @@
 
         </LinearLayout>
     </LinearLayout>
-<!--</android.support.v7.widget.CardView>-->
+</android.support.v7.widget.CardView>

@@ -5,7 +5,8 @@ package com.suyogindia.model;
  */
 
 public class RegisterUserResponse {
-    private String status,email,message;
+    public String tell_us;
+    private String status, email, message;
 
     public String getStatus() {
         return status;
@@ -17,6 +18,10 @@ public class RegisterUserResponse {
 
     public String getMessage() {
         return message;
+    }
+
+    public String getTell_us() {
+        return tell_us;
     }
 
     @Override

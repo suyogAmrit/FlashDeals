@@ -19,15 +19,17 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +47,7 @@ import com.suyogindia.model.CartItem;
 import com.suyogindia.model.Deals;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -73,12 +76,12 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
     TextView tvDiscount;
     @BindView(R.id.tv_cart_offer_price)
     TextView tvOfferPrice;
-    @BindView(R.id.et_qty)
-    EditText etQty;
-    @BindView(R.id.btn_add)
-    ImageButton btnAdd;
-    @BindView(R.id.btn_minus)
-    ImageButton btnMinus;
+    //    @BindView(R.id.et_qty)
+//    EditText etQty;
+//    @BindView(R.id.btn_add)
+//    ImageButton btnAdd;
+//    @BindView(R.id.btn_minus)
+//    ImageButton btnMinus;
     @BindView(R.id.tv_total_price)
     TextView tvTotal;
     @BindView(R.id.toolbar_details)
@@ -97,7 +100,17 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
     EditText etPincode;
     LinearLayout btnUseMyLocation;
     Button btnSubmit;
+    @BindView(R.id.tv_only_left)
+    TextView tvOnlyLeft;
+    @BindView(R.id.spn_qty)
+    Spinner spnQty;
+    @BindView(R.id.tv_text_cart)
+    TextView tvAddToCart;
+    @BindView(R.id.cl_add_to_cart)
+    RelativeLayout btnAddToCart;
 
+    ArrayList<Integer> qtyList;
+    ArrayAdapter<Integer> adapter;
     private Location mLastLocation;
     // Google client to interact with Google API
     private GoogleApiClient mGoogleApiClient;
@@ -122,47 +135,47 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
         SharedPreferences shr = getSharedPreferences(AppConstants.USERPREFS, MODE_PRIVATE);
 
         pinCode = shr.getString(AppConstants.PINCODE, AppConstants.NA);
-        etQty.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String value = s.toString();
-
-                if (detailsType == 2) {
-                    if (Integer.parseInt(value) > 1) {
-                        btnMinus.setVisibility(View.VISIBLE);
-                    } else {
-                        btnMinus.setVisibility(View.INVISIBLE);
-                    }
-                    if (Integer.parseInt(value) == Integer.valueOf(myDeals.getQuantity())) {
-                        btnAdd.setVisibility(View.INVISIBLE);
-                    } else {
-                        btnAdd.setVisibility(View.VISIBLE);
-                    }
-                }
-                if (detailsType == 1) {
-                    if (Integer.parseInt(value) > 1) {
-                        btnMinus.setVisibility(View.VISIBLE);
-                    } else {
-                        btnMinus.setVisibility(View.INVISIBLE);
-                    }
-                    if (Integer.parseInt(value) == Integer.valueOf(cartItem.getMaxqty())) {
-                        btnAdd.setVisibility(View.INVISIBLE);
-                    } else {
-                        btnAdd.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-        });
+//        etQty.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                String value = s.toString();
+//
+//                if (detailsType == 2) {
+//                    if (Integer.parseInt(value) > 1) {
+//                        btnMinus.setVisibility(View.VISIBLE);
+//                    } else {
+//                        btnMinus.setVisibility(View.INVISIBLE);
+//                    }
+//                    if (Integer.parseInt(value) == Integer.valueOf(myDeals.getQuantity())) {
+//                        btnAdd.setVisibility(View.INVISIBLE);
+//                    } else {
+//                        btnAdd.setVisibility(View.VISIBLE);
+//                    }
+//                }
+//                if (detailsType == 1) {
+//                    if (Integer.parseInt(value) > 1) {
+//                        btnMinus.setVisibility(View.VISIBLE);
+//                    } else {
+//                        btnMinus.setVisibility(View.INVISIBLE);
+//                    }
+//                    if (Integer.parseInt(value) == Integer.valueOf(cartItem.getMaxqty())) {
+//                        btnAdd.setVisibility(View.INVISIBLE);
+//                    } else {
+//                        btnAdd.setVisibility(View.VISIBLE);
+//                    }
+//                }
+//            }
+//        });
         Log.i("pincode", pinCode);
         if (pinCode.equals(AppConstants.NA)) {
             tvDelivery.setText(AppConstants.ENTERPINCODE);
@@ -195,6 +208,18 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
     @OnClick(R.id.ibtn_edit_location)
     void editeLocation() {
         showDialog();
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (detailsType == 2) {
+            super.onBackPressed();
+        } else {
+            Intent i = new Intent(DealsDetailsActivity.this, CartActivity.class);
+            startActivity(i);
+            finish();
+        }
 
     }
 
@@ -263,7 +288,7 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
     }
 
     private void setupUIWithCartItem() {
-        toolbar.setTitle("Add Quantity");
+        toolbar.setTitle("Edit Quantity");
         setSupportActionBar(toolbar);
         qty = cartItem.getQty();
         totalPrice = cartItem.getTotalPrice();
@@ -272,10 +297,34 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
         tvMrp.setText(AppConstants.RUPEE + cartItem.getMrp());
         tvOfferPrice.setText(AppConstants.RUPEE + cartItem.getOfferPrice());
         tvSeller.setText(cartItem.getSellerName());
-        etQty.setText(qty);
+//        etQty.setText(qty);
+        int qtyValue = Integer.valueOf(cartItem.getMaxqty());
+        qtyList = new ArrayList<>();
+        for (int i = 1; i <= qtyValue; i++) {
+            qtyList.add(i);
+        }
+        adapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, qtyList);
+        adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+        tvAddToCart.setText("Update Cart");
+        spnQty.setAdapter(adapter);
+        spnQty.setSelection(0);
+        spnQty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                int value = (int) parent.getItemAtPosition(position);
+                qty = String.valueOf(value);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         tvTotal.setText(AppConstants.RUPEE + totalPrice);
+        tvOnlyLeft.setText("Only " + cartItem.getMaxqty() + " left.");
+
         Glide.with(this).load(cartItem.getImage_url()).diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true).override(140, 140).placeholder(R.drawable.ic_picasa).into(ivDeal);
+                .skipMemoryCache(true).override(155, 155).placeholder(R.drawable.ic_picasa).into(ivDeal);
 
     }
 
@@ -289,27 +338,51 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
         tvMrp.setText(AppConstants.RUPEE + myDeals.getMrp());
         tvOfferPrice.setText(AppConstants.RUPEE + myDeals.getOffer_price());
         tvSeller.setText(myDeals.getSeller_name());
-        etQty.setText(qty);
-        btnMinus.setVisibility(View.INVISIBLE);
+        tvAddToCart.setText("ADD TO CART");
+//        etQty.setText(qty);
+//        btnMinus.setVisibility(View.INVISIBLE);
+        int qtyValue = Integer.valueOf(myDeals.getQuantity());
+        qtyList = new ArrayList<>();
+        for (int i = 1; i <= qtyValue; i++) {
+            qtyList.add(i);
+        }
+        adapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, qtyList);
+        adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+
+        spnQty.setAdapter(adapter);
+        spnQty.setSelection(0);
+        spnQty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                int value = (int) parent.getItemAtPosition(position);
+                qty = String.valueOf(value);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         tvTotal.setText(AppConstants.RUPEE + totalPrice);
-        Glide.with(this).load(myDeals.getImage_url()).diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true).override(140, 140).placeholder(R.drawable.ic_picasa).into(ivDeal);
+        tvOnlyLeft.setText("Only " + myDeals.getQuantity() + " left.");
+        Glide.with(this).load(myDeals.getImage_url()).override(155, 155).placeholder(R.drawable.ic_picasa).into(ivDeal);
+
     }
 
-    @OnClick(R.id.btn_add)
-    void addQty() {
-        String value = etQty.getText().toString();
-        int intValue = Integer.valueOf(value);
-        if (detailsType == 2) {
-            if (intValue < Integer.valueOf(myDeals.getQuantity()))
-                etQty.setText(String.valueOf(intValue + 1));
-        }
-        if (detailsType == 1) {
-            if (intValue < Integer.valueOf(cartItem.getMaxqty()))
-                etQty.setText(String.valueOf(intValue + 1));
-        }
-        setTotalPrice(etQty.getText().toString());
-    }
+//    @OnClick(R.id.btn_add)
+//    void addQty() {
+//        String value = etQty.getText().toString();
+//        int intValue = Integer.valueOf(value);
+//        if (detailsType == 2) {
+//            if (intValue < Integer.valueOf(myDeals.getQuantity()))
+//                etQty.setText(String.valueOf(intValue + 1));
+//        }
+//        if (detailsType == 1) {
+//            if (intValue < Integer.valueOf(cartItem.getMaxqty()))
+//                etQty.setText(String.valueOf(intValue + 1));
+//        }
+//        setTotalPrice(etQty.getText().toString());
+//    }
 
     private void setTotalPrice(String s) {
         qty = s;
@@ -328,81 +401,86 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
         tvTotal.setText(AppConstants.RUPEE + totalPrice);
     }
 
-    @OnClick(R.id.btn_minus)
-    void minusQty() {
-        String value = etQty.getText().toString();
-        int intValue = Integer.valueOf(value);
-        etQty.setText(String.valueOf(intValue - 1));
-        setTotalPrice(etQty.getText().toString());
+//    @OnClick(R.id.btn_minus)
+//    void minusQty() {
+//        String value = etQty.getText().toString();
+//        int intValue = Integer.valueOf(value);
+//        etQty.setText(String.valueOf(intValue - 1));
+//        setTotalPrice(etQty.getText().toString());
+//
+//    }
 
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_details, menu);
+//        return true;
+//    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_details, menu);
-        return true;
-    }
+    @OnClick(R.id.cl_add_to_cart)
+    void addOrUpdateCart() {
+        if (!qty.equals("0") && !totalPrice.equals("0")) {
+            if (detailsType == 2) {
+                long row = AppHelpers.addToCart(this, qty, totalPrice, myDeals);
+                if (row > 0) {
+                    Snackbar snackbar = Snackbar.make(tvDesc, AppConstants.CARTUPDATE, Snackbar.LENGTH_INDEFINITE)
+                            .setAction(AppConstants.GOTOCART, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent i = new Intent(DealsDetailsActivity.this, CartActivity.class);
+                                    startActivity(i);
+                                    finish();
+                                }
+                            });
+                    snackbar.setActionTextColor(Color.GREEN);
+                    // Changing action button text color
+                    View sbView = snackbar.getView();
+                    TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                    tvMessage.setTextColor(Color.YELLOW);
+                    snackbar.show();
+                } else {
+                    Snackbar snackbar = Snackbar.make(tvDesc, AppConstants.WENTWRONG, Snackbar.LENGTH_SHORT);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_add_to_cart) {
-            if (!qty.equals("0") && !totalPrice.equals("0")) {
-                if (detailsType == 2) {
-                    long row = AppHelpers.addToCart(this, qty, totalPrice, myDeals);
-                    if (row > 0) {
-                        Snackbar snackbar = Snackbar.make(etQty, AppConstants.CARTUPDATE, Snackbar.LENGTH_INDEFINITE)
-                                .setAction(AppConstants.GOTOCART, new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Intent i = new Intent(DealsDetailsActivity.this, CartActivity.class);
-                                        startActivity(i);
-                                        finish();
-                                    }
-                                });
-                        snackbar.setActionTextColor(Color.GREEN);
-                        // Changing action button text color
-                        View sbView = snackbar.getView();
-                        TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-                        tvMessage.setTextColor(Color.YELLOW);
-                        snackbar.show();
-                    } else {
-                        Snackbar snackbar = Snackbar.make(etQty, AppConstants.WENTWRONG, Snackbar.LENGTH_SHORT);
-
-                        // Changing action button text color
-                        View sbView = snackbar.getView();
-                        TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-                        tvMessage.setTextColor(Color.YELLOW);
-                        snackbar.show();
-                    }
-                } else if (detailsType == 1) {
-                    long row = AppHelpers.updateCart(this, qty, totalPrice, cartItem.getDelaId());
-                    if (row > 0) {
-                        Intent i = new Intent(DealsDetailsActivity.this, CartActivity.class);
-                        startActivity(i);
-                        finish();
-                    } else {
-                        Snackbar snackbar = Snackbar.make(etQty, AppConstants.WENTWRONG, Snackbar.LENGTH_SHORT);
-
-                        // Changing action button text color
-                        View sbView = snackbar.getView();
-                        TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-                        tvMessage.setTextColor(Color.YELLOW);
-                        snackbar.show();
-                    }
+                    // Changing action button text color
+                    View sbView = snackbar.getView();
+                    TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                    tvMessage.setTextColor(Color.YELLOW);
+                    snackbar.show();
                 }
+            } else if (detailsType == 1) {
+                long row = AppHelpers.updateCart(this, qty, totalPrice, cartItem.getDelaId());
+                if (row > 0) {
+                    Intent i = new Intent(DealsDetailsActivity.this, CartActivity.class);
+                    startActivity(i);
+                    finish();
+                } else {
+                    Snackbar snackbar = Snackbar.make(tvDesc, AppConstants.WENTWRONG, Snackbar.LENGTH_SHORT);
 
-            } else {
-                Snackbar snackbar = Snackbar.make(etQty, AppConstants.ENTERQTY, Snackbar.LENGTH_SHORT);
-
-                // Changing action button text color
-                View sbView = snackbar.getView();
-                TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-                tvMessage.setTextColor(Color.YELLOW);
-                snackbar.show();
+                    // Changing action button text color
+                    View sbView = snackbar.getView();
+                    TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                    tvMessage.setTextColor(Color.YELLOW);
+                    snackbar.show();
+                }
             }
+
+        } else {
+            Snackbar snackbar = Snackbar.make(tvDesc, AppConstants.ENTERQTY, Snackbar.LENGTH_SHORT);
+
+            // Changing action button text color
+            View sbView = snackbar.getView();
+            TextView tvMessage = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            tvMessage.setTextColor(Color.YELLOW);
+            snackbar.show();
         }
-        return true;
     }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        if (item.getItemId() == R.id.action_add_to_cart) {
+//
+//        }
+//        return true;
+//    }
 
     private boolean checkPlayServices() {
         GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
