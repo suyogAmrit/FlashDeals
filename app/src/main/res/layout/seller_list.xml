@@ -135,7 +135,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:src="@drawable/phone"
+                    android:src="@drawable/ic_phone"
                     android:textSize="14sp" />
                 <TextView
                     android:id="@+id/txtSellerPhone"
