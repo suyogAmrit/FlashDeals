@@ -5,10 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/lightPrimary"
     tools:context="com.suyogindia.flashdeals.OrdersActivity">
     <include layout="@layout/toolbar"/>
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="2dp"
         android:id="@+id/recyclerOrders"/>
 </LinearLayout>

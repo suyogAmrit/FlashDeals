@@ -84,7 +84,7 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
                             ((OrdersActivity) context).requestCallSeller(orders.getContact_number());
                         }
                     });
-                    sellersViewHolder.txtSellerOrderDate.setText("Ordered date:" + orders.getOrder_date());
+                    sellersViewHolder.txtSellerOrderDate.setText("Ordered Date:" + orders.getOrder_date());
                 }
                 break;
             case 1:

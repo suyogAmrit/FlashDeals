@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="2dp"
+    android:padding="8dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/card_bottom"
+    android:layout_marginLeft="6dp"
+    android:layout_marginRight="6dp"
+    android:elevation="5dp"
     android:orientation="vertical">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -12,13 +16,15 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:text="Delivery Status:"
-                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textColor="@color/brightTextGray"
                 android:id="@+id/txtDs"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
+                android:textColor="@color/brightTextGray"
                 android:textStyle="bold"
+                android:textSize="16sp"
                 android:id="@+id/txtDeliveryStatus"
                 android:layout_alignParentRight="true"
                 android:layout_toRightOf="@+id/txtDs"
@@ -38,7 +44,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Has your order been Delivered?"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/brightTextGray"
+                    android:textSize="16sp"
                     android:id="@+id/txtHas"
                     android:layout_alignParentLeft="true"/>
                 <RadioGroup
@@ -88,7 +95,8 @@
                     android:layout_height="wrap_content"
                     android:text="Rate Seller"
                     android:id="@+id/txtRate"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/brightTextGray"
+                    android:textSize="16sp"
                     android:layout_alignParentLeft="true"
                     android:layout_marginTop="10dp"/>
                 <RatingBar
@@ -102,11 +110,6 @@
                     android:layout_toRightOf="@+id/txtRate"
                      />
             </RelativeLayout>
-<View
-    android:layout_width="match_parent"
-    android:layout_height="1dp"
-    android:layout_marginTop="5dp"
-    android:background="@android:color/darker_gray"/>
         </LinearLayout>
 
     </LinearLayout>

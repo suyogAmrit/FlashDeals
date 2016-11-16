@@ -1,22 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="5dp"
-    app:cardUseCompatPadding="true"
-    app:elevation="1dp">
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="2dp">
-
+        android:orientation="vertical"
+    android:layout_marginLeft="6dp"
+    android:layout_marginRight="6dp"
+        android:background="@android:color/white"
+        android:elevation="5dp">
+    <TextView
+        android:id="@+id/txtItemDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:textSize="16sp"
+        android:textColor="@color/brightTextBlue"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="7dp"
+    android:layout_marginLeft="6dp"
+    android:layout_marginRight="6dp">
         <ImageView
             android:id="@+id/iv_deal"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:src="@drawable/ic_picasa"/>
 
         <LinearLayout
@@ -38,14 +49,7 @@
                     <!--android:textColor="@android:color/black"-->
                     <!--android:textSize="14sp" />-->
 
-                <TextView
-                    android:id="@+id/txtItemDesc"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:textSize="14sp"
-                    android:gravity="end"
-                  />
+
             </LinearLayout>
 
             <LinearLayout
@@ -174,6 +178,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="15dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -181,15 +186,16 @@
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:text="Quntity :"
-                    android:textColor="@android:color/black"
-                    android:textSize="14sp" />
+                    android:textColor="@color/brightTextGray"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/txtQuantity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="3dp"
-                    android:textSize="14sp"
+                    android:textColor="@color/brightTextGray"
+                    android:textSize="16sp"
                     android:gravity="end"
                     />
 
@@ -199,6 +205,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -251,5 +258,9 @@
 
             </LinearLayout>
         </LinearLayout>
+</LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/deamgray"/>
     </LinearLayout>
-</android.support.v7.widget.CardView>

@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="2dp"
-    app:cardUseCompatPadding="true"
-    app:elevation="1dp">
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/card_top"
+        android:elevation="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
             android:orientation="horizontal">
 
             <TextView
@@ -22,36 +21,55 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_weight="0.35"
+                android:layout_weight="0.30"
                 android:maxLines="1"
-                android:textColor="@android:color/black"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+                android:textColor="@color/brightTextBlue"
+                android:text="OrderId"
+                android:textSize="18sp"
+                />
 
             <TextView
                 android:id="@+id/txtSellerOrderDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_weight="0.65"
-                android:gravity="end|right"
+                android:layout_weight="0.70"
+                android:paddingLeft="10dp"
                 android:maxLines="1"
-                android:textColor="@android:color/black"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+                android:textColor="@color/blackish"
+                android:textSize="18sp"
+                />
         </LinearLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Seller Details"
+            android:textColor="@color/brightTextBlue"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:textSize="17sp"
+            />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/deamgray"
+        android:layout_marginTop="5dp"/>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:text="Seller Name"
-                android:textColor="@android:color/black"
-                android:textSize="15sp" />
+                android:textColor="@color/lightTextBlue"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/txtSellerEmail"
@@ -60,20 +78,23 @@
                 android:layout_alignParentRight="true"
                 android:maxLines="1"
                 android:paddingRight="3dp"
-                android:textSize="14sp" />
+                android:textColor="@color/brightTextGray"
+                android:textSize="16sp" />
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:text="Seller Address"
-                android:textColor="@android:color/black"
-                android:textSize="15sp" />
+                android:textColor="@color/lightTextBlue"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/txtSellerAddr"
@@ -83,22 +104,25 @@
                 android:layout_marginTop="5dp"
                 android:maxLines="1"
                 android:paddingRight="3dp"
-                android:textSize="14sp" />
+                android:textColor="@color/brightTextGray"
+                android:textSize="16sp" />
 
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:text="Phone"
-                android:textColor="@android:color/black"
-                android:textSize="15sp" />
+                android:textColor="@color/lightTextBlue"
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -106,36 +130,37 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/txtSellerPhone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:textSize="14sp" />
-
                 <ImageView
                     android:id="@+id/imgCall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:src="@android:drawable/ic_menu_call"
+                    android:src="@drawable/phone"
                     android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/txtSellerPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:textColor="@color/brightTextGray"
+                    android:textSize="16sp" />
             </LinearLayout>
 
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:text="Shipping Charge"
-                android:textColor="@android:color/black"
-                android:textSize="15sp" />
+                android:textColor="@color/lightTextBlue"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/txtSellerShippingCharge"
@@ -144,21 +169,23 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="5dp"
                 android:maxLines="1"
-                android:textColor="@android:color/black"
-                android:textSize="14sp" />
+                android:textColor="@color/brightTextGray"
+                android:textSize="16sp" />
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:text="Total Amount"
-                android:textColor="@android:color/black"
-                android:textSize="15sp" />
+                android:textColor="@color/lightTextBlue"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/txtSellerTotalPrice"
@@ -167,8 +194,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="5dp"
                 android:maxLines="1"
-                android:textColor="@android:color/black"
-                android:textSize="14sp" />
+                android:textColor="@color/brightTextGray"
+                android:textSize="16sp" />
         </RelativeLayout>
         <!--<TextView
             android:layout_width="match_parent"
@@ -225,5 +252,5 @@
             android:textColor="@android:color/black"
             android:layout_marginTop="5dp"
             android:id="@+id/txtSellerAddrEmail"/>-->
+
     </LinearLayout>
-</android.support.v7.widget.CardView>

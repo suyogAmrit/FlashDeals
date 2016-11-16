@@ -6,4 +6,12 @@
     <color name="red">#ee3928</color>
     <color name="blue">#00397c</color>
     <color name="sky">#d3edf8</color>
+    <color name="lightPrimary">#0077ff</color>
+    <color name="backGray">#DDDDDD</color>
+    <color name="lightTextBlue">#4184ED</color>
+    <color name="brightTextBlue">#01387B</color>
+    <color name="lightTextGray">#A5A5A5</color>
+    <color name="brightTextGray">#6C6C6C</color>
+    <color name="blackish">#666666</color>
+    <color name="deamgray">#e6e6e6</color>
 </resources>
