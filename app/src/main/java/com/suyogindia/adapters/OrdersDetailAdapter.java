@@ -84,7 +84,7 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
                             ((OrdersActivity) context).requestCallSeller(orders.getContact_number());
                         }
                     });
-                    sellersViewHolder.txtSellerOrderDate.setText("Ordered Date:" + orders.getOrder_date());
+                    sellersViewHolder.txtSellerOrderDate.setText(orders.getOrder_date());
                 }
                 break;
             case 1:
@@ -100,11 +100,13 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
                     itemsViewHolder.txtItemTotalAmount.setText(AppConstants.RUPEE + orders.getItem().getTotal_price());
                     itemsViewHolder.txtQuantity.setText("" + orders.getItem().getQuantity());
                     itemsViewHolder.txtOrderDate.setText(orders.getItem().getOrder_date());
+                    itemsViewHolder.tvOrderId.setText(orders.getItem().getNew_order_id());
+
                     Glide.with(context)
                             .load(orders.getItem().getImage_url())
                             .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .override(80,80)
+                            .override(80, 80)
                             .placeholder(R.drawable.ic_picasa)
                             .into(itemsViewHolder.ivDeal);
                 }
@@ -162,8 +164,9 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
                             }
                         }
                     });
-                    Float f = new Float(orders.getRating());
-                    statsusViewHolder.ratingSeller.setRating(f);
+                    // Float f = Float.valueOf(orders.getRating());
+                    statsusViewHolder.ratingSeller.setNumStars(5);
+                    statsusViewHolder.ratingSeller.setRating(orders.getRating());
                     statsusViewHolder.ratingSeller.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                         @Override
                         public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
@@ -227,6 +230,7 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
     public class ItemsViewHolder extends MyOrderDetailsViewHolder {
         TextView txtItemDesc, txtItemMrp, txtItemOfferPrice, txtItemDiscount, txtItemOfferStartTime, txtItemOfferEndTime, txtItemTotalAmount, txtQuantity, txtOrderDate;
         ImageView ivDeal;
+        TextView tvOrderId;
 
         public ItemsViewHolder(View itemView) {
             super(itemView);
@@ -240,6 +244,7 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
             txtQuantity = (TextView) itemView.findViewById(R.id.txtQuantity);
             txtOrderDate = (TextView) itemView.findViewById(R.id.txtOrderDate);
             ivDeal = (ImageView) itemView.findViewById(R.id.iv_deal);
+            tvOrderId = (TextView) itemView.findViewById(R.id.tvOrder_id);
 
         }
     }

@@ -5,7 +5,7 @@ package com.suyogindia.model;
  */
 
 public class RegisterUserResponse {
-    public String tell_us;
+    public int tell_us;
     private String status, email, message;
 
     public String getStatus() {
@@ -20,7 +20,7 @@ public class RegisterUserResponse {
         return message;
     }
 
-    public String getTell_us() {
+    public int getTell_us() {
         return tell_us;
     }
 

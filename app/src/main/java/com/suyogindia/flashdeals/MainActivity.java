@@ -49,7 +49,6 @@ import com.suyogindia.helpers.WebApi;
 import com.suyogindia.model.Category;
 import com.suyogindia.model.GetDealsPostData;
 import com.suyogindia.model.GetDealsResponse;
-import com.suyogindia.model.QuestionRequest;
 
 import java.io.IOException;
 import java.util.List;
@@ -95,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     int totalItem = 0;
     boolean doubleBackToExitPressedOnce = false;
     Dialog exitDialog;
+    boolean answers;
     private Location mLastLocation;
     // Google client to interact with Google API
     private GoogleApiClient mGoogleApiClient;
@@ -145,18 +145,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void checkFireBaseSeriver() {
         try {
-
+            Log.i("userid", userId);
             final String token = FirebaseInstanceId.getInstance().getToken();
             final String android_id = Settings.Secure.getString(getContentResolver(),
                     Settings.Secure.ANDROID_ID);
 
             if (AppHelpers.isConnectingToInternet(MainActivity.this)) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        MyFirebaseInstanceIDService.sendRegistrationToServer(token, android_id, userId);
-                    }
-                }).start();
+
+                MyFirebaseInstanceIDService.sendRegistrationToServer(token, android_id, userId);
+
             }
         } catch (NullPointerException e) {
             Intent i = new Intent(MainActivity.this, MyFirebaseInstanceIDService.class);
@@ -231,8 +228,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         tabs.setupWithViewPager(pager);
     }
 
-    boolean answers;
-
     private void getDataFromSharedPrefs() {
         SharedPreferences shr = getSharedPreferences(AppConstants.USERPREFS, MODE_PRIVATE);
         userId = shr.getString(AppConstants.USERID, AppConstants.NA);
@@ -263,11 +258,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                         break;
                     case R.id.nav_my_orders:
                         //Intent intent = new Intent(MainActivity.this, MyOrdersActivity.class);
-                        Intent intent = new Intent(MainActivity.this,OrdersActivity.class);
+                        Intent intent = new Intent(MainActivity.this, OrdersActivity.class);
                         startActivity(intent);
                         break;
-                    case  R.id.nav_profile:
-                        Intent intent1 = new Intent(MainActivity.this,MyProfileActivity.class);
+                    case R.id.nav_profile:
+                        Intent intent1 = new Intent(MainActivity.this, MyProfileActivity.class);
                         startActivity(intent1);
                         break;
                 }

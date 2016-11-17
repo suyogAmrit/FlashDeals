@@ -233,27 +233,32 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
             @Override
             public void onFailure(Call<RegisterUserResponse> call, Throwable t) {
+                dialog.dismiss();
                 Log.e(AppConstants.ERROR, t.getLocalizedMessage());
-
+                Toast.makeText(LoginActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
-    private void saveEmailAndMove(String email, String tell_us) {
+    private void saveEmailAndMove(String email, int tell_us) {
         SharedPreferences shr = getSharedPreferences(AppConstants.USERPREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = shr.edit();
         editor.putString(AppConstants.EMAIL, email);
-        editor.apply();
 
-        //Intent i = new Intent(LoginActivity.this, SelectDealsActivity.class);
-        if (tell_us.equals("0")) {
+
+        Log.i("tellus", tell_us + "");
+        if (tell_us == 0) {
+            editor.apply();
             Intent i = new Intent(LoginActivity.this, QuestionaryActivity.class);
             i.putExtra(AppConstants.FROMPROFILE, false);
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
+
             finish();
-        } else if (tell_us.equals("1")) {
+        } else if (tell_us == 1) {
+            editor.putBoolean(AppConstants.ANSWERS, true);
+            editor.apply();
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
             i.putExtra(AppConstants.FROMPROFILE, false);
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

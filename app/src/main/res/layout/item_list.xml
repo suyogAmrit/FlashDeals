@@ -1,36 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
-        android:background="@android:color/white"
-        android:elevation="5dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="6dp"
+    android:layout_marginRight="6dp"
+    android:background="@android:color/white"
+    android:elevation="1dp"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/txtItemDesc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:textSize="16sp"
-        android:textColor="@color/brightTextBlue"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
-        />
+        android:paddingLeft="10dp"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
 
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:layout_marginTop="7dp"
-    android:layout_marginLeft="6dp"
-    android:layout_marginRight="6dp">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="7dp"
+        android:orientation="horizontal">
+
         <ImageView
             android:id="@+id/iv_deal"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/ic_picasa"/>
+            android:src="@drawable/ic_picasa" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,12 +45,12 @@
                 android:orientation="horizontal">
 
                 <!--<TextView-->
-                    <!--android:id="@+id/textView21"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="About Item    :"-->
-                    <!--android:textColor="@android:color/black"-->
-                    <!--android:textSize="14sp" />-->
+                <!--android:id="@+id/textView21"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="About Item    :"-->
+                <!--android:textColor="@android:color/black"-->
+                <!--android:textSize="14sp" />-->
 
 
             </LinearLayout>
@@ -72,10 +73,9 @@
                     android:id="@+id/txtItemMrp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:textSize="14sp"
                     android:gravity="end"
-                    />
+                    android:paddingLeft="10dp"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -96,10 +96,9 @@
                     android:id="@+id/txtItemOfferPrice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:textSize="14sp"
                     android:gravity="end"
-                    />
+                    android:paddingLeft="10dp"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -120,10 +119,9 @@
                     android:id="@+id/txtItemDiscount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:textSize="14sp"
                     android:gravity="end"
-                    />
+                    android:paddingLeft="10dp"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -145,10 +143,9 @@
                     android:id="@+id/txtItemOfferStartTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="3dp"
-                    android:textSize="14sp"
                     android:gravity="end"
-                    />
+                    android:paddingLeft="3dp"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -170,17 +167,16 @@
                     android:id="@+id/txtItemOfferEndTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="3dp"
-                    android:textSize="14sp"
                     android:gravity="end"
-                    />
+                    android:paddingLeft="3dp"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginLeft="15dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -195,19 +191,19 @@
                     android:id="@+id/txtQuantity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="3dp"
-                    android:textColor="@color/brightTextGray"
-                    android:textSize="16sp"
                     android:gravity="end"
-                    />
+                    android:paddingLeft="3dp"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -215,19 +211,43 @@
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:text="Total Amount :"
-                    android:textColor="@android:color/black"
                     android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/txtItemTotalAmount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="3dp"
-                    android:textSize="14sp"
                     android:gravity="end"
-                    />
+                    android:paddingLeft="3dp"
+                    android:textColor="@color/colorAccent"
+
+                    android:textSize="14sp" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text="Order Identifier :"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvOrder_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingLeft="3dp"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -248,10 +268,9 @@
                     android:id="@+id/txtOrderDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="3dp"
-                    android:textSize="14sp"
                     android:gravity="end"
-                    />
+                    android:paddingLeft="3dp"
+                    android:textSize="14sp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -260,10 +279,11 @@
 
             </LinearLayout>
         </LinearLayout>
-</LinearLayout>
+    </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="3dp"
-        android:background="@color/deamgray"/>
-    </LinearLayout>
+        android:background="@color/deamgray" />
+</LinearLayout>

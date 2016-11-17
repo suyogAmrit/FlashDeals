@@ -27,8 +27,10 @@
     </style>
         <style name="foodRatingBar" parent="@android:style/Widget.RatingBar">
             <item name="android:progressDrawable">@drawable/rating_bg</item>
-            <item name="android:minHeight">22dip</item>
-            <item name="android:maxHeight">22dip</item>
+            <item name="android:minHeight">24dip</item>
+            <item name="android:maxHeight">24dip</item>
+
+            <item name="android:numStars">5</item>
         </style>
 
     <style name="spinner_style" >

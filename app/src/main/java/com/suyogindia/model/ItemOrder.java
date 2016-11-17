@@ -107,6 +107,7 @@ public class ItemOrder implements Parcelable{
     private String zip;
     private String phone;
     private String email;
+
     Item item;
 
     public String getSeller_email() {
@@ -282,7 +283,13 @@ public class ItemOrder implements Parcelable{
         dest.writeString(order_date);
         dest.writeString(contact_number);
     }
-    public ItemOrder(int type, String seller_name, String seller_delevery_mode, double seller_shipping_charge, String seller_address, String seller_city, String seller_state, String seller_country, String seller_zip, String seller_phone, String email,String delevery_status,String user_delevery_status,String seller_order_id,String seller_email,float rating) {
+
+
+
+    public ItemOrder(int type, String seller_name, String seller_delevery_mode, double seller_shipping_charge,
+                     String seller_address, String seller_city, String seller_state, String seller_country, String seller_zip,
+                     String seller_phone, String email, String delevery_status, String user_delevery_status, String seller_order_id,
+                     String seller_email, float rating) {
         this.type = type;
         this.seller_name = seller_name;
         this.delevery_mode = seller_delevery_mode;

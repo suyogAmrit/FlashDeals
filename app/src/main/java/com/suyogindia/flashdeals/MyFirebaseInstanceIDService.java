@@ -35,7 +35,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
             @Override
             public void onResponse(Call<PostTokenResponse> call, Response<PostTokenResponse> response) {
                 if (response.isSuccessful())
-                    Log.i(AppConstants.STATUS, response.body().getStatus());
+                    Log.i("token_status", response.body().getStatus());
 
             }
 

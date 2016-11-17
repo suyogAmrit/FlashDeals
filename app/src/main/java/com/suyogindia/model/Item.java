@@ -29,6 +29,7 @@ public class Item implements Parcelable {
     private int quantity;
     private String order_date;
     private String image_url;
+    private String new_order_id;
 
     public Item() {
         super();
@@ -45,7 +46,12 @@ public class Item implements Parcelable {
         quantity = in.readInt();
         order_date = in.readString();
         image_url = in.readString();
+        new_order_id = in.readString();
 
+    }
+
+    public String getNew_order_id() {
+        return new_order_id;
     }
 
     public double getTotal_price() {
@@ -137,6 +143,7 @@ public class Item implements Parcelable {
         dest.writeInt(quantity);
         dest.writeString(order_date);
         dest.writeString(image_url);
+        dest.writeString(new_order_id);
     }
 
     public String getImage_url() {
