@@ -151,6 +151,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 String status = response.getString(AppConstants.STATUS);
                 Toast.makeText(ForgotPasswordActivity.this, response.getString(AppConstants.MESSAGE), Toast.LENGTH_SHORT).show();
                 if (status.equals(AppConstants.SUCESS)) {
+                    Intent i = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
+                    startActivity(i);
                     finish();
                 }
             } catch (NullPointerException e) {

@@ -147,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         try {
             Log.i("userid", userId);
             final String token = FirebaseInstanceId.getInstance().getToken();
+            Log.i("token", token);
             final String android_id = Settings.Secure.getString(getContentResolver(),
                     Settings.Secure.ANDROID_ID);
 
@@ -403,6 +404,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             tvLocation.setText(myAddress.getAddressLine(0));
         } catch (IOException e) {
             e.printStackTrace();
+            tvLocation.setText("Can not locate you");
         }
     }
 

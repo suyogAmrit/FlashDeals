@@ -31,6 +31,7 @@ public class DealsFragment extends Fragment {
         Bundle b = new Bundle();
         b.putParcelable(AppConstants.CATEGORY, category);
         Log.i("size", category.getDealsList().size() + "");
+
         myDealsFragment.setArguments(b);
         return myDealsFragment;
     }

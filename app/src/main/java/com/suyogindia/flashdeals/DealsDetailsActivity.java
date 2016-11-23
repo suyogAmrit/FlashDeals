@@ -298,7 +298,7 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
         tvOfferPrice.setText(AppConstants.RUPEE + cartItem.getOfferPrice());
         tvSeller.setText(cartItem.getSellerName());
 //        etQty.setText(qty);
-        int qtyValue = Integer.valueOf(cartItem.getMaxqty());
+        final int qtyValue = Integer.valueOf(cartItem.getMaxqty());
         qtyList = new ArrayList<>();
         for (int i = 1; i <= qtyValue; i++) {
             qtyList.add(i);
@@ -313,6 +313,7 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 int value = (int) parent.getItemAtPosition(position);
                 qty = String.valueOf(value);
+                setTotalPrice(qty);
             }
 
             @Override
@@ -356,6 +357,7 @@ public class DealsDetailsActivity extends AppCompatActivity implements GoogleApi
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 int value = (int) parent.getItemAtPosition(position);
                 qty = String.valueOf(value);
+                setTotalPrice(qty);
             }
 
             @Override

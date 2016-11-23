@@ -17,11 +17,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.suyogindia.database.DataBaseHelper;
 import com.suyogindia.flashdeals.ClearCartService;
-import com.suyogindia.model.OrderReviewResponse;
 import com.suyogindia.model.CartItem;
 import com.suyogindia.model.CreateOrderRequest;
 import com.suyogindia.model.CreateOrderResponse;
 import com.suyogindia.model.Deals;
+import com.suyogindia.model.OrderReviewResponse;
 import com.suyogindia.model.PlaceOrderItem;
 import com.suyogindia.model.PlaceOrderPostData;
 import com.suyogindia.model.PlaceOrderResponse;
@@ -88,6 +88,7 @@ public class AppHelpers {
                 .build();
         return retrofit.create(WebApi.class);
     }
+
     public static OkHttpClient getSocketTime() {
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(15, TimeUnit.SECONDS)
@@ -97,6 +98,7 @@ public class AppHelpers {
 
         return client;
     }
+
     public static ProgressDialog showProgressDialog(Context context, String genotpmessage) {
         ProgressDialog dialog = new ProgressDialog(context);
         dialog.setTitle(AppConstants.DALOGTITLE);
@@ -270,8 +272,8 @@ public class AppHelpers {
         return api.createOrder(data);
 
     }
-    public static boolean isValidMobile(String phone)
-    {
+
+    public static boolean isValidMobile(String phone) {
         return android.util.Patterns.PHONE.matcher(phone).matches();
     }
 }

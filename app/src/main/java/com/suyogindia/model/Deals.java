@@ -38,6 +38,30 @@ public class Deals implements Parcelable {
         image_url = in.readString();
     }
 
+    public void setMrp(String mrp) {
+        this.mrp = mrp;
+    }
+
+    public void setOffer_price(String offer_price) {
+        this.offer_price = offer_price;
+    }
+
+    public void setMax_price(String max_price) {
+        this.max_price = max_price;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setDiscount(String discount) {
+        this.discount = discount;
+    }
+
+    public void setShipping_charge(String shipping_charge) {
+        this.shipping_charge = shipping_charge;
+    }
+
     public String getImage_url() {
         return image_url;
     }

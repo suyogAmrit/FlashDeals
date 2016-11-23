@@ -1,12 +1,15 @@
 package com.suyogindia.flashdeals;
 
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -17,6 +20,8 @@ import com.suyogindia.helpers.AppConstants;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 /**
  * Created by suyogcomputech on 24/10/16.
  */
@@ -24,6 +29,7 @@ import org.json.JSONObject;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
+
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -41,6 +47,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         } catch (JSONException e) {
             Log.e(AppConstants.ERROR, e.getLocalizedMessage());
         }
+
     }
 
     private void sendNotification(JSONObject notificationObject) throws JSONException {
@@ -58,14 +65,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             builder.setContentTitle("Flash Deal Order Update");
             builder.setTicker("Flash Deal Order Update");
 
-            intent = new Intent(this, MyOrdersActivity.class);
+            intent = new Intent(this, OrdersActivity.class);
+
         } else if (notificationType == 0) {
             intent = new Intent(this, MainActivity.class);
             builder.setTicker("Deals Of the Day");
             builder.setContentTitle("Deals Of the Day");
         }
         String messageBody = notificationObject.getString(AppConstants.MESSAGE);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -81,6 +89,4 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         notificationManager.notify(notificationType, builder.build());
 
     }
-
-
 }

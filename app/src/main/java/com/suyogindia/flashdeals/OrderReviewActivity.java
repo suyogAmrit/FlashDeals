@@ -284,8 +284,8 @@ public class OrderReviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 confirmOderDialog.dismiss();
-                Intent i = new Intent(OrderReviewActivity.this, MainActivity.class);
-                startActivity(i);
+//                Intent i = new Intent(OrderReviewActivity.this, MainActivity.class);
+//                startActivity(i);
                 finish();
             }
         });

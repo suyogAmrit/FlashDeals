@@ -200,4 +200,5 @@ public class MyOrdersActivity extends AppCompatActivity {
             Toast.makeText(MyOrdersActivity.this, "Please Connect to internet", Toast.LENGTH_SHORT).show();
         }
     }
+
 }

@@ -7,8 +7,8 @@ android {
         applicationId "com.suyogindia.flashdeals"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 3
-        versionName "3.0"
+        versionCode 5
+        versionName "5.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -32,23 +32,23 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    //Add this line
+    compile project(":payUMoneysdk")
+
     compile 'com.android.support:appcompat-v7:24.0.0'
-    testCompile 'junit:junit:4.12'
     compile 'com.jakewharton:butterknife:8.4.0'
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.android.support:cardview-v7:24.0.0'
     compile 'com.android.support:recyclerview-v7:24.0.0'
     compile 'com.android.support:design:24.0.0'
     compile 'com.facebook.android:facebook-android-sdk:4.16.1'
-    compile 'com.google.android.gms:play-services:9.6.1'
+    compile 'com.google.android.gms:play-services:9.8.0'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0'
     compile 'com.android.support:multidex:1.0.1'
-    //Add this line
-    compile project(":payUMoneysdk")
-    compile 'com.google.firebase:firebase-messaging:9.0.0'
+    compile 'com.google.firebase:firebase-messaging:9.8.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta2'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-
+    testCompile 'junit:junit:4.12'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
 }
 apply plugin: 'com.google.gms.google-services'

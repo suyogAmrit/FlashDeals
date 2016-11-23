@@ -94,6 +94,18 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.ViewHolder> 
                     .skipMemoryCache(true)
                     .placeholder(R.drawable.ic_picasa)
                     .into(ivDeal);
+            if (myDeals.getMrp().contains(",")) {
+                myDeals.setMrp(myDeals.getMrp().replace(",", ""));
+            }
+            if (myDeals.getOffer_price().contains(",")) {
+                myDeals.setOffer_price(myDeals.getOffer_price().replace(",", ""));
+            }
+            if (myDeals.getDiscount().contains(",")) {
+                myDeals.setDiscount(myDeals.getDiscount().replace(",", ""));
+            }
+            if (myDeals.getShipping_charge().contains(",")) {
+                myDeals.setShipping_charge(myDeals.getShipping_charge().replace(",", ""));
+            }
             tvDiscount.setText(AppConstants.DISCOUNT + ": " + myDeals.getDiscount() + "%");
             tvSeller.setText(myDeals.getSeller_name());
             tvOfferPrice.setText("Offer Price: " + AppConstants.RUPEE + " " + myDeals.getOffer_price());

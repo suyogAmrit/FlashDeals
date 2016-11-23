@@ -177,7 +177,9 @@ public class QuestionaryActivity extends AppCompatActivity implements View.OnCli
         listAnswrs.add(moviewStriing);
         listAnswrs.add(cityString);
         listAnswrs.add(etFamily.getText().toString());
-        listAnswrs.add("+91" + etAlternaetPhone.getText().toString());
+        if (etAlternaetPhone.getText().toString().length() > 0) {
+            listAnswrs.add("+91" + etAlternaetPhone.getText().toString());
+        } else listAnswrs.add("");
         //TODO add all strings serially
         request.setAddressList(list);
         request.setAnswerList(listAnswrs);
@@ -238,7 +240,7 @@ public class QuestionaryActivity extends AppCompatActivity implements View.OnCli
         } else if (homeAddress == null && officeaddress == null) {
             showSnackBar("Please provide One Address");
             return false;
-        } else if (!AppHelpers.isValidMobile(etAlternaetPhone.getText().toString().trim())) {
+        } else if (etAlternaetPhone.getText().toString().trim().length() > 0 && (etAlternaetPhone.getText().toString().length() < 10)) {
             etAlternaetPhone.setError("Please provide a valid Phone Number");
             return false;
         } else {
