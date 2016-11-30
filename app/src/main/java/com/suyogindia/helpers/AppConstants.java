@@ -89,4 +89,7 @@ public class AppConstants {
     public static final String CARTUPDATE = "Item Added";
     public static final String GOTOCART = "GO TO CART";
     public static final String ORDERCONFRMMSG = "Checking Order Details";
+    public static final String EXTRA_LATTITUDE = "EXTRA_LATTITUDE";
+    public static final String EXTRA_LONGITUDE = "EXTRA_LONGITUDE";
+    public static final String EXTRA_SELLER_NAME = "EXTRA_SELLER_NAME";
 }

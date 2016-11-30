@@ -1,6 +1,7 @@
 package com.suyogindia.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -13,11 +14,13 @@ import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.suyogindia.flashdeals.OrdersActivity;
 import com.suyogindia.flashdeals.R;
+import com.suyogindia.flashdeals.SellerMapActivity;
 import com.suyogindia.helpers.AppConstants;
 import com.suyogindia.model.ItemOrder;
 
@@ -85,6 +88,21 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
                         }
                     });
                     sellersViewHolder.txtSellerOrderDate.setText(orders.getOrder_date());
+                    sellersViewHolder.imgSellerLoc.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(context, SellerMapActivity.class);
+                            intent.putExtra(AppConstants.EXTRA_SELLER_NAME,orders.getSeller_name());
+                            intent.putExtra(AppConstants.EXTRA_LATTITUDE,orders.getLatitude());
+                            intent.putExtra(AppConstants.EXTRA_LONGITUDE, orders.getLongitude());
+                            if (intent.resolveActivity(context.getPackageManager()) != null) {
+                                context.startActivity(intent);
+                            }else {
+                                Toast.makeText(context,"Your Device Not Supporing Google Map",Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    });
                 }
                 break;
             case 1:
@@ -205,7 +223,7 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
 
     public class SellersViewHolder extends MyOrderDetailsViewHolder {
         TextView txtSellerEmail, txtSellerDlvryMode, txtSellerShippingCharge, txtSellerAddr, txtSellerCity, txtSellerState, txtSellerCountry, txtSellerZip, txtSellerPhone, txtSellerAddrEmail, txtSellerOrderId, txtSellerDeliveryStatus, txtSellerTotalPrice, txtSellerOrderDate;
-        ImageView imgCall;
+        ImageView imgCall,imgSellerLoc;
 
         public SellersViewHolder(View itemView) {
             super(itemView);
@@ -224,6 +242,7 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
             txtSellerTotalPrice = (TextView) itemView.findViewById(R.id.txtSellerTotalPrice);
             imgCall = (ImageView) itemView.findViewById(R.id.imgCall);
             txtSellerOrderDate = (TextView) itemView.findViewById(R.id.txtSellerOrderDate);
+            imgSellerLoc=(ImageView)itemView.findViewById(R.id.imgSellerLoc);
         }
     }
 

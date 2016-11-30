@@ -43,14 +43,16 @@
     </RelativeLayout>
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Seller Details"
+        android:layout_weight="1"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
         android:layout_marginTop="10dp"
-        android:text="Seller Details"
         android:textColor="@color/colorPrimary"
         android:textSize="17sp" />
+
 
     <View
         android:layout_width="match_parent"
@@ -76,17 +78,27 @@
     <!--android:text="Seller Name"-->
     <!--android:textColor="@color/lightTextBlue"-->
     <!--android:textSize="16sp" />-->
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginLeft="6dp"
+    android:layout_marginStart="6dp"
+    android:layout_marginTop="3dp">
     <TextView
         android:id="@+id/txtSellerEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="6dp"
-        android:layout_marginStart="6dp"
-        android:layout_marginTop="3dp"
         android:maxLines="1"
-        android:text="name"
+        android:layout_weight="1"
         android:textSize="16sp" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_map_localization"
+        android:id="@+id/imgSellerLoc"/>
+</LinearLayout>
+
     <!--</RelativeLayout>-->
 
     <!--<RelativeLayout-->
@@ -105,17 +117,16 @@
     <!--android:layout_marginLeft="6dp"-->
     <!--android:layout_marginRight="6dp"/>-->
 
-    <TextView
-        android:id="@+id/txtSellerAddr"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
-        android:layout_marginTop="3dp"
-        android:maxLines="1"
-
-        android:paddingRight="3dp"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/txtSellerAddr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginTop="3dp"
+            android:paddingRight="3dp"
+            android:textSize="16sp" />
 
     <!--</RelativeLayout>-->
 

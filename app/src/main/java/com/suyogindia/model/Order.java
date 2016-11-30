@@ -29,6 +29,24 @@ public class Order implements Parcelable{
     private double seller_total_price;
     private String order_date;
     private String contact_number;
+    private double latitude;
+    private double longitude;
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
 
     public DeleiveryInfo getDelevery_info() {
         return delevery_info;

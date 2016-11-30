@@ -11,6 +11,24 @@ public class ItemOrder implements Parcelable{
     int type;
     private double seller_total_price;
     private String contact_number;
+    private double latitude;
+    private double longitude;
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
 
     public DeleiveryInfo getDelevery_info() {
         return delevery_info;
@@ -69,6 +87,8 @@ public class ItemOrder implements Parcelable{
         seller_total_price = in.readDouble();
         order_date = in.readString();
         contact_number = in.readString();
+        latitude = in.readDouble();
+        longitude = in.readDouble();
     }
 
     public static final Creator<ItemOrder> CREATOR = new Creator<ItemOrder>() {
@@ -282,6 +302,8 @@ public class ItemOrder implements Parcelable{
         dest.writeDouble(seller_total_price);
         dest.writeString(order_date);
         dest.writeString(contact_number);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
     }
 
 
@@ -308,7 +330,7 @@ public class ItemOrder implements Parcelable{
         this.rating = rating;
     }
 
-    public ItemOrder(int type, String seller_name, String seller_order_id,String seller_address,String phone,double shiping_charge,double seller_total_price, String order_date,String contact_number) {
+    public ItemOrder(int type, String seller_name, String seller_order_id,String seller_address,String phone,double shiping_charge,double seller_total_price, String order_date,String contact_number,double latitude,double longitude) {
         this.type = type;
         this.seller_name = seller_name;
         this.seller_order_id = seller_order_id;
@@ -318,5 +340,7 @@ public class ItemOrder implements Parcelable{
         this.seller_total_price = seller_total_price;
         this.order_date = order_date;
         this.contact_number = contact_number;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 }

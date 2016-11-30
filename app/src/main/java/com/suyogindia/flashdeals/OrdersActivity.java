@@ -1,5 +1,7 @@
 package com.suyogindia.flashdeals;
 
+import android.*;
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -44,6 +46,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class OrdersActivity extends AppCompatActivity {
     private static final int REQUEST_CALL = 201;
+    private static final int REQIEST_LOCATION = 202;
     public static String responseString, userDemoid;
     private RecyclerView recyclerOrders;
     Retrofit retrofit;
@@ -113,7 +116,7 @@ public class OrdersActivity extends AppCompatActivity {
     private ArrayList<ItemOrder> getItemOrdersFrom(ArrayList<Order> orderseList) {
         ArrayList<ItemOrder> itemOrdersArrayList = new ArrayList<>();
         for (Order order : orderseList) {
-            ItemOrder itemSeller = new ItemOrder(0, order.getSeller_name(), order.getSeller_order_id(), order.getSeller_address(), order.getPhone(),order.getShipping_charge(),order.getSeller_total_price(),order.getOrder_date(),order.getContact_number());
+            ItemOrder itemSeller = new ItemOrder(0, order.getSeller_name(), order.getSeller_order_id(), order.getSeller_address(), order.getPhone(),order.getShipping_charge(),order.getSeller_total_price(),order.getOrder_date(),order.getContact_number(),order.getLatitude(),order.getLongitude());
             itemOrdersArrayList.add(itemSeller);
             ArrayList<Item> arrayList = order.getItems();
             for (Item i : arrayList) {
