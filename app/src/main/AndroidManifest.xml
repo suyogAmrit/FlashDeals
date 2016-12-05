@@ -153,7 +153,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="AIzaSyDSsRVK-ZEteX6J6jK5mXvIXXIsDJU0hSc" />
 
         <activity android:name=".SellerMapActivity"></activity>
     </application>

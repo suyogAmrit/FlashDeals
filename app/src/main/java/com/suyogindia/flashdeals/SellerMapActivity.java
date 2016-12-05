@@ -49,7 +49,7 @@ public class SellerMapActivity extends AppCompatActivity implements OnMapReadyCa
         LatLng latlang = new LatLng(lattitude, longitude);
         map.addMarker(new MarkerOptions().position(latlang).title(sellerName)).showInfoWindow();
         map.moveCamera(CameraUpdateFactory.newLatLng(latlang));
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latlang, 10);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latlang, 13);
         map.animateCamera(cameraUpdate);
     }
 }

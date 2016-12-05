@@ -92,4 +92,8 @@ public class AppConstants {
     public static final String EXTRA_LATTITUDE = "EXTRA_LATTITUDE";
     public static final String EXTRA_LONGITUDE = "EXTRA_LONGITUDE";
     public static final String EXTRA_SELLER_NAME = "EXTRA_SELLER_NAME";
+
+    public static final String TERMS = "<a href='http://flashdeal.co.in/tandc.html'>Accept Terms & Conditions </a>";
+
+    public static final String ACCECPTTERMS = "Accept the Terms & Conditions to continue";
 }
