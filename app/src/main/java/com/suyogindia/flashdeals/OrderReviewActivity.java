@@ -23,12 +23,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.payUMoney.sdk.PayUmoneySdkInitilizer;
 import com.payUMoney.sdk.SdkConstants;
-import com.payUMoney.sdk.SdkSession;
 import com.suyogindia.adapters.OrderReviewAdapter;
 import com.suyogindia.helpers.AppConstants;
 import com.suyogindia.helpers.AppHelpers;
-import com.suyogindia.helpers.MakePaymentHelper;
+import com.suyogindia.helpers.PayYouMoneyHelper;
 import com.suyogindia.helpers.WebApi;
 import com.suyogindia.model.CartItem;
 import com.suyogindia.model.CreateOrderResponse;
@@ -50,8 +50,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-;import static android.app.Activity.RESULT_CANCELED;
-import static android.app.Activity.RESULT_OK;
+;
 
 /**
  * Created by suyogcomputech on 26/10/16.
@@ -114,12 +113,12 @@ public class OrderReviewActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_place_order) {
-//            if (checkAllData()) {
+            if (checkAllData()) {
             //TODO uncomment the above lines and comment the bellows
             sendOrderDetails();
-//            } else {
-//                Toast.makeText(this, "Some Items can't be delivered. Please remove the items to Proceed. ", Toast.LENGTH_LONG).show();
-//            }
+            } else {
+                Toast.makeText(this, "Some Items can't be delivered. Please remove the items to Proceed. ", Toast.LENGTH_LONG).show();
+            }
         }
         return true;
     }
@@ -127,41 +126,30 @@ public class OrderReviewActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //if(data!=null) {
-        if (requestCode == SdkSession.PAYMENT_SUCCESS) {
+        if (requestCode == PayUmoneySdkInitilizer.PAYU_SDK_PAYMENT_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                Log.i("app_activity", "success");
-                Log.i("paymentID", data.getStringExtra("paymentId"));
-//                Intent intent = new Intent(this, paymentSuccess.class);
-//                intent.putExtra(SdkConstants.RESULT, "success");
-//                intent.putExtra(SdkConstants.PAYMENT_ID, data.getStringExtra("paymentId"));
-//                startActivity(intent);
-                // finish();
-            }
-
-            if (resultCode == RESULT_CANCELED) {
+                Log.i(TAG, "Success - Payment ID : " + data.getStringExtra(SdkConstants.PAYMENT_ID));
+                String paymentId = data.getStringExtra(SdkConstants.PAYMENT_ID);
+                if (!TextUtils.isEmpty(orderId)) {
+                    sendOrderDataToServer(paymentId, orderId, userId);
+                }
+            } else if (resultCode == RESULT_CANCELED) {
+                Log.i(TAG, "failure");
+                showOrderFailureDialog();
+            } else if (resultCode == PayUmoneySdkInitilizer.RESULT_FAILED) {
                 Log.i("app_activity", "failure");
 
-                if (data != null) {
-                    if (data.getStringExtra(SdkConstants.RESULT).equals("cancel")) {
-
-                    } else {
-//                        Intent intent = new Intent(this, paymentSuccess.class);
-//                        intent.putExtra(SdkConstants.RESULT, "failure");
-//                        startActivity(intent);
-                    }
-                }
-                //Write your code if there's no result
+                showOrderFailureDialog();
             }
+        }else{
+            showOrderFailureDialog();
         }
-        //}
-        if (!TextUtils.isEmpty(orderId)) {
-            sendOrderDataToServer("2016", orderId, userId);
-        }
+
     }
 
     private boolean checkAllData() {
         boolean canOrder = true;
-        for (int i=0;i<listItems.size();i++) {
+        for (int i = 0; i < listItems.size(); i++) {
             if (listItems.get(i).getType() == 2 && listItems.get(i).getReview_status() == 0) {
                 canOrder = false;
                 rvOrderReview.scrollToPosition(i);
@@ -204,9 +192,11 @@ public class OrderReviewActivity extends AppCompatActivity {
                     if (response.body().getStatus().equals(AppConstants.SUCESS)) {
                         orderId = response.body().getOrderId();
                         Log.i("orderid", response.body().getOrderId());
-                        MakePaymentHelper myMakePayment = new MakePaymentHelper(OrderReviewActivity.this);
-                        // TODO: 08/11/16 change to total amount
-                        myMakePayment.initiatePayment(10.00);
+//                        MakePaymentHelper myMakePayment = new MakePaymentHelper(OrderReviewActivity.this);
+//                        // TODO: 08/11/16 change to total amount
+//                        myMakePayment.initiatePayment(10.00);
+                        PayYouMoneyHelper helper = new PayYouMoneyHelper(OrderReviewActivity.this);
+                        helper.makePayment(10);
                         //Changes for send order data
 
                     } else {
@@ -245,7 +235,7 @@ public class OrderReviewActivity extends AppCompatActivity {
     }
 
     private void callWebServiceForPaymentConfirmation(String paymentId, String orderId, String userId) {
-        dialog=AppHelpers.showProgressDialog(OrderReviewActivity.this,AppConstants.ORDERCONFRMMSG);
+        dialog = AppHelpers.showProgressDialog(OrderReviewActivity.this, AppConstants.ORDERCONFRMMSG);
         dialog.show();
         Map<String, String> mapOrder = new HashMap<>(3);
         mapOrder.put(AppConstants.PAYMENTID, paymentId);
@@ -292,7 +282,25 @@ public class OrderReviewActivity extends AppCompatActivity {
         confirmOderDialog.setCancelable(false);
         confirmOderDialog.show();
     }
-
+    private void showOrderFailureDialog() {
+        confirmOderDialog = new Dialog(this);
+        confirmOderDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        confirmOderDialog.setContentView(R.layout.dialog_order_failure);
+        TextView tvOrderID = (TextView) confirmOderDialog.findViewById(R.id.tv_dialog_order_id);
+        tvOrderID.setText("Order Id: " + orderId);
+        Button btnOkay = (Button) confirmOderDialog.findViewById(R.id.btn_confirm);
+        btnOkay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmOderDialog.dismiss();
+//                Intent i = new Intent(OrderReviewActivity.this, MainActivity.class);
+//                startActivity(i);
+                finish();
+            }
+        });
+        confirmOderDialog.setCancelable(false);
+        confirmOderDialog.show();
+    }
 
     private void sendDataForReview() {
         if (AppHelpers.isConnectingToInternet(this)) {
@@ -352,11 +360,11 @@ public class OrderReviewActivity extends AppCompatActivity {
             for (ReviewItem item : itemList) {
                 ReviewOrderItem item2 = new ReviewOrderItem(2, item.getDealId(), item.getDescription(), item.getQuantity_available(),
                         item.getReview_message(), item.getCategory_id(),
-                        item.getItem_price(), item.getOffer_price(), item.getDelivery_mode(),item.getImage_url(), item.getReview_status());
+                        item.getItem_price(), item.getOffer_price(), item.getDelivery_mode(), item.getImage_url(), item.getReview_status());
                 listItems.add(item2);
             }
 
-            ReviewOrderItem item3 = new ReviewOrderItem(3, s.getSeller_item_price(),s.getSeller_shipping_charge(),s.getSeller_total_price());
+            ReviewOrderItem item3 = new ReviewOrderItem(3, s.getSeller_item_price(), s.getSeller_shipping_charge(), s.getSeller_total_price());
             listItems.add(item3);
 
         }

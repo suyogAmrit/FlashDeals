@@ -1,8 +1,10 @@
 package com.suyogindia.flashdeals;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -297,6 +299,32 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         actionBarDrawerToggle.syncState();
     }
 
+    private void showEnableLocationDialog() {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                MainActivity.this);
+        alertDialogBuilder
+                .setMessage("GPS is disabled in your device. Enable it?")
+                .setPositiveButton("Enable GPS",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                dialog.dismiss();
+                                Intent callGPSSettingIntent = new Intent(
+                                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                startActivity(callGPSSettingIntent);
+                            }
+                        });
+        alertDialogBuilder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+
     /**
      * Creating google api client object
      */
@@ -333,6 +361,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
+//    @Override
+//    protected void onRestart() {
+//        super.onRestart();
+//        if (mGoogleApiClient != null) {
+//            mGoogleApiClient.connect();
+//
+//        }
+//    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -363,9 +400,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     tvLocation.setText(latitude + ", " + longitude);
                     getAddressFromLocation();
                 } else {
-
-                    tvLocation
-                            .setText("Can not Locate You");
+                    tvLocation.setText("Can not Locate you!");
+                    // showEnableLocationDialog();
                 }
             }
         } else {
@@ -379,9 +415,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 tvLocation.setText(latitude + ", " + longitude);
                 getAddressFromLocation();
             } else {
-
-                tvLocation
-                        .setText("Can not Locate You");
+                tvLocation.setText("Can not Locate you!");
+                // showEnableLocationDialog();
             }
         }
     }
