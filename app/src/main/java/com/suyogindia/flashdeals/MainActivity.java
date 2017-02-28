@@ -1,11 +1,10 @@
 package com.suyogindia.flashdeals;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -40,8 +39,15 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.suyogindia.adapters.DealsFragmentPagerAdapter;
 import com.suyogindia.database.DataBaseHelper;
@@ -65,14 +71,19 @@ import retrofit2.Response;
 /**
  * Created by suyogcomputech on 13/10/16.
  */
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, ResultCallback<LocationSettingsResult>, LocationListener {
 
+    protected static final int REQUEST_CHECK_SETTINGS = 0x1;
     // LogCat tag
     private static final String TAG = MainActivity.class.getSimpleName();
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
     private static final int LOCREQCODE = 111;
-
-
+    /**
+     * Stores the types of location services the client is interested in using. Used for checking
+     * settings to determine if the device has optimal location settings.
+     */
+    protected LocationSettingsRequest mLocationSettingsRequest;
     @BindView(R.id.drawer_layout)
     DrawerLayout myDrawerLayout;
     @BindView(R.id.nav_view)
@@ -87,8 +98,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     TextView tvLocation;
     @BindView(R.id.fab_cart)
     FloatingActionButton fabCart;
-
-
     String userId, email, pinCode = "";
     ProgressDialog dialog;
     Call<GetDealsResponse> dealsResponseCall;
@@ -131,6 +140,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
                 // Building the GoogleApi client
                 buildGoogleApiClient();
+                createLocationRequest();
+                buildLocationSettingsRequest();
+                checkLocationSettings();
             }
             getDeals();
             fabCart.setOnClickListener(new View.OnClickListener() {
@@ -140,6 +152,103 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                         Intent i = new Intent(MainActivity.this, CartActivity.class);
                         startActivity(i);
                     }
+                }
+            });
+        }
+    }
+
+    protected void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    protected void buildLocationSettingsRequest() {
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+        builder.addLocationRequest(mLocationRequest);
+        mLocationSettingsRequest = builder.build();
+    }
+
+    protected void checkLocationSettings() {
+        PendingResult<LocationSettingsResult> result =
+                LocationServices.SettingsApi.checkLocationSettings(
+                        mGoogleApiClient,
+                        mLocationSettingsRequest
+                );
+        result.setResultCallback(this);
+    }
+
+    @Override
+    public void onResult(@NonNull LocationSettingsResult locationSettingsResult) {
+        final Status status = locationSettingsResult.getStatus();
+        switch (status.getStatusCode()) {
+            case LocationSettingsStatusCodes.SUCCESS:
+                Log.i(TAG, "All location settings are satisfied.");
+                startLocationUpdates();
+                break;
+            case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                Log.i(TAG, "Location settings are not satisfied. Show the user a dialog to" +
+                        "upgrade location settings ");
+
+                try {
+                    // Show the dialog by calling startResolutionForResult(), and check the result
+                    // in onActivityResult().
+                    status.startResolutionForResult(MainActivity.this, REQUEST_CHECK_SETTINGS);
+                } catch (IntentSender.SendIntentException e) {
+                    Log.i(TAG, "PendingIntent unable to execute request.");
+                }
+                break;
+            case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                Log.i(TAG, "Location settings are inadequate, and cannot be fixed here. Dialog " +
+                        "not created.");
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            // Check for the integer request code originally supplied to startResolutionForResult().
+            case REQUEST_CHECK_SETTINGS:
+                switch (resultCode) {
+                    case RESULT_OK:
+                        Log.i(TAG, "User agreed to make required location settings changes.");
+                        startLocationUpdates();
+                        break;
+                    case RESULT_CANCELED:
+                        Log.i(TAG, "User chose not to make required location settings changes.");
+                        break;
+                }
+                break;
+        }
+    }
+
+    private void startLocationUpdates() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, LOCREQCODE);
+            } else {
+                LocationServices.FusedLocationApi.requestLocationUpdates(
+                        mGoogleApiClient,
+                        mLocationRequest,
+                        this
+                ).setResultCallback(new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+
+                    }
+                });
+            }
+        } else {
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                    mGoogleApiClient,
+                    mLocationRequest,
+                    this
+            ).setResultCallback(new ResultCallback<Status>() {
+                @Override
+                public void onResult(Status status) {
+
                 }
             });
         }
@@ -272,17 +381,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 return true;
             }
         });
-//        View header = myNavigationView.getHeaderView(0);
-//        TextView tvEmail = (TextView) header.findViewById(R.id.tv_email);
-//        tvEmail.setText(email);
-//        imgEditProfile = (LinearLayout) header.findViewById(R.id.imgEditProfile);
-//        imgEditProfile.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(MainActivity.this, MyProfileActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+//
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, myDrawerLayout, toolbar,
                 R.string.drawer_open, R.string.drawer_close) {
             @Override
@@ -299,31 +398,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         actionBarDrawerToggle.syncState();
     }
 
-    private void showEnableLocationDialog() {
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                MainActivity.this);
-        alertDialogBuilder
-                .setMessage("GPS is disabled in your device. Enable it?")
-                .setPositiveButton("Enable GPS",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,
-                                                int id) {
-                                dialog.dismiss();
-                                Intent callGPSSettingIntent = new Intent(
-                                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                                startActivity(callGPSSettingIntent);
-                            }
-                        });
-        alertDialogBuilder.setNegativeButton("Cancel",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
-        AlertDialog alert = alertDialogBuilder.create();
-        alert.show();
-    }
 
     /**
      * Creating google api client object
@@ -437,6 +511,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
 
             tvLocation.setText(myAddress.getAddressLine(0));
+            LocationServices.FusedLocationApi.removeLocationUpdates(
+                    mGoogleApiClient,
+                    this
+            ).setResultCallback(new ResultCallback<Status>() {
+                @Override
+                public void onResult(Status status) {
+
+                }
+            });
         } catch (IOException e) {
             e.printStackTrace();
             tvLocation.setText("Can not locate you");
@@ -447,7 +530,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCREQCODE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            displayLocation();
+            startLocationUpdates();
         }
     }
 
@@ -500,5 +583,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         });
         exitDialog.show();
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        mLastLocation = location;
+        getAddressFromLocation();
     }
 }

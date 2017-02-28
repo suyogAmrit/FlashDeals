@@ -196,7 +196,7 @@ public class OrderReviewActivity extends AppCompatActivity {
 //                        // TODO: 08/11/16 change to total amount
 //                        myMakePayment.initiatePayment(10.00);
                         PayYouMoneyHelper helper = new PayYouMoneyHelper(OrderReviewActivity.this);
-                        helper.makePayment(10);
+                        helper.makePayment(grandToal);
                         //Changes for send order data
 
                     } else {
